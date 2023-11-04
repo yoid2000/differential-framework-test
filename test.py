@@ -9,9 +9,13 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from tpot import TPOTClassifier
 from tpot import TPOTRegressor
+from joblib import dump, load
 import numpy as np
 import pandas as pd
+import json
 import pprint
+import os
+from mixed_types_kneighbors import MixedTypeKNeighbors
 
 workWithAuto = False
 if workWithAuto:
@@ -20,8 +24,30 @@ if workWithAuto:
 
 pp = pprint.PrettyPrinter(indent=4)
 
+def getAnonymeterPreds(victims, dataset, secret, auxCols):
+    ''' Both victims and dataset df's have all columns.
+        The secret is the column the attacker is trying to predict
+        In usage, the dataset can be the synthetic dataset (in which case
+        we are emulating Anonymeter), or it can be the baseline dataset
+        (in which case we are doing the differential framework, but with
+        k-neighbors matching as our analysis)
+        auxCols are the known columns
+    '''
+    print(f"getAnonymeterPreds for secret {secret}")
+    secretType, nums, cats, drops = categorize_columns(dataset, secret)
+    if secretType == 'drop':
+        print(f"skip secret {secretType} because not cat or num")
+        return
+    print(f"Secret is {secret} with type {secretType}")
+    for column in drops:
+        victims = victims.drop(column, axis=1)
+        dataset = dataset.drop(column, axis=1)
+    nn = MixedTypeKNeighbors(n_neighbors=1).fit(candidates=dataset[auxCols])
+    predictions_idx = nn.kneighbors(queries=victims[auxCols])
+    predictions = dataset.iloc[predictions_idx.flatten()][secret]
+    printEvaluation(secretType, victims[secret], predictions)
 
-def doModel(df, target, auto='none'):
+def doModel(fileBaseName, df, target, numVictims=500, auto='none'):
     if auto == 'autosklearn' and workWithAuto is False:
         return
     targetType, nums, cats, drops = categorize_columns(df, target)
@@ -38,7 +64,7 @@ def doModel(df, target, auto='none'):
 
 
     if auto == 'none':
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=numVictims, random_state=42)
         # Create a column transformer
         preprocessor = ColumnTransformer(
             transformers=[
@@ -64,7 +90,7 @@ def doModel(df, target, auto='none'):
         # Make predictions and evaluate the model
         y_pred = pipe.predict(X_test)
     elif auto == 'autosklearn':
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=numVictims, random_state=42)
         if targetType == 'cat':
             # Initialize the classifier
             automl = autosklearn.classification.AutoSklearnClassifier(time_left_for_this_task=120, per_run_time_limit=30)
@@ -84,30 +110,60 @@ def doModel(df, target, auto='none'):
             # Predict on test data
             y_pred = automl.predict(X_test)
     elif auto == 'tpot':
-        for column in cats:
-            df[column] = df[column].astype(str)
-        X = pd.get_dummies(X)
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-        if targetType == 'cat':
-            # Initialize the classifier
-            tpot = TPOTClassifier(generations=5, population_size=50, verbosity=2, random_state=42)
-            # Fit the model
-            tpot.fit(X_train, y_train)
-            # Print the best pipeline
-            print(tpot.fitted_pipeline_)
-            # Predict on test data
-            y_pred = tpot.predict(X_test)
+        savedModelName = fileBaseName + '.tpot.joblib'
+        if os.path.exists(savedModelName):
+            tpot = load(savedModelName)
         else:
-            # Initialize the regressor
-            tpot = TPOTRegressor(generations=5, population_size=50, verbosity=2, random_state=42)
-            # Fit the model
-            tpot.fit(X_train, y_train)
-            # Print the best pipeline
-            print(tpot.fitted_pipeline_)
-            # Predict on test data
-            y_pred = tpot.predict(X_test)
+            for column in cats:
+                df[column] = df[column].astype(str)
+            X = pd.get_dummies(X)
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=numVictims, random_state=42)
+            if targetType == 'cat':
+                # Initialize the classifier
+                tpot = TPOTClassifier(generations=100, population_size=100, verbosity=2, random_state=42)
+                # Fit the model
+                tpot.fit(X_train, y_train)
+                # Print the best pipeline
+                print(tpot.fitted_pipeline_)
+            else:
+                # Initialize the regressor
+                tpot = TPOTRegressor(generations=100, population_size=100, verbosity=2, random_state=42)
+                # Fit the model
+                tpot.fit(X_train, y_train)
+                # Print the best pipeline
+                print(tpot.fitted_pipeline_)
+            dump(tpot.fitted_pipeline_, savedModelName)
+        # Predict on test data
+        y_pred = tpot.predict(X_test)
 
+    printEvaluation(targetType, y_test, y_pred)
 
+    # To see which features were selected
+    if False and not auto:
+        # Get the preprocessor step from the pipeline
+        preprocessor = pipe.named_steps['preprocessor']
+
+        # Get the feature names after one-hot encoding
+        feature_names = preprocessor.get_feature_names_out()
+
+        # Now use these feature names with your model coefficients
+        selected_features = list(feature_names[(pipe.named_steps['model'].coef_ != 0).any(axis=0)])
+        print(f"Selected features:")
+        if targetType == 'cat':
+            pp.pprint(list(selected_features))
+            numFeatures = len(list(selected_features))
+        else:
+            print(type(selected_features))
+            if len(selected_features) == 0:
+                print("strange!!!")
+                print(selected_features)
+                numFeatures = 0
+            else:
+                pp.pprint(list(selected_features[0]))
+                numFeatures = len(list(selected_features[0]))
+        print(f"Selected {numFeatures} out of {len(feature_names)} total")
+
+def printEvaluation(targetType, y_test, y_pred):
     if targetType == 'cat':
         accuracy = accuracy_score(y_test, y_pred)
         print(f"Accuracy: {accuracy}")
@@ -134,32 +190,6 @@ def doModel(df, target, auto='none'):
         #relErr = np.abs(y_test - y_pred) / npMax
         #print(f"Average relative error: {np.mean(relErr)}")
         #print(f"Std Dev relative error: {np.std(relErr)}")
-
-    # To see which features were selected
-
-    if False and not auto:
-        # Get the preprocessor step from the pipeline
-        preprocessor = pipe.named_steps['preprocessor']
-
-        # Get the feature names after one-hot encoding
-        feature_names = preprocessor.get_feature_names_out()
-
-        # Now use these feature names with your model coefficients
-        selected_features = list(feature_names[(pipe.named_steps['model'].coef_ != 0).any(axis=0)])
-        print(f"Selected features:")
-        if targetType == 'cat':
-            pp.pprint(list(selected_features))
-            numFeatures = len(list(selected_features))
-        else:
-            print(type(selected_features))
-            if len(selected_features) == 0:
-                print("strange!!!")
-                print(selected_features)
-                numFeatures = 0
-            else:
-                pp.pprint(list(selected_features[0]))
-                numFeatures = len(list(selected_features[0]))
-        print(f"Selected {numFeatures} out of {len(feature_names)} total")
 
 def csv_to_dataframe(file_path):
     # Read the CSV file
@@ -215,14 +245,39 @@ def getColType(df, col):
     return nums, cats, drops
 
 
-# Usage
-file_path = 'BankChurnersNoId.csv'  # replace with your file path
-df = csv_to_dataframe(file_path)
-print_dataframe_columns(df)
+numVictims = 500
+filePath = 'BankChurnersNoId_ctgan.json'
+with open(filePath, 'r') as f:
+    testData = json.load(f)
+'''
+    dfAnon is the synthetic data generated from dfOrig
+    dfTest is additional data not used for the synthetic data
+'''
+dfOrig = pd.DataFrame(testData['originalTable'], columns=testData['colNames'])
+dfAnon = pd.DataFrame(testData['anonTable'], columns=testData['colNames'])
+dfTest = pd.DataFrame(testData['testTable'], columns=testData['colNames'])
+
+print(f"Got {dfOrig.shape[0]} original rows")
+print(f"Got {dfAnon.shape[0]} synthetic rows")
+print(f"Got {dfTest.shape[0]} test rows")
+
+print_dataframe_columns(dfOrig)
 print('===============================================')
 print('===============================================')
-for target in df.columns:
+for target in dfOrig.columns:
     print(f"Use target {target}")
-    doModel(df, target)
-    doModel(df, target, auto='tpot')
+    # Here, we are using the original rows to measure the baseline
+    # using ML models (this is meant to give a high-quality baseline)
+    fileBaseName = filePath + target
+    print("----  DIFFERENTIAL FRAMEWORK  ----")
+    doModel(fileBaseName, dfOrig, target, numVictims=numVictims)
+    #doModel(fileBaseName, df, target, auto='tpot', numVictims=numVictims)
+    # Here, we are mimicing Anonymeter. That is to say, we are applying
+    # the analysis (which is the same as the attack) to the synthetic
+    # data using victims that were not part of making the synthetic data
+    auxCols = list(dfTest.columns)
+    auxCols.remove(target)
+    print("----  CLASSIC ANONYMETER  ----")
+    dfSample = dfTest.sample(n=numVictims, replace=False)
+    getAnonymeterPreds(dfSample, dfAnon, target, auxCols)
     print('----------------------------------------------')
