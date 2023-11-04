@@ -271,7 +271,7 @@ for target in dfOrig.columns:
     fileBaseName = filePath + target
     print("----  DIFFERENTIAL FRAMEWORK  ----")
     doModel(fileBaseName, dfOrig, target, numVictims=numVictims)
-    doModel(fileBaseName, df, target, auto='tpot', numVictims=numVictims)
+    doModel(fileBaseName, dfOrig, target, auto='tpot', numVictims=numVictims)
     # Here, we are mimicing Anonymeter. That is to say, we are applying
     # the analysis (which is the same as the attack) to the synthetic
     # data using victims that were not part of making the synthetic data
