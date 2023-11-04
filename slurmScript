@@ -2,4 +2,4 @@
 #SBATCH --time=7-0
 #SBATCH --array=0-30
 arrayNum="${SLURM_ARRAY_TASK_ID}"
-python3 diffTest.py --jobNum=$arrayNum --jsonFile="BankChurnersNoId_ctgan.json" --numVictims=500
+python3 oneSlurmJob.py --jobNum=$arrayNum --jsonFile="BankChurnersNoId_ctgan.json" --numVictims=500
