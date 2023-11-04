@@ -244,40 +244,43 @@ def getColType(df, col):
 
     return nums, cats, drops
 
+if __name__ == "__main__":
 
-numVictims = 500
-filePath = 'BankChurnersNoId_ctgan.json'
-with open(filePath, 'r') as f:
-    testData = json.load(f)
-'''
-    dfAnon is the synthetic data generated from dfOrig
-    dfTest is additional data not used for the synthetic data
-'''
-dfOrig = pd.DataFrame(testData['originalTable'], columns=testData['colNames'])
-dfAnon = pd.DataFrame(testData['anonTable'], columns=testData['colNames'])
-dfTest = pd.DataFrame(testData['testTable'], columns=testData['colNames'])
-
-print(f"Got {dfOrig.shape[0]} original rows")
-print(f"Got {dfAnon.shape[0]} synthetic rows")
-print(f"Got {dfTest.shape[0]} test rows")
-
-print_dataframe_columns(dfOrig)
-print('===============================================')
-print('===============================================')
-for target in dfOrig.columns:
-    print(f"Use target {target}")
-    # Here, we are using the original rows to measure the baseline
-    # using ML models (this is meant to give a high-quality baseline)
-    fileBaseName = filePath + target
-    print("----  DIFFERENTIAL FRAMEWORK  ----")
-    doModel(fileBaseName, dfOrig, target, numVictims=numVictims)
-    doModel(fileBaseName, dfOrig, target, auto='tpot', numVictims=numVictims)
-    # Here, we are mimicing Anonymeter. That is to say, we are applying
-    # the analysis (which is the same as the attack) to the synthetic
-    # data using victims that were not part of making the synthetic data
-    auxCols = list(dfTest.columns)
-    auxCols.remove(target)
-    print("----  CLASSIC ANONYMETER  ----")
-    dfSample = dfTest.sample(n=numVictims, replace=False)
-    getAnonymeterPreds(dfSample, dfAnon, target, auxCols)
-    print('----------------------------------------------')
+    doTpot = False
+    numVictims = 500
+    filePath = 'BankChurnersNoId_ctgan.json'
+    with open(filePath, 'r') as f:
+        testData = json.load(f)
+    '''
+        dfAnon is the synthetic data generated from dfOrig
+        dfTest is additional data not used for the synthetic data
+    '''
+    dfOrig = pd.DataFrame(testData['originalTable'], columns=testData['colNames'])
+    dfAnon = pd.DataFrame(testData['anonTable'], columns=testData['colNames'])
+    dfTest = pd.DataFrame(testData['testTable'], columns=testData['colNames'])
+    
+    print(f"Got {dfOrig.shape[0]} original rows")
+    print(f"Got {dfAnon.shape[0]} synthetic rows")
+    print(f"Got {dfTest.shape[0]} test rows")
+    
+    print_dataframe_columns(dfOrig)
+    print('===============================================')
+    print('===============================================')
+    for target in dfOrig.columns:
+        print(f"Use target {target}")
+        # Here, we are using the original rows to measure the baseline
+        # using ML models (this is meant to give a high-quality baseline)
+        fileBaseName = filePath + target
+        print("----  DIFFERENTIAL FRAMEWORK  ----")
+        doModel(fileBaseName, dfOrig, target, numVictims=numVictims)
+        if doTpot:
+            doModel(fileBaseName, dfOrig, target, auto='tpot', numVictims=numVictims)
+        # Here, we are mimicing Anonymeter. That is to say, we are applying
+        # the analysis (which is the same as the attack) to the synthetic
+        # data using victims that were not part of making the synthetic data
+        auxCols = list(dfTest.columns)
+        auxCols.remove(target)
+        print("----  CLASSIC ANONYMETER  ----")
+        dfSample = dfTest.sample(n=numVictims, replace=False)
+        getAnonymeterPreds(dfSample, dfAnon, target, auxCols)
+        print('----------------------------------------------')
