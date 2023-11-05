@@ -17,7 +17,7 @@ def oneTpotJob(jobNum=0, jsonFile='BankChurnersNoId_ctgan.json', numVictims=500)
         testData = json.load(f)
     columns = testData['colNames']
     if jobNum >= len(columns):
-        print("oneTpotJob: FAIL: jobNum {jobNum} exceeds columns {len(columns)}")
+        print(f"oneTpotJob: FAIL: jobNum {jobNum} exceeds columns {len(columns)}")
     dfOrig = pd.DataFrame(testData['originalTable'], columns=columns)
     target = columns[jobNum]
     fileBaseName = jsonFile + target

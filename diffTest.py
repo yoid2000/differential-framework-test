@@ -24,7 +24,16 @@ if workWithAuto:
 
 pp = pprint.PrettyPrinter(indent=4)
 
-def getAnonymeterPreds(victims, dataset, secret, auxCols):
+def updateResults(res, dataset, column, measure, value):
+    ''' measures are: 'accuracy', 'rmse', 'accuracy-freq', 'avg-value'
+    '''
+    if dataset not in res:
+        res[dataset] = {}
+    if column not in res[dataset]:
+        res[dataset][column] = {}
+    res[dataset][column][measure] = value
+
+def getAnonymeterPreds(res, filePath, victims, dataset, secret, auxCols):
     ''' Both victims and dataset df's have all columns.
         The secret is the column the attacker is trying to predict
         In usage, the dataset can be the synthetic dataset (in which case
@@ -45,9 +54,10 @@ def getAnonymeterPreds(victims, dataset, secret, auxCols):
     nn = MixedTypeKNeighbors(n_neighbors=1).fit(candidates=dataset[auxCols])
     predictions_idx = nn.kneighbors(queries=victims[auxCols])
     predictions = dataset.iloc[predictions_idx.flatten()][secret]
-    printEvaluation(secretType, victims[secret], predictions)
+    printEvaluation(res, filePath, secret, secretType, victims[secret], predictions)
 
-def doModel(fileBaseName, df, target, numVictims=500, auto='none'):
+def doModel(res, dataset, target, df, numVictims=500, auto='none'):
+    fileBaseName = dataset + target
     if auto == 'autosklearn' and workWithAuto is False:
         return
     targetType, nums, cats, drops = categorize_columns(df, target)
@@ -136,7 +146,7 @@ def doModel(fileBaseName, df, target, numVictims=500, auto='none'):
         # Predict on test data
         y_pred = tpot.predict(X_test)
 
-    printEvaluation(targetType, y_test, y_pred)
+    printEvaluation(res, dataset, target, targetType, y_test, y_pred)
 
     # To see which features were selected
     if False and not auto:
@@ -163,9 +173,10 @@ def doModel(fileBaseName, df, target, numVictims=500, auto='none'):
                 numFeatures = len(list(selected_features[0]))
         print(f"Selected {numFeatures} out of {len(feature_names)} total")
 
-def printEvaluation(targetType, y_test, y_pred):
+def printEvaluation(res, dataset, target, targetType, y_test, y_pred):
     if targetType == 'cat':
         accuracy = accuracy_score(y_test, y_pred)
+        updateResults(res, dataset, target, 'accuracy', accuracy)
         print(f"Accuracy: {accuracy}")
         # Find the most frequent category
         most_frequent = y_test.mode()[0]
@@ -173,12 +184,15 @@ def printEvaluation(targetType, y_test, y_pred):
         y_pred_freq = [most_frequent] * len(y_test)
         # Compute accuracy
         accuracy_freq = accuracy_score(y_test, y_pred_freq)
+        updateResults(res, dataset, target, 'accuracy_freq', accuracy_freq)
         print(f"Accuracy of best guess: {accuracy_freq}")
         accuracy_improvement = (accuracy - accuracy_freq) / max(accuracy, accuracy_freq)
         print(f"Accuracy Improvement: {accuracy_improvement}")
     else:
         mse = mean_squared_error(y_test, y_pred)
         rmse = np.sqrt(mse)
+        updateResults(res, dataset, target, 'rmse', rmse)
+        updateResults(res, dataset, target, 'avg-value', np.mean(y_test))
         print(f"Root Mean Squared Error: {rmse}")
         print(f"Average test value: {np.mean(y_test)}")
         print(f"Relative error: {rmse/np.mean(y_test)}")
@@ -245,7 +259,12 @@ def getColType(df, col):
     return nums, cats, drops
 
 if __name__ == "__main__":
-
+    results = {
+        'tpot':{},
+        'manual-ml':{},
+        'classic-anonymeter':{},
+        'diff-anonymeter':{},
+    }
     doTpot = False
     numVictims = 500
     filePath = 'BankChurnersNoId_ctgan.json'
@@ -270,11 +289,10 @@ if __name__ == "__main__":
         print(f"Use target {target}")
         # Here, we are using the original rows to measure the baseline
         # using ML models (this is meant to give a high-quality baseline)
-        fileBaseName = filePath + target
         print("----  DIFFERENTIAL FRAMEWORK  ----")
-        doModel(fileBaseName, dfOrig, target, numVictims=numVictims)
+        doModel(results['manual-ml'], filePath, target, dfOrig, numVictims=numVictims)
         if doTpot:
-            doModel(fileBaseName, dfOrig, target, auto='tpot', numVictims=numVictims)
+            doModel(results['tpot'], filePath, target, dfOrig, auto='tpot', numVictims=numVictims)
         # Here, we are mimicing Anonymeter. That is to say, we are applying
         # the analysis (which is the same as the attack) to the synthetic
         # data using victims that were not part of making the synthetic data
@@ -282,5 +300,8 @@ if __name__ == "__main__":
         auxCols.remove(target)
         print("----  CLASSIC ANONYMETER  ----")
         dfSample = dfTest.sample(n=numVictims, replace=False)
-        getAnonymeterPreds(dfSample, dfAnon, target, auxCols)
+        getAnonymeterPreds(results['classic-anonymeter'], filePath, dfSample, dfAnon, target, auxCols)
         print('----------------------------------------------')
+    pp.pprint(results)
+    with open('results.json', 'w') as f:
+        json.dump(results, f, indent=4)
