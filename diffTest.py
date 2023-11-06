@@ -289,7 +289,7 @@ if __name__ == "__main__":
         print(f"Use target {target}")
         # Here, we are using the original rows to measure the baseline
         # using ML models (this is meant to give a high-quality baseline)
-        print("----  DIFFERENTIAL FRAMEWORK  ----")
+        print("\n----  DIFFERENTIAL FRAMEWORK  ----")
         doModel(results['manual-ml'], filePath, target, dfOrig, numVictims=numVictims)
         if doTpot:
             doModel(results['tpot'], filePath, target, dfOrig, auto='tpot', numVictims=numVictims)
@@ -298,10 +298,15 @@ if __name__ == "__main__":
         # data using victims that were not part of making the synthetic data
         auxCols = list(dfTest.columns)
         auxCols.remove(target)
-        print("----  CLASSIC ANONYMETER  ----")
-        dfSample = dfTest.sample(n=numVictims, replace=False)
-        getAnonymeterPreds(results['classic-anonymeter'], filePath, dfSample, dfAnon, target, auxCols)
+        dfSampleVictims = dfTest.sample(n=numVictims, replace=False)
+        print("\n----  CLASSIC ANONYMETER  ----")
+        getAnonymeterPreds(results['classic-anonymeter'], filePath, dfSampleVictims, dfAnon, target, auxCols)
+        # Here, we are running Anonymeter against the original data instead of
+        # the synthetic data. This follows the differential framework, but
+        # using Anonymeter's attack method as the analysis
         print('----------------------------------------------')
+        print("\n----  DIFFERENTIAL ANONYMETER  ----")
+        getAnonymeterPreds(results['diff-anonymeter'], filePath, dfSampleVictims, dfOrig, target, auxCols)
     pp.pprint(results)
     with open('results.json', 'w') as f:
         json.dump(results, f, indent=4)
