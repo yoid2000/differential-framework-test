@@ -261,7 +261,7 @@ class MixedTypeKNeighbors:
 
     """
 
-    def __init__(self, n_neighbors = 1):
+    def __init__(self, n_neighbors = 5):
         self._n_neighbors = n_neighbors
 
     def fit(self, candidates, ctypes = None):

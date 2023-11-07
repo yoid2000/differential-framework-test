@@ -4,6 +4,7 @@ import json
 import pprint
 import seaborn as sns
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
 import pandas as pd
 import math
 import os
@@ -21,7 +22,10 @@ def doClip(thingy,clipBegin = 10, clipEnd=3):
 
 if __name__ == "__main__":
     useForMl = 'manual-ml'
-    methods = [useForMl, 'diff-anonymeter', 'classic-anonymeter']
+    methods = [useForMl, 'diff-anonymeter', 'classic-anonymeter',
+                         'diff-anonymeter-10', 'manual-ml-10',
+                         'diff-anonymeter-50', 'manual-ml-50',
+                         'diff-anonymeter-100', 'manual-ml-100']
     with open('results.json', 'r') as f:
         res = json.load(f)
     dataset = list(res['classic-anonymeter'].keys())[0]
@@ -72,10 +76,15 @@ if __name__ == "__main__":
             plottables[method]['rmse-improve'].append(classicRmse/thisRmse)
     pp.pprint(plottables)
 
-    methods = ['manual-ml', 'diff-anonymeter', 'classic-anonymeter']
     mlIndex = methods.index(useForMl)
     diffIndex = methods.index('diff-anonymeter')
     classicIndex = methods.index('classic-anonymeter')
+    mlIndex10 = methods.index('manual-ml-10')
+    diffIndex10 = methods.index('diff-anonymeter-10')
+    mlIndex50 = methods.index('manual-ml-50')
+    diffIndex50 = methods.index('diff-anonymeter-50')
+    mlIndex100 = methods.index('manual-ml-100')
+    diffIndex100 = methods.index('diff-anonymeter-100')
     # Plot the accuracy scores (for categorical columns)
     dfAcc = pd.DataFrame({
         'Columns': doClip(catCols),
@@ -148,7 +157,6 @@ if __name__ == "__main__":
     fig.savefig("rmse-improv.png")
     plt.close()
 
-
     # Plot the accuracy improvement over classic
     dfAcc = pd.DataFrame({
         'Columns': doClip(catCols),
@@ -162,4 +170,105 @@ if __name__ == "__main__":
     snsPlot = sns.barplot(x="Columns", y="Accuracy Improvement\nover Classic Anonymeter", hue='Analysis', data=dfAccMelted)
     fig = snsPlot.get_figure()
     fig.savefig("acc-improv.png")
+    plt.close()
+
+    # Plot the accuracies for the two groups of four
+    dfAcc = pd.DataFrame({
+        'ML 0': plottables[methods[mlIndex]]['accuracy'],
+        'ML 10%': plottables[methods[mlIndex10]]['accuracy'],
+        'ML 50%': plottables[methods[mlIndex50]]['accuracy'],
+        'ML 100%': plottables[methods[mlIndex100]]['accuracy'],
+        'Match 0': plottables[methods[diffIndex]]['accuracy'],
+        'Match 10%': plottables[methods[diffIndex10]]['accuracy'],
+        'Match 50%': plottables[methods[diffIndex50]]['accuracy'],
+        'Match 100%': plottables[methods[diffIndex100]]['accuracy'],
+    })
+    box_plot = sns.boxplot(data=dfAcc, orient='h')
+    # Set the colors
+    colors = ['#4c72b0', '#4c72b0', '#4c72b0', '#4c72b0', '#64b5cd', '#64b5cd', '#64b5cd', '#64b5cd']
+    for i in range(len(colors)):
+        mybox = box_plot.artists[i]
+        mybox.set_facecolor(colors[i])
+    plt.savefig("acc-link.png")
+    plt.close()
+
+    '''
+    #4C72B0   blue
+    #55A868   green
+    #C44E52   red
+    #8172B2   purple
+    #CCB974   tan
+    #64B5CD
+    '''
+
+# Ok, the mega plot!
+    dfRmseImprove = pd.DataFrame({
+        'ML': plottables[methods[mlIndex]]['rmse-improve'],
+        'Match': plottables[methods[diffIndex]]['rmse-improve'],
+    })
+    dfAccImprove = pd.DataFrame({
+        'ML': plottables[methods[mlIndex]]['acc-improve'],
+        'Match': plottables[methods[diffIndex]]['acc-improve'],
+    })
+    dfAccLink = pd.DataFrame({
+        'ML 0': plottables[methods[mlIndex]]['accuracy'],
+        'ML 10%': plottables[methods[mlIndex10]]['accuracy'],
+        'ML 50%': plottables[methods[mlIndex50]]['accuracy'],
+        'ML 100%': plottables[methods[mlIndex100]]['accuracy'],
+        'Match 0': plottables[methods[diffIndex]]['accuracy'],
+        'Match 10%': plottables[methods[diffIndex10]]['accuracy'],
+        'Match 50%': plottables[methods[diffIndex50]]['accuracy'],
+        'Match 100%': plottables[methods[diffIndex100]]['accuracy'],
+    })
+    dfRmseLink = pd.DataFrame({
+        'ML 0': plottables[methods[mlIndex]]['rmse'],
+        'ML 10%': plottables[methods[mlIndex10]]['rmse'],
+        'ML 50%': plottables[methods[mlIndex50]]['rmse'],
+        'ML 100%': plottables[methods[mlIndex100]]['rmse'],
+        'Match 0': plottables[methods[diffIndex]]['rmse'],
+        'Match 10%': plottables[methods[diffIndex10]]['rmse'],
+        'Match 50%': plottables[methods[diffIndex50]]['rmse'],
+        'Match 100%': plottables[methods[diffIndex100]]['rmse'],
+    })
+
+    fig = plt.figure(figsize=(4, 8))
+    gs = gridspec.GridSpec(4, 1, height_ratios=[1, 1, 4, 4])
+
+    # Create the seaborn graphs
+    ax0=fig.add_subplot(gs[0])
+    sns.boxplot(data=dfAccImprove, orient='h', ax=ax0)
+    colors = ['#4c72b0', '#ccb974']
+    for i in range(len(colors)):
+        mybox = ax0.artists[i]
+        mybox.set_facecolor(colors[i])
+    ax0.set_xlabel('Accuracy improvement over Anonymeter')
+
+    ax1=fig.add_subplot(gs[1])
+    sns.boxplot(data=dfRmseImprove, orient='h', ax=ax1)
+    for i in range(len(colors)):
+        mybox = ax1.artists[i]
+        mybox.set_facecolor(colors[i])
+    ax1.set_xlabel('RMSE improvement over Anonymeter')
+    ax1.set_xscale('log')
+
+    ax2=fig.add_subplot(gs[2])
+    sns.boxplot(data=dfAccLink, orient='h', ax=ax2)
+    colors = ['#4c72b0', '#4c72b0', '#4c72b0', '#4c72b0', '#ccb974', '#ccb974', '#ccb974', '#ccb974']
+    for i in range(len(colors)):
+        mybox = ax2.artists[i]
+        mybox.set_facecolor(colors[i])
+    ax2.set_xlabel('Accuracy')
+    
+    ax3=fig.add_subplot(gs[3])
+    sns.boxplot(data=dfRmseLink, orient='h', ax=ax3)
+    for i in range(len(colors)):
+        mybox = ax3.artists[i]
+        mybox.set_facecolor(colors[i])
+    ax3.set_xlabel('RMSE')
+    ax3.set_xscale('log')
+
+    # Display the figure
+    #plt.subplots_adjust(bottom=0.3, left=0.15, right=0.2)
+    plt.tight_layout()
+    plt.savefig("mega.png")
     plt.close()
