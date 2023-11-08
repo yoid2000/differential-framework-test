@@ -264,11 +264,99 @@ if __name__ == "__main__":
     for i in range(len(colors)):
         mybox = ax3.artists[i]
         mybox.set_facecolor(colors[i])
-    ax3.set_xlabel('RMSE')
+    ax3.set_xlabel('Root Mean Squared Error (RMSE)')
     ax3.set_xscale('log')
 
     # Display the figure
     #plt.subplots_adjust(bottom=0.3, left=0.15, right=0.2)
     plt.tight_layout()
     plt.savefig("mega.png")
+    plt.close()
+
+    # Now the first part of the mega plot
+    fig = plt.figure(figsize=(4, 3))
+    gs = gridspec.GridSpec(2, 1, height_ratios=[1, 1])
+
+    # Create the seaborn graphs
+    ax0=fig.add_subplot(gs[0])
+    sns.boxplot(data=dfAccImprove, orient='h', ax=ax0)
+    colors = ['#4c72b0', '#ccb974']
+    for i in range(len(colors)):
+        mybox = ax0.artists[i]
+        mybox.set_facecolor(colors[i])
+    ax0.set_xlabel('Accuracy improvement over Anonymeter')
+
+    ax1=fig.add_subplot(gs[1])
+    sns.boxplot(data=dfRmseImprove, orient='h', ax=ax1)
+    for i in range(len(colors)):
+        mybox = ax1.artists[i]
+        mybox.set_facecolor(colors[i])
+    ax1.set_xlabel('RMSE improvement over Anonymeter')
+    ax1.set_xscale('log')
+    plt.tight_layout()
+    plt.savefig("diffVsClassicImprove.png")
+    plt.close()
+
+    # And now the linkage part
+    fig = plt.figure(figsize=(4, 4.5))
+    gs = gridspec.GridSpec(2, 1, height_ratios=[1, 1])
+
+    ax2=fig.add_subplot(gs[0])
+    sns.boxplot(data=dfAccLink, orient='h', ax=ax2)
+    colors = ['#4c72b0', '#4c72b0', '#4c72b0', '#4c72b0', '#ccb974', '#ccb974', '#ccb974', '#ccb974']
+    for i in range(len(colors)):
+        mybox = ax2.artists[i]
+        mybox.set_facecolor(colors[i])
+    ax2.set_xlabel('Accuracy')
+    
+    ax3=fig.add_subplot(gs[1])
+    sns.boxplot(data=dfRmseLink, orient='h', ax=ax3)
+    for i in range(len(colors)):
+        mybox = ax3.artists[i]
+        mybox.set_facecolor(colors[i])
+    ax3.set_xlabel('Root Mean Squared Error (RMSE)')
+    ax3.set_xscale('log')
+
+    # Display the figure
+    #plt.subplots_adjust(bottom=0.3, left=0.15, right=0.2)
+    plt.tight_layout()
+    plt.savefig("linkage.png")
+    plt.close()
+
+# Let's look at three whiskers
+    dfRmse = pd.DataFrame({
+        'ML/Diff': plottables[methods[mlIndex]]['rmse'],
+        'Match/Diff': plottables[methods[diffIndex]]['rmse'],
+        'Match/Prior': plottables[methods[classicIndex]]['rmse'],
+    })
+    dfAcc = pd.DataFrame({
+        'ML/Diff': plottables[methods[mlIndex]]['accuracy'],
+        'Match/Diff': plottables[methods[diffIndex]]['accuracy'],
+        'Match/Prior': plottables[methods[classicIndex]]['accuracy'],
+    })
+    print("dfRmse:")
+    print(dfRmse.describe())
+    print("dfAcc:")
+    print(dfAcc.describe())
+    fig = plt.figure(figsize=(4, 2.5))
+    gs = gridspec.GridSpec(2, 1, height_ratios=[1, 1])
+
+    # Create the seaborn graphs
+    ax0=fig.add_subplot(gs[0])
+    sns.boxplot(data=dfAcc, orient='h', ax=ax0)
+    colors = ['#4c72b0', '#ccb974', '#c44e52']
+    for i in range(len(colors)):
+        mybox = ax0.artists[i]
+        mybox.set_facecolor(colors[i])
+    ax0.set_xlabel('Accuracy')
+
+    ax1=fig.add_subplot(gs[1])
+    sns.boxplot(data=dfRmse, orient='h', ax=ax1)
+    for i in range(len(colors)):
+        mybox = ax1.artists[i]
+        mybox.set_facecolor(colors[i])
+    ax1.set_xlabel('Root Mean Square Error (RMSE)')
+    ax1.set_xscale('log')
+    plt.tight_layout()
+    plt.savefig("diffVsClassic.png")
     plt.close()
