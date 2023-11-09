@@ -21,7 +21,7 @@ def oneTpotJob(jobNum=0, jsonFile='BankChurnersNoId_ctgan.json', numVictims=500)
         print(f"oneTpotJob: FAIL: jobNum {jobNum} exceeds columns {len(columns)}")
     dfOrig = pd.DataFrame(testData['originalTable'], columns=columns)
     target = columns[jobNum]
-    fileBaseName = jsonFile + target
+    fileBaseName = jsonFile + target + '.tpot.joblib'
     print(f"Checking for {fileBaseName}")
     if os.path.exists(fileBaseName):
         print(f"{fileBaseName} already exists")
