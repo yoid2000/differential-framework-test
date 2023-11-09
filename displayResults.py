@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 import json
 import pprint
@@ -93,12 +92,12 @@ if __name__ == "__main__":
         methods[classicIndex]: plottables[methods[classicIndex]]['accuracy'],
     })
 
-    dfAccMelted = dfAcc.melt('Columns', var_name='Analysis', value_name='Accuracy')
+    dfAccMelted = dfAcc.melt('Columns', var_name='Analysis', value_name='Precision')
 
     # Create the plot
     plt.xticks(rotation=45)
     plt.subplots_adjust(bottom=0.3, left=0.15)
-    snsPlot = sns.barplot(x="Columns", y="Accuracy", hue='Analysis', data=dfAccMelted)
+    snsPlot = sns.barplot(x="Columns", y="Precision", hue='Analysis', data=dfAccMelted)
     fig = snsPlot.get_figure()
     fig.savefig("accuracy.png")
     plt.close()
@@ -163,11 +162,11 @@ if __name__ == "__main__":
         methods[mlIndex]: plottables[methods[mlIndex]]['acc-improve'],
         methods[diffIndex]: plottables[methods[diffIndex]]['acc-improve'],
     })
-    dfAccMelted = dfAcc.melt('Columns', var_name='Analysis', value_name='Accuracy Improvement\nover Classic Anonymeter')
+    dfAccMelted = dfAcc.melt('Columns', var_name='Analysis', value_name='Precision Improvement\nover Classic Anonymeter')
     # Create the plot
     plt.xticks(rotation=45)
     plt.subplots_adjust(bottom=0.3, left=0.15)
-    snsPlot = sns.barplot(x="Columns", y="Accuracy Improvement\nover Classic Anonymeter", hue='Analysis', data=dfAccMelted)
+    snsPlot = sns.barplot(x="Columns", y="Precision Improvement\nover Classic Anonymeter", hue='Analysis', data=dfAccMelted)
     fig = snsPlot.get_figure()
     fig.savefig("acc-improv.png")
     plt.close()
@@ -241,7 +240,7 @@ if __name__ == "__main__":
     for i in range(len(colors)):
         mybox = ax0.artists[i]
         mybox.set_facecolor(colors[i])
-    ax0.set_xlabel('Accuracy improvement over Anonymeter')
+    ax0.set_xlabel('Precision improvement over Anonymeter')
 
     ax1=fig.add_subplot(gs[1])
     sns.boxplot(data=dfRmseImprove, orient='h', ax=ax1)
@@ -257,7 +256,7 @@ if __name__ == "__main__":
     for i in range(len(colors)):
         mybox = ax2.artists[i]
         mybox.set_facecolor(colors[i])
-    ax2.set_xlabel('Accuracy')
+    ax2.set_xlabel('Precision')
     
     ax3=fig.add_subplot(gs[3])
     sns.boxplot(data=dfRmseLink, orient='h', ax=ax3)
@@ -284,7 +283,7 @@ if __name__ == "__main__":
     for i in range(len(colors)):
         mybox = ax0.artists[i]
         mybox.set_facecolor(colors[i])
-    ax0.set_xlabel('Accuracy improvement over Anonymeter')
+    ax0.set_xlabel('Precision improvement over Anonymeter')
 
     ax1=fig.add_subplot(gs[1])
     sns.boxplot(data=dfRmseImprove, orient='h', ax=ax1)
@@ -307,7 +306,7 @@ if __name__ == "__main__":
     for i in range(len(colors)):
         mybox = ax2.artists[i]
         mybox.set_facecolor(colors[i])
-    ax2.set_xlabel('Accuracy')
+    ax2.set_xlabel('Precision')
     
     ax3=fig.add_subplot(gs[1])
     sns.boxplot(data=dfRmseLink, orient='h', ax=ax3)
@@ -348,7 +347,7 @@ if __name__ == "__main__":
     for i in range(len(colors)):
         mybox = ax0.artists[i]
         mybox.set_facecolor(colors[i])
-    ax0.set_xlabel('Accuracy')
+    ax0.set_xlabel('Precision')
 
     ax1=fig.add_subplot(gs[1])
     sns.boxplot(data=dfRmse, orient='h', ax=ax1)

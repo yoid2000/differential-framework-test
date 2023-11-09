@@ -16,6 +16,29 @@ import pprint
 import os
 from mixed_types_kneighbors import MixedTypeKNeighbors
 
+columnTypes = {
+        'Attrition_Flag': 'cat',
+        'Customer_Age': 'num',
+        'Gender': 'cat',
+        'Dependent_count': 'num',
+        'Education_Level': 'cat',
+        'Marital_Status': 'cat',
+        'Income_Category': 'cat',
+        'Card_Category': 'cat',
+        'Months_on_book': 'num',
+        'Total_Relationship_Count': 'num',
+        'Months_Inactive_12_mon': 'num',
+        'Contacts_Count_12_mon': 'num',
+        'Credit_Limit': 'num',
+        'Total_Revolving_Bal': 'num',
+        'Avg_Open_To_Buy': 'num',
+        'Total_Amt_Chng_Q4_Q1': 'num',
+        'Total_Trans_Amt': 'num',
+        'Total_Trans_Ct': 'num',
+        'Total_Ct_Chng_Q4_Q1': 'num',
+        'Avg_Utilization_Ratio': 'num',
+}
+
 workWithAuto = False
 if workWithAuto:
     import autosklearn.regression
@@ -56,7 +79,6 @@ def getAnonymeterPreds(res, filePath, victims, dataset, secret, auxCols):
     printEvaluation(res, filePath, secret, secretType, victims[secret], predictions)
 
 def doModel(res, dataset, target, df, numVictims=500, auto='none'):
-    fileBaseName = dataset + target
     if auto == 'autosklearn' and workWithAuto is False:
         return
     targetType, nums, cats, drops = categorize_columns(df, target)
@@ -66,7 +88,15 @@ def doModel(res, dataset, target, df, numVictims=500, auto='none'):
     print(f"Target is {target} with type {targetType} and auto={auto}")
     for column in drops:
         df = df.drop(column, axis=1)
+    model, X_train, X_test, y_train, y_test = makeModel(dataset, target, df, numVictims=numVictims, auto=auto)
+    y_pred = model.predict(X_test)
+    if res is not None:
+        printEvaluation(res, dataset, target, targetType, y_test, y_pred)
 
+
+def makeModel(dataset, target, df, numVictims=500, auto='none'):
+    fileBaseName = dataset + target
+    targetType, nums, cats, drops = categorize_columns(df, target)
     # Assuming df is your DataFrame and 'target' is the column you want to predict
     X = df.drop(target, axis=1)
     y = df[target]
@@ -95,8 +125,7 @@ def doModel(res, dataset, target, df, numVictims=500, auto='none'):
         #model = LogisticRegression(penalty='l1', solver='liblinear')
         #model.fit(X_train, y_train)
 
-        # Make predictions and evaluate the model
-        y_pred = pipe.predict(X_test)
+        return pipe, X_train, X_test, y_train, y_test
     elif auto == 'autosklearn':
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=numVictims, random_state=42)
         if targetType == 'cat':
@@ -106,8 +135,7 @@ def doModel(res, dataset, target, df, numVictims=500, auto='none'):
             automl.fit(X_train, y_train)
             # Print the final ensemble constructed by auto-sklearn
             print(automl.show_models())
-            # Predict on test data
-            y_pred = automl.predict(X_test)
+            return automl, X_train, X_test, y_train, y_test
         else:
             # Initialize the regressor
             automl = autosklearn.regression.AutoSklearnRegressor(time_left_for_this_task=120, per_run_time_limit=30)
@@ -115,12 +143,12 @@ def doModel(res, dataset, target, df, numVictims=500, auto='none'):
             automl.fit(X_train, y_train)
             # Print the final ensemble constructed by auto-sklearn
             print(automl.show_models())
-            # Predict on test data
-            y_pred = automl.predict(X_test)
+            return automl, X_train, X_test, y_train, y_test
     elif auto == 'tpot':
         savedModelName = fileBaseName + '.tpot.joblib'
-        if os.path.exists(savedModelName):
-            tpot = load(savedModelName)
+        savedModelPath = os.path.join('models', savedModelName)
+        if os.path.exists(savedModelPath):
+            tpot = load(savedModelPath)
         else:
             for column in cats:
                 df[column] = df[column].astype(str)
@@ -140,11 +168,10 @@ def doModel(res, dataset, target, df, numVictims=500, auto='none'):
                 tpot.fit(X_train, y_train)
                 # Print the best pipeline
                 print(tpot.fitted_pipeline_)
+            # This is supposed to be savedModelName...
             dump(tpot.fitted_pipeline_, savedModelName)
         # Predict on test data
-        y_pred = tpot.predict(X_test)
-
-    printEvaluation(res, dataset, target, targetType, y_test, y_pred)
+        return tpot, X_train, X_test, y_train, y_test
 
     # To see which features were selected
     if False and not auto:
@@ -224,6 +251,8 @@ def categorize_columns(df, target):
     return targetType, nums, cats, drops
 
 def getColType(df, col):
+    if col in columnTypes:
+        return columnTypes[col]
     # Check if the column is numeric
     if pd.api.types.is_numeric_dtype(df[col]):
         if df[col].nunique() >= 10:
