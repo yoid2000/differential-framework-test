@@ -3,72 +3,66 @@
         "target": "Attrition_Flag",
         "recall": 0.9996709443896018,
         "numPredicts": 3038,
-        "prec": 0.8824884792626728
+        "prec": 0.8959842001316656
     },
     {
         "target": "Attrition_Flag",
-        "recall": 0.8772622573214873,
-        "numPredicts": 2666,
-        "prec": 0.9238559639909978
+        "recall": 0.8950312602829879,
+        "numPredicts": 2720,
+        "prec": 0.9356617647058824
     },
     {
         "target": "Attrition_Flag",
-        "recall": 0.773938795656466,
-        "numPredicts": 2352,
-        "prec": 0.9430272108843537
+        "recall": 0.7989470220467259,
+        "numPredicts": 2428,
+        "prec": 0.9538714991762768
     },
     {
         "target": "Attrition_Flag",
-        "recall": 0.6623889437314906,
-        "numPredicts": 2013,
-        "prec": 0.9622454048683556
+        "recall": 0.6873971701217506,
+        "numPredicts": 2089,
+        "prec": 0.9684059358544759
     },
     {
         "target": "Attrition_Flag",
-        "recall": 0.5383349786113854,
-        "numPredicts": 1636,
-        "prec": 0.9700488997555012
+        "recall": 0.5695952615992103,
+        "numPredicts": 1731,
+        "prec": 0.9722703639514731
     },
     {
         "target": "Attrition_Flag",
-        "recall": 0.4116485686080948,
-        "numPredicts": 1251,
-        "prec": 0.9768185451638689
+        "recall": 0.44027640671273444,
+        "numPredicts": 1338,
+        "prec": 0.9813153961136024
     },
     {
         "target": "Attrition_Flag",
-        "recall": 0.2889108259295821,
-        "numPredicts": 878,
-        "prec": 0.979498861047836
+        "recall": 0.3260941099045739,
+        "numPredicts": 991,
+        "prec": 0.9828456104944501
     },
     {
         "target": "Attrition_Flag",
-        "recall": 0.17472852912142153,
-        "numPredicts": 531,
-        "prec": 0.9849340866290018
+        "recall": 0.2194800921355709,
+        "numPredicts": 667,
+        "prec": 0.9835082458770614
     },
     {
         "target": "Attrition_Flag",
-        "recall": 0.09312273774267851,
-        "numPredicts": 283,
-        "prec": 0.9858657243816255
+        "recall": 0.13886146758802237,
+        "numPredicts": 422,
+        "prec": 0.985781990521327
     },
     {
         "target": "Attrition_Flag",
-        "recall": 0.04968739717012175,
-        "numPredicts": 151,
-        "prec": 0.9867549668874173
+        "recall": 0.07963145771635406,
+        "numPredicts": 242,
+        "prec": 0.9958677685950413
     },
     {
         "target": "Attrition_Flag",
-        "recall": 0.022375781507074696,
-        "numPredicts": 68,
-        "prec": 0.9852941176470589
-    },
-    {
-        "target": "Attrition_Flag",
-        "recall": 0.010200723922342876,
-        "numPredicts": 31,
+        "recall": 0.04014478446857519,
+        "numPredicts": 122,
         "prec": 1.0
     },
     {
@@ -79,81 +73,33 @@
     },
     {
         "target": "Gender",
-        "recall": 0.8051990786442909,
-        "numPredicts": 2447,
-        "prec": 0.9550469963220269
+        "recall": 0.8061862454754853,
+        "numPredicts": 2450,
+        "prec": 0.9551020408163265
     },
     {
         "target": "Gender",
-        "recall": 0.7673576834485027,
-        "numPredicts": 2332,
-        "prec": 0.9601200686106347
+        "recall": 0.7680157946692991,
+        "numPredicts": 2334,
+        "prec": 0.9601542416452442
     },
     {
         "target": "Gender",
-        "recall": 0.6985850608752879,
-        "numPredicts": 2123,
-        "prec": 0.9594912859161564
+        "recall": 0.6873971701217506,
+        "numPredicts": 2089,
+        "prec": 0.9597893729056965
     },
     {
         "target": "Gender",
-        "recall": 0.4317209608423824,
-        "numPredicts": 1312,
-        "prec": 0.961890243902439
+        "recall": 0.37249095097071405,
+        "numPredicts": 1132,
+        "prec": 0.9832155477031802
     },
     {
         "target": "Gender",
-        "recall": 0.1062849621586048,
-        "numPredicts": 323,
+        "recall": 0.10463968410661402,
+        "numPredicts": 318,
         "prec": 1.0
-    },
-    {
-        "target": "Dependent_count",
-        "recall": 0.9996709443896018,
-        "numPredicts": 3038,
-        "prec": 0.3008558262014483
-    },
-    {
-        "target": "Dependent_count",
-        "recall": 0.6377097729516288,
-        "numPredicts": 1938,
-        "prec": 0.3173374613003096
-    },
-    {
-        "target": "Dependent_count",
-        "recall": 0.24712076340901612,
-        "numPredicts": 751,
-        "prec": 0.24101198402130491
-    },
-    {
-        "target": "Dependent_count",
-        "recall": 0.087857847976308,
-        "numPredicts": 267,
-        "prec": 0.149812734082397
-    },
-    {
-        "target": "Dependent_count",
-        "recall": 0.03784139519578809,
-        "numPredicts": 115,
-        "prec": 0.02608695652173913
-    },
-    {
-        "target": "Dependent_count",
-        "recall": 0.017110891740704178,
-        "numPredicts": 52,
-        "prec": 0.0
-    },
-    {
-        "target": "Dependent_count",
-        "recall": 0.009213557091148404,
-        "numPredicts": 28,
-        "prec": 0.0
-    },
-    {
-        "target": "Dependent_count",
-        "recall": 0.005923000987166831,
-        "numPredicts": 18,
-        "prec": 0.0
     },
     {
         "target": "Education_Level",
@@ -165,25 +111,25 @@
         "target": "Marital_Status",
         "recall": 0.9996709443896018,
         "numPredicts": 3038,
-        "prec": 0.45852534562211983
+        "prec": 0.4588545095457538
     },
     {
         "target": "Marital_Status",
-        "recall": 0.18887792036854228,
-        "numPredicts": 574,
-        "prec": 0.6480836236933798
+        "recall": 0.20072392234287595,
+        "numPredicts": 610,
+        "prec": 0.6262295081967213
     },
     {
         "target": "Marital_Status",
-        "recall": 0.01579466929911155,
-        "numPredicts": 48,
-        "prec": 0.875
+        "recall": 0.014478446857518921,
+        "numPredicts": 44,
+        "prec": 0.8409090909090909
     },
     {
         "target": "Marital_Status",
-        "recall": 0.003948667324777887,
-        "numPredicts": 12,
-        "prec": 0.9166666666666666
+        "recall": 0.0029615004935834156,
+        "numPredicts": 9,
+        "prec": 1.0
     },
     {
         "target": "Income_Category",
@@ -193,63 +139,63 @@
     },
     {
         "target": "Income_Category",
-        "recall": 0.5705824284304047,
-        "numPredicts": 1734,
-        "prec": 0.6349480968858131
+        "recall": 0.5709114840408029,
+        "numPredicts": 1735,
+        "prec": 0.6357348703170029
     },
     {
         "target": "Income_Category",
-        "recall": 0.43632773938795655,
-        "numPredicts": 1326,
-        "prec": 0.6772247360482655
+        "recall": 0.43665679499835475,
+        "numPredicts": 1327,
+        "prec": 0.6774679728711379
     },
     {
         "target": "Income_Category",
-        "recall": 0.38960184271141823,
-        "numPredicts": 1184,
-        "prec": 0.700168918918919
+        "recall": 0.38795656465942746,
+        "numPredicts": 1179,
+        "prec": 0.7005937234944869
     },
     {
         "target": "Income_Category",
-        "recall": 0.32543599868377754,
-        "numPredicts": 989,
-        "prec": 0.7340748230535895
+        "recall": 0.3234616650213886,
+        "numPredicts": 983,
+        "prec": 0.7344862665310274
     },
     {
         "target": "Income_Category",
-        "recall": 0.2602829878249424,
-        "numPredicts": 791,
-        "prec": 0.7547408343868521
+        "recall": 0.25765054294175715,
+        "numPredicts": 783,
+        "prec": 0.7573435504469987
     },
     {
         "target": "Income_Category",
-        "recall": 0.14610069101678183,
-        "numPredicts": 444,
-        "prec": 0.7545045045045045
+        "recall": 0.13359657782165185,
+        "numPredicts": 406,
+        "prec": 0.7487684729064039
     },
     {
         "target": "Income_Category",
-        "recall": 0.06284962158604804,
-        "numPredicts": 191,
-        "prec": 0.7643979057591623
+        "recall": 0.055281342546890426,
+        "numPredicts": 168,
+        "prec": 0.7916666666666666
     },
     {
         "target": "Income_Category",
-        "recall": 0.027640671273445213,
-        "numPredicts": 84,
-        "prec": 0.8333333333333334
+        "recall": 0.022046725896676538,
+        "numPredicts": 67,
+        "prec": 0.8208955223880597
     },
     {
         "target": "Income_Category",
-        "recall": 0.009542612701546561,
-        "numPredicts": 29,
-        "prec": 0.6896551724137931
+        "recall": 0.007239223428759461,
+        "numPredicts": 22,
+        "prec": 0.7272727272727273
     },
     {
         "target": "Income_Category",
-        "recall": 0.004935834155972359,
-        "numPredicts": 15,
-        "prec": 0.7333333333333333
+        "recall": 0.0036196117143797303,
+        "numPredicts": 11,
+        "prec": 0.6363636363636364
     },
     {
         "target": "Card_Category",
@@ -277,9 +223,9 @@
     },
     {
         "target": "Card_Category",
-        "recall": 0.8644290885159592,
-        "numPredicts": 2627,
-        "prec": 0.9699276741530263
+        "recall": 0.8647581441263573,
+        "numPredicts": 2628,
+        "prec": 0.9699391171993912
     },
     {
         "target": "Card_Category",
@@ -289,15 +235,15 @@
     },
     {
         "target": "Card_Category",
-        "recall": 0.793024021059559,
-        "numPredicts": 2410,
-        "prec": 0.9887966804979254
+        "recall": 0.7933530766699572,
+        "numPredicts": 2411,
+        "prec": 0.9888013272501037
     },
     {
         "target": "Card_Category",
-        "recall": 0.7459690687726226,
-        "numPredicts": 2267,
-        "prec": 0.9933833259814733
+        "recall": 0.7462981243830207,
+        "numPredicts": 2268,
+        "prec": 0.9933862433862434
     },
     {
         "target": "Card_Category",
@@ -307,128 +253,8 @@
     },
     {
         "target": "Card_Category",
-        "recall": 0.5982230997038499,
-        "numPredicts": 1818,
+        "recall": 0.5985521553142481,
+        "numPredicts": 1819,
         "prec": 1.0
-    },
-    {
-        "target": "Total_Relationship_Count",
-        "recall": 0.9996709443896018,
-        "numPredicts": 3038,
-        "prec": 0.2574061882817643
-    },
-    {
-        "target": "Total_Relationship_Count",
-        "recall": 0.07502467917077986,
-        "numPredicts": 228,
-        "prec": 0.35964912280701755
-    },
-    {
-        "target": "Total_Relationship_Count",
-        "recall": 0.06975978940440934,
-        "numPredicts": 212,
-        "prec": 0.36792452830188677
-    },
-    {
-        "target": "Total_Relationship_Count",
-        "recall": 0.044422507403751234,
-        "numPredicts": 135,
-        "prec": 0.31851851851851853
-    },
-    {
-        "target": "Total_Relationship_Count",
-        "recall": 0.018427114182296808,
-        "numPredicts": 56,
-        "prec": 0.25
-    },
-    {
-        "target": "Total_Relationship_Count",
-        "recall": 0.007897334649555774,
-        "numPredicts": 24,
-        "prec": 0.25
-    },
-    {
-        "target": "Total_Relationship_Count",
-        "recall": 0.0042777229351760445,
-        "numPredicts": 13,
-        "prec": 0.07692307692307693
-    },
-    {
-        "target": "Months_Inactive_12_mon",
-        "recall": 0.9996709443896018,
-        "numPredicts": 3038,
-        "prec": 0.3778801843317972
-    },
-    {
-        "target": "Months_Inactive_12_mon",
-        "recall": 0.19118130964132937,
-        "numPredicts": 581,
-        "prec": 0.4905335628227194
-    },
-    {
-        "target": "Months_Inactive_12_mon",
-        "recall": 0.15235274761434683,
-        "numPredicts": 463,
-        "prec": 0.5118790496760259
-    },
-    {
-        "target": "Months_Inactive_12_mon",
-        "recall": 0.11516946363935505,
-        "numPredicts": 350,
-        "prec": 0.5228571428571429
-    },
-    {
-        "target": "Months_Inactive_12_mon",
-        "recall": 0.0361961171437973,
-        "numPredicts": 110,
-        "prec": 0.45454545454545453
-    },
-    {
-        "target": "Months_Inactive_12_mon",
-        "recall": 0.014149391247120764,
-        "numPredicts": 43,
-        "prec": 0.20930232558139536
-    },
-    {
-        "target": "Months_Inactive_12_mon",
-        "recall": 0.006252056597564989,
-        "numPredicts": 19,
-        "prec": 0.15789473684210525
-    },
-    {
-        "target": "Contacts_Count_12_mon",
-        "recall": 0.9996709443896018,
-        "numPredicts": 3038,
-        "prec": 0.3268597761685319
-    },
-    {
-        "target": "Contacts_Count_12_mon",
-        "recall": 0.9496544916090819,
-        "numPredicts": 2886,
-        "prec": 0.3264033264033264
-    },
-    {
-        "target": "Contacts_Count_12_mon",
-        "recall": 0.6538334978611385,
-        "numPredicts": 1987,
-        "prec": 0.3236034222445898
-    },
-    {
-        "target": "Contacts_Count_12_mon",
-        "recall": 0.13195129976966108,
-        "numPredicts": 401,
-        "prec": 0.3640897755610973
-    },
-    {
-        "target": "Contacts_Count_12_mon",
-        "recall": 0.01579466929911155,
-        "numPredicts": 48,
-        "prec": 0.3125
-    },
-    {
-        "target": "Contacts_Count_12_mon",
-        "recall": 0.004935834155972359,
-        "numPredicts": 15,
-        "prec": 0.3333333333333333
     }
 ]

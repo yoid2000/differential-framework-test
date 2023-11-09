@@ -24,10 +24,17 @@ if __name__ == "__main__":
     df = pd.DataFrame(res)
     print(df.head())
 
-    plt.figure(figsize=(7,4))
-    scatter = sns.scatterplot(data=df, x='recall', y='prec', hue='target', style='target', legend=True)
-    plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0)
-    plt.xscale('log')
+    doLegend = False
+    if doLegend:
+        plt.figure(figsize=(7,4))
+    else:
+        plt.figure(figsize=(4,2.5))
+    scatter = sns.scatterplot(data=df, x='recall', y='prec', hue='target', style='target', legend=doLegend)
+    if doLegend:
+        plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0)
+    #plt.xscale('log')
+    plt.xlabel("Recall")
+    plt.ylabel("Precision")
     plt.tight_layout()
     plt.savefig("prec-recall.png")
     plt.close()

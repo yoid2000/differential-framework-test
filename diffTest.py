@@ -1,9 +1,29 @@
-from diffTools import doModel, getAnonymeterPreds 
+from diffTools import makeModel, getAnonymeterPreds, accuracy_score, mean_squared_error, categorize_columns, printEvaluation, prepDataframes
 import pandas as pd
+import numpy as np
 import json
 import pprint
 
+workWithAuto = False
 pp = pprint.PrettyPrinter(indent=4)
+
+def doModel(res, dataset, target, df, dfTest, numVictims=500, auto='none'):
+    if auto == 'autosklearn' and workWithAuto is False:
+        return
+    targetType, nums, cats, drops = categorize_columns(df, target)
+    if targetType == 'drop':
+        print(f"skip target {targetType} because not cat or num")
+        return
+    print(f"Target is {target} with type {targetType} and auto={auto}")
+    for column in drops:
+        df = df.drop(column, axis=1)
+        dfTest = df.drop(column, axis=1)
+    X_test = dfTest.drop(target, axis=1)
+    y_test = dfTest[target]
+    model = makeModel(dataset, target, df, numVictims=numVictims, auto=auto)
+    y_pred = model.predict(X_test)
+    if res is not None:
+        printEvaluation(res, dataset, target, targetType, y_test, y_pred)
 
 def sample_rows(df, num_rows=500):
     # Randomly sample rows and create a new dataframe
@@ -61,18 +81,12 @@ if __name__ == "__main__":
     dfAnon = pd.DataFrame(testData['anonTable'], columns=testData['colNames'])
     dfTest = pd.DataFrame(testData['testTable'], columns=testData['colNames'])
 
+    dfOrig, dfTest, dfAnon = prepDataframes(dfOrig, dfTest, dfAnon)
+
     print(f"Got {dfOrig.shape[0]} original rows")
     print(f"Got {dfAnon.shape[0]} synthetic rows")
     print(f"Got {dfTest.shape[0]} test rows")
 
-    # I want to clean out the two "Naive_Bayes..." columns, because they are
-    # not original data
-    columns = list(dfOrig.columns)
-    for column in columns:
-        if column[:5] == 'Naive':
-            dfOrig = dfOrig.drop(column, axis=1)
-            dfAnon = dfAnon.drop(column, axis=1)
-            dfTest = dfTest.drop(column, axis=1)
     print(list(dfOrig.columns))
 
     if True:

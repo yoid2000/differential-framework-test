@@ -1,4 +1,4 @@
-from diffTools import makeModel, getColType, categorize_columns
+from diffTools import makeModel, getColType, prepDataframes
 import joblib
 import pandas as pd
 import numpy as np
@@ -52,18 +52,11 @@ if __name__ == "__main__":
     dfAnon = pd.DataFrame(testData['anonTable'], columns=testData['colNames'])
     dfTest = pd.DataFrame(testData['testTable'], columns=testData['colNames'])
 
+    dfOrig, dfTest, dfAnon = prepDataframes(dfOrig, dfTest, dfAnon)
+
     print(f"Got {dfOrig.shape[0]} original rows")
     print(f"Got {dfAnon.shape[0]} synthetic rows")
     print(f"Got {dfTest.shape[0]} test rows")
-
-    # I want to clean out the two "Naive_Bayes..." columns, because they are
-    # not original data
-    columns = list(dfOrig.columns)
-    for column in columns:
-        if column[:5] == 'Naive':
-            dfOrig = dfOrig.drop(column, axis=1)
-            dfAnon = dfAnon.drop(column, axis=1)
-            dfTest = dfTest.drop(column, axis=1)
     print(list(dfOrig.columns))
 
     ''' The following runs the tests for the case where the victims are
@@ -75,11 +68,6 @@ if __name__ == "__main__":
     results = []
     for target in dfOrig.columns:
         targetType = getColType(dfOrig, target)
-        targetType, nums, cats, drops = categorize_columns(dfOrig, target)
-        print('targetType', target, targetType)
-        print('cats', cats)
-        print('nums', nums)
-        quit()
         if targetType != 'cat':
             continue
         print(f"Use target {target} with {dfOrig[target].nunique()} distinct values")
@@ -89,7 +77,7 @@ if __name__ == "__main__":
         fileBaseName = filePath + target
         savedModelName = fileBaseName + '.tpot.joblib'
         savedModelPath = os.path.join('models', savedModelName)
-        if os.path.exists(savedModelPath):
+        if False and os.path.exists(savedModelPath):
             print("Using auto tpot")
             model = joblib.load(savedModelPath)
         else:

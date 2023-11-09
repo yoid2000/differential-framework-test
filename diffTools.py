@@ -39,11 +39,6 @@ columnTypes = {
         'Avg_Utilization_Ratio': 'num',
 }
 
-workWithAuto = False
-if workWithAuto:
-    import autosklearn.regression
-    import autosklearn.classification
-
 pp = pprint.PrettyPrinter(indent=4)
 
 def updateResults(res, dataset, column, measure, value):
@@ -54,6 +49,38 @@ def updateResults(res, dataset, column, measure, value):
     if column not in res[dataset]:
         res[dataset][column] = {}
     res[dataset][column][measure] = value
+
+def printEvaluation(res, dataset, target, targetType, y_test, y_pred):
+    if targetType == 'cat':
+        accuracy = accuracy_score(y_test, y_pred)
+        updateResults(res, dataset, target, 'accuracy', accuracy)
+        print(f"Accuracy: {accuracy}")
+        # Find the most frequent category
+        most_frequent = y_test.mode()[0]
+        # Create a list of predictions
+        y_pred_freq = [most_frequent] * len(y_test)
+        # Compute accuracy
+        accuracy_freq = accuracy_score(y_test, y_pred_freq)
+        updateResults(res, dataset, target, 'accuracy_freq', accuracy_freq)
+        print(f"Accuracy of best guess: {accuracy_freq}")
+        accuracy_improvement = (accuracy - accuracy_freq) / max(accuracy, accuracy_freq)
+        print(f"Accuracy Improvement: {accuracy_improvement}")
+    else:
+        mse = mean_squared_error(y_test, y_pred)
+        rmse = np.sqrt(mse)
+        updateResults(res, dataset, target, 'rmse', rmse)
+        updateResults(res, dataset, target, 'avg-value', np.mean(y_test))
+        print(f"Root Mean Squared Error: {rmse}")
+        print(f"Average test value: {np.mean(y_test)}")
+        print(f"Relative error: {rmse/np.mean(y_test)}")
+        #npFixed = np.full((len(y_test),),0.001)
+        #npMax = np.abs(np.maximum(y_test, y_pred, npFixed))
+        #y_test_has_bad = not np.isfinite(y_test).all()
+        #y_pred_has_bad = not np.isfinite(y_pred).all()
+        #print(f"bad y_test {y_test_has_bad}, bad y_pred {y_pred_has_bad}")
+        #relErr = np.abs(y_test - y_pred) / npMax
+        #print(f"Average relative error: {np.mean(relErr)}")
+        #print(f"Std Dev relative error: {np.std(relErr)}")
 
 def getAnonymeterPreds(res, filePath, victims, dataset, secret, auxCols):
     ''' Both victims and dataset df's have all columns.
@@ -77,22 +104,6 @@ def getAnonymeterPreds(res, filePath, victims, dataset, secret, auxCols):
     predictions_idx = nn.kneighbors(queries=victims[auxCols])
     predictions = dataset.iloc[predictions_idx.flatten()][secret]
     printEvaluation(res, filePath, secret, secretType, victims[secret], predictions)
-
-def doModel(res, dataset, target, df, dfTest, numVictims=500, auto='none'):
-    if auto == 'autosklearn' and workWithAuto is False:
-        return
-    targetType, nums, cats, drops = categorize_columns(df, target)
-    if targetType == 'drop':
-        print(f"skip target {targetType} because not cat or num")
-        return
-    print(f"Target is {target} with type {targetType} and auto={auto}")
-    for column in drops:
-        df = df.drop(column, axis=1)
-    model = makeModel(dataset, target, df, numVictims=numVictims, auto=auto)
-    y_pred = model.predict(X_test)
-    if res is not None:
-        printEvaluation(res, dataset, target, targetType, y_test, y_pred)
-
 
 def makeModel(dataset, target, df, numVictims=500, auto='none'):
     fileBaseName = dataset + target
@@ -127,6 +138,8 @@ def makeModel(dataset, target, df, numVictims=500, auto='none'):
 
         return pipe
     elif auto == 'autosklearn':
+        import autosklearn.regression
+        import autosklearn.classification
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=numVictims, random_state=42)
         if targetType == 'cat':
             # Initialize the classifier
@@ -197,38 +210,6 @@ def makeModel(dataset, target, df, numVictims=500, auto='none'):
                 numFeatures = len(list(selected_features[0]))
         print(f"Selected {numFeatures} out of {len(feature_names)} total")
 
-def printEvaluation(res, dataset, target, targetType, y_test, y_pred):
-    if targetType == 'cat':
-        accuracy = accuracy_score(y_test, y_pred)
-        updateResults(res, dataset, target, 'accuracy', accuracy)
-        print(f"Accuracy: {accuracy}")
-        # Find the most frequent category
-        most_frequent = y_test.mode()[0]
-        # Create a list of predictions
-        y_pred_freq = [most_frequent] * len(y_test)
-        # Compute accuracy
-        accuracy_freq = accuracy_score(y_test, y_pred_freq)
-        updateResults(res, dataset, target, 'accuracy_freq', accuracy_freq)
-        print(f"Accuracy of best guess: {accuracy_freq}")
-        accuracy_improvement = (accuracy - accuracy_freq) / max(accuracy, accuracy_freq)
-        print(f"Accuracy Improvement: {accuracy_improvement}")
-    else:
-        mse = mean_squared_error(y_test, y_pred)
-        rmse = np.sqrt(mse)
-        updateResults(res, dataset, target, 'rmse', rmse)
-        updateResults(res, dataset, target, 'avg-value', np.mean(y_test))
-        print(f"Root Mean Squared Error: {rmse}")
-        print(f"Average test value: {np.mean(y_test)}")
-        print(f"Relative error: {rmse/np.mean(y_test)}")
-        #npFixed = np.full((len(y_test),),0.001)
-        #npMax = np.abs(np.maximum(y_test, y_pred, npFixed))
-        #y_test_has_bad = not np.isfinite(y_test).all()
-        #y_pred_has_bad = not np.isfinite(y_pred).all()
-        #print(f"bad y_test {y_test_has_bad}, bad y_pred {y_pred_has_bad}")
-        #relErr = np.abs(y_test - y_pred) / npMax
-        #print(f"Average relative error: {np.mean(relErr)}")
-        #print(f"Std Dev relative error: {np.std(relErr)}")
-
 def categorize_columns(df, target):
     # Initialize empty lists for each category
     nums = []
@@ -236,6 +217,7 @@ def categorize_columns(df, target):
     drops = []
 
     # Iterate over each column in the DataFrame except the target
+    targetType = None
     for col in df.columns:
         colType = getColType(df, col)
         if col == target:
@@ -269,6 +251,20 @@ def getColType(df, col):
         return 'drop'
 
     return nums, cats, drops
+
+def prepDataframes(dfOrig, dfTest, dfAnon):
+    _, nums, cats, drops = categorize_columns(dfOrig, 'none')
+    for column in drops:
+        dfOrig = dfOrig.drop(column, axis=1)
+        dfTest = dfTest.drop(column, axis=1)
+        dfAnon = dfAnon.drop(column, axis=1)
+    columns = list(dfOrig.columns)
+    for column in columns:
+        if column[:5] == 'Naive':
+            dfOrig = dfOrig.drop(column, axis=1)
+            dfAnon = dfAnon.drop(column, axis=1)
+            dfTest = dfTest.drop(column, axis=1)
+    return dfOrig, dfTest, dfAnon
 
 if __name__ == "__main__":
     pass
