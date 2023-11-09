@@ -9,7 +9,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from tpot import TPOTClassifier
 from tpot import TPOTRegressor
-from joblib import dump, load
+from joblib import load
 import numpy as np
 import pandas as pd
 import pprint
@@ -78,7 +78,7 @@ def getAnonymeterPreds(res, filePath, victims, dataset, secret, auxCols):
     predictions = dataset.iloc[predictions_idx.flatten()][secret]
     printEvaluation(res, filePath, secret, secretType, victims[secret], predictions)
 
-def doModel(res, dataset, target, df, numVictims=500, auto='none'):
+def doModel(res, dataset, target, df, dfTest, numVictims=500, auto='none'):
     if auto == 'autosklearn' and workWithAuto is False:
         return
     targetType, nums, cats, drops = categorize_columns(df, target)
@@ -88,13 +88,13 @@ def doModel(res, dataset, target, df, numVictims=500, auto='none'):
     print(f"Target is {target} with type {targetType} and auto={auto}")
     for column in drops:
         df = df.drop(column, axis=1)
-    model, X_train, X_test, y_train, y_test = makeModel(dataset, target, df, numVictims=numVictims, auto=auto)
+    model = makeModel(dataset, target, df, numVictims=numVictims, auto=auto)
     y_pred = model.predict(X_test)
     if res is not None:
         printEvaluation(res, dataset, target, targetType, y_test, y_pred)
 
 
-def makeModel(dataset, target, df, numVictims=500, auto='none', findLocal=False):
+def makeModel(dataset, target, df, numVictims=500, auto='none'):
     fileBaseName = dataset + target
     targetType, nums, cats, drops = categorize_columns(df, target)
     # Assuming df is your DataFrame and 'target' is the column you want to predict
@@ -125,7 +125,7 @@ def makeModel(dataset, target, df, numVictims=500, auto='none', findLocal=False)
         #model = LogisticRegression(penalty='l1', solver='liblinear')
         #model.fit(X_train, y_train)
 
-        return pipe, X_train, X_test, y_train, y_test
+        return pipe
     elif auto == 'autosklearn':
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=numVictims, random_state=42)
         if targetType == 'cat':
@@ -135,7 +135,7 @@ def makeModel(dataset, target, df, numVictims=500, auto='none', findLocal=False)
             automl.fit(X_train, y_train)
             # Print the final ensemble constructed by auto-sklearn
             print(automl.show_models())
-            return automl, X_train, X_test, y_train, y_test
+            return automl
         else:
             # Initialize the regressor
             automl = autosklearn.regression.AutoSklearnRegressor(time_left_for_this_task=120, per_run_time_limit=30)
@@ -143,15 +143,13 @@ def makeModel(dataset, target, df, numVictims=500, auto='none', findLocal=False)
             automl.fit(X_train, y_train)
             # Print the final ensemble constructed by auto-sklearn
             print(automl.show_models())
-            return automl, X_train, X_test, y_train, y_test
+            return automl
     elif auto == 'tpot':
         savedModelName = fileBaseName + '.tpot.joblib'
-        if findLocal:
-            savedModelPath = savedModelName
-        else:
-            savedModelPath = os.path.join('models', savedModelName)
+        savedModelPath = os.path.join('models', savedModelName)
         if os.path.exists(savedModelPath):
             tpot = load(savedModelPath)
+            return tpot
         else:
             for column in cats:
                 df[column] = df[column].astype(str)
@@ -171,10 +169,8 @@ def makeModel(dataset, target, df, numVictims=500, auto='none', findLocal=False)
                 tpot.fit(X_train, y_train)
                 # Print the best pipeline
                 print(tpot.fitted_pipeline_)
-            # This is supposed to be savedModelName...
-            dump(tpot.fitted_pipeline_, savedModelName)
         # Predict on test data
-        return tpot, X_train, X_test, y_train, y_test
+        return tpot
 
     # To see which features were selected
     if False and not auto:

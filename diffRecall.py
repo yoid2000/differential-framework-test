@@ -94,7 +94,7 @@ if __name__ == "__main__":
             model = joblib.load(savedModelPath)
         else:
             print("Using non-auto")
-            model, _, _, _, _ = makeModel(filePath, target, dfOrig, numVictims=numVictims)
+            model = makeModel(filePath, target, dfOrig, numVictims=numVictims)
         ''' I screwed up a little, because if the tpot model was stored, then
             I've lost the train and test sets. Fortunately, the training set
             came only from dfOrig, and test entries in dfTest are distinct from

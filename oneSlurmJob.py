@@ -5,6 +5,7 @@ import pprint
 import json
 import pandas as pd
 import diffTools
+from joblib import dump
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -21,7 +22,12 @@ def oneTpotJob(jobNum=0, jsonFile='BankChurnersNoId_ctgan.json', numVictims=500)
     dfOrig = pd.DataFrame(testData['originalTable'], columns=columns)
     target = columns[jobNum]
     fileBaseName = jsonFile + target
-    diffTools.makeModel(fileBaseName, target, dfOrig, auto='tpot', numVictims=numVictims, findLocal=True)
+    if os.path.exists(fileBaseName):
+        print(f"{fileBaseName} already exists")
+        return
+    model = diffTools.makeModel(fileBaseName, target, dfOrig, auto='tpot', numVictims=numVictims)
+    # This is supposed to be savedModelName...
+    dump(model.fitted_pipeline_, fileBaseName)
     print("oneTpotJob: SUCCESS")
 
 
