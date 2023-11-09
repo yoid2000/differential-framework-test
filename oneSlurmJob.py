@@ -4,7 +4,7 @@ import fire
 import pprint
 import json
 import pandas as pd
-import diffTest
+import diffTools
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -21,7 +21,7 @@ def oneTpotJob(jobNum=0, jsonFile='BankChurnersNoId_ctgan.json', numVictims=500)
     dfOrig = pd.DataFrame(testData['originalTable'], columns=columns)
     target = columns[jobNum]
     fileBaseName = jsonFile + target
-    diffTest.doModel(fileBaseName, dfOrig, target, auto='tpot', numVictims=numVictims)
+    diffTools.makeModel(fileBaseName, target, dfOrig, auto='tpot', numVictims=numVictims, findLocal=True)
     print("oneTpotJob: SUCCESS")
 
 

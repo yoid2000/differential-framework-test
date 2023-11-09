@@ -94,7 +94,7 @@ def doModel(res, dataset, target, df, numVictims=500, auto='none'):
         printEvaluation(res, dataset, target, targetType, y_test, y_pred)
 
 
-def makeModel(dataset, target, df, numVictims=500, auto='none'):
+def makeModel(dataset, target, df, numVictims=500, auto='none', findLocal=False):
     fileBaseName = dataset + target
     targetType, nums, cats, drops = categorize_columns(df, target)
     # Assuming df is your DataFrame and 'target' is the column you want to predict
@@ -146,7 +146,10 @@ def makeModel(dataset, target, df, numVictims=500, auto='none'):
             return automl, X_train, X_test, y_train, y_test
     elif auto == 'tpot':
         savedModelName = fileBaseName + '.tpot.joblib'
-        savedModelPath = os.path.join('models', savedModelName)
+        if findLocal:
+            savedModelPath = savedModelName
+        else:
+            savedModelPath = os.path.join('models', savedModelName)
         if os.path.exists(savedModelPath):
             tpot = load(savedModelPath)
         else:
