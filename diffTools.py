@@ -157,14 +157,14 @@ def makeModel(dataset, target, df, numVictims=500, auto='none'):
             X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=numVictims, random_state=42)
             if targetType == 'cat':
                 # Initialize the classifier
-                tpot = TPOTClassifier(generations=100, population_size=100, verbosity=2, random_state=42)
+                tpot = TPOTClassifier(generations=100, population_size=100, verbosity=1, random_state=42)
                 # Fit the model
                 tpot.fit(X_train, y_train)
                 # Print the best pipeline
                 print(tpot.fitted_pipeline_)
             else:
                 # Initialize the regressor
-                tpot = TPOTRegressor(generations=100, population_size=100, verbosity=2, random_state=42)
+                tpot = TPOTRegressor(generations=100, population_size=100, verbosity=1, random_state=42)
                 # Fit the model
                 tpot.fit(X_train, y_train)
                 # Print the best pipeline
