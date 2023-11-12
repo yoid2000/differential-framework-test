@@ -1,4 +1,4 @@
 #!/bin/sh
 #SBATCH --time=7-0
-#SBATCH --array=0-10
+#SBATCH --array=0-4
 python3 diffTest.py --numVictims=50 --max_iter=100
