@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 import pprint
 import json
-from filelock import Filelock
+import filelock
 import os
 from mixed_types_kneighbors import MixedTypeKNeighbors
 
@@ -44,7 +44,7 @@ columnTypes = {
 class StoreResults():
     def __init__(self, resultsFileName):
         self.resultsFileName = resultsFileName
-        self.lock = Filelock(self.resultsFileName + '.lock')
+        self.lock = filelock.Filelock(self.resultsFileName + '.lock')
 
     def updateResults(self, method, dataset, column, measure, value):
         with self.lock:
