@@ -55,7 +55,8 @@ def print_dataframe_columns(df):
         print("-----")
         print(df[column].describe())
 
-def runDiffTest(numVictims = 1000, max_iter = 5000, doTpot = False, resultsFile = 'results.json', filePath = 'BankChurnersNoId_ctgan.json'):
+def runDiffTest(jobNum=0, numVictims = 1000, max_iter = 5000, doTpot = False, resultsFile = 'results', filePath = 'BankChurnersNoId_ctgan.json'):
+    resultsFile = f"{resultsFile}.{jobNum}.json"
     sr = StoreResults(resultsFile)
     with open(filePath, 'r') as f:
         testData = json.load(f)

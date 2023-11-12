@@ -7,7 +7,6 @@ from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
-from filelock import FileLock
 from tpot import TPOTClassifier
 from tpot import TPOTRegressor
 from joblib import load
@@ -44,34 +43,31 @@ columnTypes = {
 
 class StoreResults():
     def __init__(self, resultsFileName):
-        self.resultsFileName = resultsFileName
-        self.lock = FileLock(resultsFileName + ".lock")
+        os.makedirs('results', exist_ok=True)
+        self.resultsFileName = os.path.join('results', resultsFileName)
 
     def updateResults(self, method, dataset, column, measure, value):
-        with self.lock:
-            if not os.path.exists(self.resultsFileName):
-                print(f"updateResults: {self.resultsFileName} doesn't exist: making")
-                res = {}
-            else:
-                print(f"updateResults: opening {self.resultsFileName}")
-                with open(self.resultsFileName, 'r') as f:
-                    res = json.load(f)
-            if method not in res:
-                res[method] = {}
-            if dataset not in res:
-                res[method][dataset] = {}
-            if column not in res[method][dataset]:
-                res[method][dataset][column] = {}
-            measureList = measure + '__'
-            if measureList not in res[method][dataset][column]:
-                res[method][dataset][column][measureList] = []
-            res[method][dataset][column][measureList].append(value)
-            res[method][dataset][column][measure] = sum(res[method][dataset][column][measureList]) / len(res[method][dataset][column][measureList])
-            print(f"updateResults: writing {self.resultsFileName}")
-            pp.pprint(res)
-            with open(self.resultsFileName, 'w') as f:
-                json.dump(res, f, indent=4)
-            time.sleep(5)
+        if not os.path.exists(self.resultsFileName):
+            print(f"updateResults: {self.resultsFileName} doesn't exist: making")
+            res = {}
+        else:
+            print(f"updateResults: opening {self.resultsFileName}")
+            with open(self.resultsFileName, 'r') as f:
+                res = json.load(f)
+        if method not in res:
+            res[method] = {}
+        if dataset not in res:
+            res[method][dataset] = {}
+        if column not in res[method][dataset]:
+            res[method][dataset][column] = {}
+        measureList = measure + '__'
+        if measureList not in res[method][dataset][column]:
+            res[method][dataset][column][measureList] = []
+        res[method][dataset][column][measureList].append(value)
+        res[method][dataset][column][measure] = sum(res[method][dataset][column][measureList]) / len(res[method][dataset][column][measureList])
+        print(f"updateResults: writing {self.resultsFileName}")
+        with open(self.resultsFileName, 'w') as f:
+            json.dump(res, f, indent=4)
 
 
 pp = pprint.PrettyPrinter(indent=4)
