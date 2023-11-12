@@ -49,8 +49,10 @@ class StoreResults():
     def updateResults(self, method, dataset, column, measure, value):
         with self.lock:
             if not os.path.exists(self.resultsFileName):
+                print(f"updateResults: {self.resultsFileName} doesn't exist: making")
                 res = {}
             else:
+                print(f"updateResults: opening {self.resultsFileName}")
                 with open(self.resultsFileName, 'r') as f:
                     res = json.load(f)
             if method not in res:
@@ -64,6 +66,8 @@ class StoreResults():
                 res[method][dataset][column][measureList] = []
             res[method][dataset][column][measureList].append(value)
             res[method][dataset][column][measure] = sum(res[method][dataset][column][measureList]) / len(res[method][dataset][column][measureList])
+            print(f"updateResults: writing {self.resultsFileName}")
+            pp.pprint(res)
             with open(self.resultsFileName, 'w') as f:
                 json.dump(res, f, indent=4)
 
