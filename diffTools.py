@@ -15,6 +15,7 @@ import numpy as np
 import pandas as pd
 import pprint
 import json
+import time
 import os
 from mixed_types_kneighbors import MixedTypeKNeighbors
 
@@ -70,6 +71,7 @@ class StoreResults():
             pp.pprint(res)
             with open(self.resultsFileName, 'w') as f:
                 json.dump(res, f, indent=4)
+            time.sleep(5)
 
 
 pp = pprint.PrettyPrinter(indent=4)
