@@ -3,757 +3,1823 @@
     "manual-ml": {
         "BankChurnersNoId_ctgan.json": {
             "Attrition_Flag": {
+                "accuracy__": [
+                    0.886
+                ],
                 "accuracy": 0.886,
-                "accuracy_freq": 0.84
+                "accuracy_freq__": [
+                    0.835
+                ],
+                "accuracy_freq": 0.835
             },
             "Customer_Age": {
-                "rmse": 4.83566373512563,
-                "avg-value": 47.432
+                "rmse__": [
+                    4.973241954737439
+                ],
+                "rmse": 4.973241954737439,
+                "avg-value__": [
+                    46.276
+                ],
+                "avg-value": 46.276,
+                "errorPrecision__": [
+                    0.335
+                ],
+                "errorPrecision": 0.335
             },
             "Gender": {
-                "accuracy": 0.888,
-                "accuracy_freq": 0.586
+                "accuracy__": [
+                    0.913
+                ],
+                "accuracy": 0.913,
+                "accuracy_freq__": [
+                    0.516
+                ],
+                "accuracy_freq": 0.516
             },
             "Dependent_count": {
-                "accuracy": 0.278,
-                "accuracy_freq": 0.292
+                "rmse__": [
+                    1.3047823410105264
+                ],
+                "rmse": 1.3047823410105264,
+                "avg-value__": [
+                    2.393
+                ],
+                "avg-value": 2.393,
+                "errorPrecision__": [
+                    0.28
+                ],
+                "errorPrecision": 0.28
             },
             "Education_Level": {
-                "accuracy": 0.328,
-                "accuracy_freq": 0.328
+                "accuracy__": [
+                    0.305
+                ],
+                "accuracy": 0.305,
+                "accuracy_freq__": [
+                    0.305
+                ],
+                "accuracy_freq": 0.305
             },
             "Marital_Status": {
-                "accuracy": 0.504,
-                "accuracy_freq": 0.506
+                "accuracy__": [
+                    0.469
+                ],
+                "accuracy": 0.469,
+                "accuracy_freq__": [
+                    0.469
+                ],
+                "accuracy_freq": 0.469
             },
             "Income_Category": {
-                "accuracy": 0.54,
-                "accuracy_freq": 0.36
+                "accuracy__": [
+                    0.474
+                ],
+                "accuracy": 0.474,
+                "accuracy_freq__": [
+                    0.337
+                ],
+                "accuracy_freq": 0.337
             },
             "Card_Category": {
-                "accuracy": 0.946,
-                "accuracy_freq": 0.946
+                "accuracy__": [
+                    0.932
+                ],
+                "accuracy": 0.932,
+                "accuracy_freq__": [
+                    0.932
+                ],
+                "accuracy_freq": 0.932
             },
             "Months_on_book": {
-                "rmse": 4.985318375714131,
-                "avg-value": 36.89
+                "rmse__": [
+                    4.919421178155613
+                ],
+                "rmse": 4.919421178155613,
+                "avg-value__": [
+                    35.926
+                ],
+                "avg-value": 35.926,
+                "errorPrecision__": [
+                    0.348
+                ],
+                "errorPrecision": 0.348
             },
             "Total_Relationship_Count": {
-                "accuracy": 0.25,
-                "accuracy_freq": 0.228
+                "rmse__": [
+                    1.4533967502459055
+                ],
+                "rmse": 1.4533967502459055,
+                "avg-value__": [
+                    3.821
+                ],
+                "avg-value": 3.821,
+                "errorPrecision__": [
+                    0.239
+                ],
+                "errorPrecision": 0.239
             },
             "Months_Inactive_12_mon": {
-                "accuracy": 0.406,
-                "accuracy_freq": 0.414
+                "rmse__": [
+                    0.9848244402602112
+                ],
+                "rmse": 0.9848244402602112,
+                "avg-value__": [
+                    2.351
+                ],
+                "avg-value": 2.351,
+                "errorPrecision__": [
+                    0.395
+                ],
+                "errorPrecision": 0.395
             },
             "Contacts_Count_12_mon": {
-                "accuracy": 0.354,
-                "accuracy_freq": 0.358
+                "rmse__": [
+                    1.1359080599039506
+                ],
+                "rmse": 1.1359080599039506,
+                "avg-value__": [
+                    2.437
+                ],
+                "avg-value": 2.437,
+                "errorPrecision__": [
+                    0.349
+                ],
+                "errorPrecision": 0.349
             },
             "Credit_Limit": {
-                "rmse": 0.7583676929790683,
-                "avg-value": 8458.005600000002
+                "rmse__": [
+                    0.7298521343270723
+                ],
+                "rmse": 0.7298521343270723,
+                "avg-value__": [
+                    8433.4512
+                ],
+                "avg-value": 8433.4512,
+                "errorPrecision__": [
+                    1.0
+                ],
+                "errorPrecision": 1.0
             },
             "Total_Revolving_Bal": {
-                "rmse": 19.172278374637383,
-                "avg-value": 1169.276
+                "rmse__": [
+                    18.706857865358813
+                ],
+                "rmse": 18.706857865358813,
+                "avg-value__": [
+                    1154.899
+                ],
+                "avg-value": 1154.899,
+                "errorPrecision__": [
+                    1.0
+                ],
+                "errorPrecision": 1.0
             },
             "Avg_Open_To_Buy": {
-                "rmse": 0.6239038126982418,
-                "avg-value": 7288.7296
+                "rmse__": [
+                    0.5195412890246072
+                ],
+                "rmse": 0.5195412890246072,
+                "avg-value__": [
+                    7278.5522
+                ],
+                "avg-value": 7278.5522,
+                "errorPrecision__": [
+                    1.0
+                ],
+                "errorPrecision": 1.0
             },
             "Total_Amt_Chng_Q4_Q1": {
-                "rmse": 0.1948381876590143,
-                "avg-value": 0.7569960000000001
+                "rmse__": [
+                    0.21673451534209037
+                ],
+                "rmse": 0.21673451534209037,
+                "avg-value__": [
+                    0.757562
+                ],
+                "avg-value": 0.757562,
+                "errorPrecision__": [
+                    0.544
+                ],
+                "errorPrecision": 0.544
             },
             "Total_Trans_Amt": {
-                "rmse": 1753.5113958222857,
-                "avg-value": 4261.58
+                "rmse__": [
+                    1823.7242034953802
+                ],
+                "rmse": 1823.7242034953802,
+                "avg-value__": [
+                    4383.693
+                ],
+                "avg-value": 4383.693,
+                "errorPrecision__": [
+                    0.438
+                ],
+                "errorPrecision": 0.438
             },
             "Total_Trans_Ct": {
-                "rmse": 11.955830143559451,
-                "avg-value": 64.884
+                "rmse__": [
+                    12.184199217618326
+                ],
+                "rmse": 12.184199217618326,
+                "avg-value__": [
+                    64.788
+                ],
+                "avg-value": 64.788,
+                "errorPrecision__": [
+                    0.405
+                ],
+                "errorPrecision": 0.405
             },
             "Total_Ct_Chng_Q4_Q1": {
-                "rmse": 0.26789142077110945,
-                "avg-value": 0.7279800000000001
+                "rmse__": [
+                    0.2394267989128203
+                ],
+                "rmse": 0.2394267989128203,
+                "avg-value__": [
+                    0.7060460000000001
+                ],
+                "avg-value": 0.7060460000000001,
+                "errorPrecision__": [
+                    0.481
+                ],
+                "errorPrecision": 0.481
             },
             "Avg_Utilization_Ratio": {
-                "rmse": 0.20977718940763088,
-                "avg-value": 0.28502999999999995
+                "rmse__": [
+                    0.2088087895608606
+                ],
+                "rmse": 0.2088087895608606,
+                "avg-value__": [
+                    0.263478
+                ],
+                "avg-value": 0.263478,
+                "errorPrecision__": [
+                    0.263
+                ],
+                "errorPrecision": 0.263
             }
         }
     },
     "classic-anonymeter": {
         "BankChurnersNoId_ctgan.json": {
             "Attrition_Flag": {
-                "accuracy": 0.764,
-                "accuracy_freq": 0.822
+                "accuracy__": [
+                    0.835
+                ],
+                "accuracy": 0.835,
+                "accuracy_freq__": [
+                    0.835
+                ],
+                "accuracy_freq": 0.835
             },
             "Customer_Age": {
-                "rmse": 10.901651251072014,
-                "avg-value": 46.174
+                "rmse__": [
+                    10.855920043920737
+                ],
+                "rmse": 10.855920043920737,
+                "avg-value__": [
+                    46.276
+                ],
+                "avg-value": 46.276,
+                "errorPrecision__": [
+                    0.142
+                ],
+                "errorPrecision": 0.142
             },
             "Gender": {
-                "accuracy": 0.726,
-                "accuracy_freq": 0.502
+                "accuracy__": [
+                    0.755
+                ],
+                "accuracy": 0.755,
+                "accuracy_freq__": [
+                    0.516
+                ],
+                "accuracy_freq": 0.516
             },
             "Dependent_count": {
-                "accuracy": 0.214,
-                "accuracy_freq": 0.272
+                "rmse__": [
+                    1.7392527130926085
+                ],
+                "rmse": 1.7392527130926085,
+                "avg-value__": [
+                    2.393
+                ],
+                "avg-value": 2.393,
+                "errorPrecision__": [
+                    0.28
+                ],
+                "errorPrecision": 0.28
             },
             "Education_Level": {
-                "accuracy": 0.158,
-                "accuracy_freq": 0.322
+                "accuracy__": [
+                    0.305
+                ],
+                "accuracy": 0.305,
+                "accuracy_freq__": [
+                    0.305
+                ],
+                "accuracy_freq": 0.305
             },
             "Marital_Status": {
-                "accuracy": 0.344,
-                "accuracy_freq": 0.498
+                "accuracy__": [
+                    0.469
+                ],
+                "accuracy": 0.469,
+                "accuracy_freq__": [
+                    0.469
+                ],
+                "accuracy_freq": 0.469
             },
             "Income_Category": {
-                "accuracy": 0.288,
-                "accuracy_freq": 0.346
+                "accuracy__": [
+                    0.337
+                ],
+                "accuracy": 0.337,
+                "accuracy_freq__": [
+                    0.337
+                ],
+                "accuracy_freq": 0.337
             },
             "Card_Category": {
-                "accuracy": 0.862,
-                "accuracy_freq": 0.944
+                "accuracy__": [
+                    0.932
+                ],
+                "accuracy": 0.932,
+                "accuracy_freq__": [
+                    0.932
+                ],
+                "accuracy_freq": 0.932
             },
             "Months_on_book": {
-                "rmse": 10.860847112449378,
-                "avg-value": 35.844
+                "rmse__": [
+                    10.990086441880246
+                ],
+                "rmse": 10.990086441880246,
+                "avg-value__": [
+                    35.926
+                ],
+                "avg-value": 35.926,
+                "errorPrecision__": [
+                    0.267
+                ],
+                "errorPrecision": 0.267
             },
             "Total_Relationship_Count": {
-                "accuracy": 0.17,
-                "accuracy_freq": 0.216
+                "rmse__": [
+                    2.1095023109728985
+                ],
+                "rmse": 2.1095023109728985,
+                "avg-value__": [
+                    3.821
+                ],
+                "avg-value": 3.821,
+                "errorPrecision__": [
+                    0.239
+                ],
+                "errorPrecision": 0.239
             },
             "Months_Inactive_12_mon": {
-                "accuracy": 0.336,
-                "accuracy_freq": 0.428
+                "rmse__": [
+                    1.3896042602122376
+                ],
+                "rmse": 1.3896042602122376,
+                "avg-value__": [
+                    2.351
+                ],
+                "avg-value": 2.351,
+                "errorPrecision__": [
+                    0.395
+                ],
+                "errorPrecision": 0.395
             },
             "Contacts_Count_12_mon": {
-                "accuracy": 0.29,
-                "accuracy_freq": 0.356
+                "rmse__": [
+                    1.410319112825179
+                ],
+                "rmse": 1.410319112825179,
+                "avg-value__": [
+                    2.437
+                ],
+                "avg-value": 2.437,
+                "errorPrecision__": [
+                    0.349
+                ],
+                "errorPrecision": 0.349
             },
             "Credit_Limit": {
-                "rmse": 9278.170024634168,
-                "avg-value": 8536.0922
+                "rmse__": [
+                    8873.803944771938
+                ],
+                "rmse": 8873.803944771938,
+                "avg-value__": [
+                    8433.4512
+                ],
+                "avg-value": 8433.4512,
+                "errorPrecision__": [
+                    0.369
+                ],
+                "errorPrecision": 0.369
             },
             "Total_Revolving_Bal": {
-                "rmse": 1086.9036525837973,
-                "avg-value": 1127.676
+                "rmse__": [
+                    1109.1872254042596
+                ],
+                "rmse": 1109.1872254042596,
+                "avg-value__": [
+                    1154.899
+                ],
+                "avg-value": 1154.899,
+                "errorPrecision__": [
+                    0.263
+                ],
+                "errorPrecision": 0.263
             },
             "Avg_Open_To_Buy": {
-                "rmse": 8962.019429918684,
-                "avg-value": 7415.3546
+                "rmse__": [
+                    9071.171802751836
+                ],
+                "rmse": 9071.171802751836,
+                "avg-value__": [
+                    7278.5522
+                ],
+                "avg-value": 7278.5522,
+                "errorPrecision__": [
+                    0.362
+                ],
+                "errorPrecision": 0.362
             },
             "Total_Amt_Chng_Q4_Q1": {
-                "rmse": 0.26436399527923615,
-                "avg-value": 0.743552
+                "rmse__": [
+                    0.27881833153506963
+                ],
+                "rmse": 0.27881833153506963,
+                "avg-value__": [
+                    0.757562
+                ],
+                "avg-value": 0.757562,
+                "errorPrecision__": [
+                    0.412
+                ],
+                "errorPrecision": 0.412
             },
             "Total_Trans_Amt": {
-                "rmse": 4404.420295793761,
-                "avg-value": 4405.208
+                "rmse__": [
+                    4070.1151251530955
+                ],
+                "rmse": 4070.1151251530955,
+                "avg-value__": [
+                    4383.693
+                ],
+                "avg-value": 4383.693,
+                "errorPrecision__": [
+                    0.36
+                ],
+                "errorPrecision": 0.36
             },
             "Total_Trans_Ct": {
-                "rmse": 28.71372494121931,
-                "avg-value": 66.134
+                "rmse__": [
+                    28.06677751363701
+                ],
+                "rmse": 28.06677751363701,
+                "avg-value__": [
+                    64.788
+                ],
+                "avg-value": 64.788,
+                "errorPrecision__": [
+                    0.23
+                ],
+                "errorPrecision": 0.23
             },
             "Total_Ct_Chng_Q4_Q1": {
-                "rmse": 0.34415071698312644,
-                "avg-value": 0.720428
+                "rmse__": [
+                    0.32572027109162244
+                ],
+                "rmse": 0.32572027109162244,
+                "avg-value__": [
+                    0.7060460000000001
+                ],
+                "avg-value": 0.7060460000000001,
+                "errorPrecision__": [
+                    0.332
+                ],
+                "errorPrecision": 0.332
             },
             "Avg_Utilization_Ratio": {
-                "rmse": 0.34511500691798375,
-                "avg-value": 0.267646
+                "rmse__": [
+                    0.3270958192945914
+                ],
+                "rmse": 0.3270958192945914,
+                "avg-value__": [
+                    0.263478
+                ],
+                "avg-value": 0.263478,
+                "errorPrecision__": [
+                    0.263
+                ],
+                "errorPrecision": 0.263
             }
         }
     },
     "diff-anonymeter": {
         "BankChurnersNoId_ctgan.json": {
             "Attrition_Flag": {
-                "accuracy": 0.822,
-                "accuracy_freq": 0.822
+                "accuracy__": [
+                    0.835
+                ],
+                "accuracy": 0.835,
+                "accuracy_freq__": [
+                    0.835
+                ],
+                "accuracy_freq": 0.835
             },
             "Customer_Age": {
-                "rmse": 8.41760060824936,
-                "avg-value": 46.174
+                "rmse__": [
+                    8.887913140889712
+                ],
+                "rmse": 8.887913140889712,
+                "avg-value__": [
+                    46.276
+                ],
+                "avg-value": 46.276,
+                "errorPrecision__": [
+                    0.163
+                ],
+                "errorPrecision": 0.163
             },
             "Gender": {
-                "accuracy": 0.852,
-                "accuracy_freq": 0.502
+                "accuracy__": [
+                    0.855
+                ],
+                "accuracy": 0.855,
+                "accuracy_freq__": [
+                    0.516
+                ],
+                "accuracy_freq": 0.516
             },
             "Dependent_count": {
-                "accuracy": 0.226,
-                "accuracy_freq": 0.272
+                "rmse__": [
+                    1.7629520696831211
+                ],
+                "rmse": 1.7629520696831211,
+                "avg-value__": [
+                    2.393
+                ],
+                "avg-value": 2.393,
+                "errorPrecision__": [
+                    0.28
+                ],
+                "errorPrecision": 0.28
             },
             "Education_Level": {
-                "accuracy": 0.192,
-                "accuracy_freq": 0.322
+                "accuracy__": [
+                    0.305
+                ],
+                "accuracy": 0.305,
+                "accuracy_freq__": [
+                    0.305
+                ],
+                "accuracy_freq": 0.305
             },
             "Marital_Status": {
-                "accuracy": 0.386,
-                "accuracy_freq": 0.498
+                "accuracy__": [
+                    0.469
+                ],
+                "accuracy": 0.469,
+                "accuracy_freq__": [
+                    0.469
+                ],
+                "accuracy_freq": 0.469
             },
             "Income_Category": {
-                "accuracy": 0.386,
-                "accuracy_freq": 0.346
+                "accuracy__": [
+                    0.398
+                ],
+                "accuracy": 0.398,
+                "accuracy_freq__": [
+                    0.337
+                ],
+                "accuracy_freq": 0.337
             },
             "Card_Category": {
-                "accuracy": 0.948,
-                "accuracy_freq": 0.944
+                "accuracy__": [
+                    0.932
+                ],
+                "accuracy": 0.932,
+                "accuracy_freq__": [
+                    0.932
+                ],
+                "accuracy_freq": 0.932
             },
             "Months_on_book": {
-                "rmse": 9.021086409075128,
-                "avg-value": 35.844
+                "rmse__": [
+                    9.142045722922195
+                ],
+                "rmse": 9.142045722922195,
+                "avg-value__": [
+                    35.926
+                ],
+                "avg-value": 35.926,
+                "errorPrecision__": [
+                    0.267
+                ],
+                "errorPrecision": 0.267
             },
             "Total_Relationship_Count": {
-                "accuracy": 0.21,
-                "accuracy_freq": 0.216
+                "rmse__": [
+                    2.0719555979798407
+                ],
+                "rmse": 2.0719555979798407,
+                "avg-value__": [
+                    3.821
+                ],
+                "avg-value": 3.821,
+                "errorPrecision__": [
+                    0.239
+                ],
+                "errorPrecision": 0.239
             },
             "Months_Inactive_12_mon": {
-                "accuracy": 0.372,
-                "accuracy_freq": 0.428
+                "rmse__": [
+                    1.376226725507102
+                ],
+                "rmse": 1.376226725507102,
+                "avg-value__": [
+                    2.351
+                ],
+                "avg-value": 2.351,
+                "errorPrecision__": [
+                    0.395
+                ],
+                "errorPrecision": 0.395
             },
             "Contacts_Count_12_mon": {
-                "accuracy": 0.262,
-                "accuracy_freq": 0.356
+                "rmse__": [
+                    1.5706686474237652
+                ],
+                "rmse": 1.5706686474237652,
+                "avg-value__": [
+                    2.437
+                ],
+                "avg-value": 2.437,
+                "errorPrecision__": [
+                    0.349
+                ],
+                "errorPrecision": 0.349
             },
             "Credit_Limit": {
-                "rmse": 4487.288054230528,
-                "avg-value": 8536.0922
+                "rmse__": [
+                    4625.7741117730775
+                ],
+                "rmse": 4625.7741117730775,
+                "avg-value__": [
+                    8433.4512
+                ],
+                "avg-value": 8433.4512,
+                "errorPrecision__": [
+                    0.556
+                ],
+                "errorPrecision": 0.556
             },
             "Total_Revolving_Bal": {
-                "rmse": 866.7470992163746,
-                "avg-value": 1127.676
+                "rmse__": [
+                    806.4450037045303
+                ],
+                "rmse": 806.4450037045303,
+                "avg-value__": [
+                    1154.899
+                ],
+                "avg-value": 1154.899,
+                "errorPrecision__": [
+                    0.274
+                ],
+                "errorPrecision": 0.274
             },
             "Avg_Open_To_Buy": {
-                "rmse": 4311.180980091186,
-                "avg-value": 7415.3546
+                "rmse__": [
+                    4524.958193954945
+                ],
+                "rmse": 4524.958193954945,
+                "avg-value__": [
+                    7278.5522
+                ],
+                "avg-value": 7278.5522,
+                "errorPrecision__": [
+                    0.586
+                ],
+                "errorPrecision": 0.586
             },
             "Total_Amt_Chng_Q4_Q1": {
-                "rmse": 0.2690913748153218,
-                "avg-value": 0.743552
+                "rmse__": [
+                    0.28097805964167377
+                ],
+                "rmse": 0.28097805964167377,
+                "avg-value__": [
+                    0.757562
+                ],
+                "avg-value": 0.757562,
+                "errorPrecision__": [
+                    0.429
+                ],
+                "errorPrecision": 0.429
             },
             "Total_Trans_Amt": {
-                "rmse": 3313.2950007507634,
-                "avg-value": 4405.208
+                "rmse__": [
+                    3144.0198854332966
+                ],
+                "rmse": 3144.0198854332966,
+                "avg-value__": [
+                    4383.693
+                ],
+                "avg-value": 4383.693,
+                "errorPrecision__": [
+                    0.525
+                ],
+                "errorPrecision": 0.525
             },
             "Total_Trans_Ct": {
-                "rmse": 21.93558752347427,
-                "avg-value": 66.134
+                "rmse__": [
+                    20.697560242695275
+                ],
+                "rmse": 20.697560242695275,
+                "avg-value__": [
+                    64.788
+                ],
+                "avg-value": 64.788,
+                "errorPrecision__": [
+                    0.283
+                ],
+                "errorPrecision": 0.283
             },
             "Total_Ct_Chng_Q4_Q1": {
-                "rmse": 0.300302607381288,
-                "avg-value": 0.720428
+                "rmse__": [
+                    0.2853201780456475
+                ],
+                "rmse": 0.2853201780456475,
+                "avg-value__": [
+                    0.7060460000000001
+                ],
+                "avg-value": 0.7060460000000001,
+                "errorPrecision__": [
+                    0.379
+                ],
+                "errorPrecision": 0.379
             },
             "Avg_Utilization_Ratio": {
-                "rmse": 0.20432107086641846,
-                "avg-value": 0.267646
+                "rmse__": [
+                    0.19935453844846374
+                ],
+                "rmse": 0.19935453844846374,
+                "avg-value__": [
+                    0.263478
+                ],
+                "avg-value": 0.263478,
+                "errorPrecision__": [
+                    0.478
+                ],
+                "errorPrecision": 0.478
             }
         }
     },
     "manual-ml-10": {
         "BankChurnersNoId_ctgan.json": {
             "Attrition_Flag": {
-                "accuracy": 0.854,
-                "accuracy_freq": 0.814
+                "accuracy__": [
+                    0.881
+                ],
+                "accuracy": 0.881,
+                "accuracy_freq__": [
+                    0.831
+                ],
+                "accuracy_freq": 0.831
             },
             "Customer_Age": {
-                "rmse": 4.88284684074336,
-                "avg-value": 45.924
+                "rmse__": [
+                    4.873758813789972
+                ],
+                "rmse": 4.873758813789972,
+                "avg-value__": [
+                    46.65
+                ],
+                "avg-value": 46.65,
+                "errorPrecision__": [
+                    0.371
+                ],
+                "errorPrecision": 0.371
             },
             "Gender": {
-                "accuracy": 0.908,
-                "accuracy_freq": 0.564
+                "accuracy__": [
+                    0.885
+                ],
+                "accuracy": 0.885,
+                "accuracy_freq__": [
+                    0.529
+                ],
+                "accuracy_freq": 0.529
             },
             "Dependent_count": {
-                "accuracy": 0.272,
-                "accuracy_freq": 0.298
+                "rmse__": [
+                    1.2763197146294862
+                ],
+                "rmse": 1.2763197146294862,
+                "avg-value__": [
+                    2.341
+                ],
+                "avg-value": 2.341,
+                "errorPrecision__": [
+                    0.285
+                ],
+                "errorPrecision": 0.285
             },
             "Education_Level": {
-                "accuracy": 0.366,
-                "accuracy_freq": 0.366
+                "accuracy__": [
+                    0.316
+                ],
+                "accuracy": 0.316,
+                "accuracy_freq__": [
+                    0.316
+                ],
+                "accuracy_freq": 0.316
             },
             "Marital_Status": {
-                "accuracy": 0.462,
-                "accuracy_freq": 0.442
+                "accuracy__": [
+                    0.477
+                ],
+                "accuracy": 0.477,
+                "accuracy_freq__": [
+                    0.462
+                ],
+                "accuracy_freq": 0.462
             },
             "Income_Category": {
-                "accuracy": 0.528,
-                "accuracy_freq": 0.37
+                "accuracy__": [
+                    0.518
+                ],
+                "accuracy": 0.518,
+                "accuracy_freq__": [
+                    0.368
+                ],
+                "accuracy_freq": 0.368
             },
             "Card_Category": {
-                "accuracy": 0.942,
-                "accuracy_freq": 0.946
+                "accuracy__": [
+                    0.939
+                ],
+                "accuracy": 0.939,
+                "accuracy_freq__": [
+                    0.931
+                ],
+                "accuracy_freq": 0.931
             },
             "Months_on_book": {
-                "rmse": 4.834648930412902,
-                "avg-value": 35.706
+                "rmse__": [
+                    4.947935300390162
+                ],
+                "rmse": 4.947935300390162,
+                "avg-value__": [
+                    36.199
+                ],
+                "avg-value": 36.199,
+                "errorPrecision__": [
+                    0.326
+                ],
+                "errorPrecision": 0.326
             },
             "Total_Relationship_Count": {
-                "accuracy": 0.232,
-                "accuracy_freq": 0.216
+                "rmse__": [
+                    1.4623027274084768
+                ],
+                "rmse": 1.4623027274084768,
+                "avg-value__": [
+                    3.826
+                ],
+                "avg-value": 3.826,
+                "errorPrecision__": [
+                    0.225
+                ],
+                "errorPrecision": 0.225
             },
             "Months_Inactive_12_mon": {
-                "accuracy": 0.386,
-                "accuracy_freq": 0.392
+                "rmse__": [
+                    0.9958508737074083
+                ],
+                "rmse": 0.9958508737074083,
+                "avg-value__": [
+                    2.395
+                ],
+                "avg-value": 2.395,
+                "errorPrecision__": [
+                    0.394
+                ],
+                "errorPrecision": 0.394
             },
             "Contacts_Count_12_mon": {
-                "accuracy": 0.322,
-                "accuracy_freq": 0.322
+                "rmse__": [
+                    1.1183327229343667
+                ],
+                "rmse": 1.1183327229343667,
+                "avg-value__": [
+                    2.464
+                ],
+                "avg-value": 2.464,
+                "errorPrecision__": [
+                    0.327
+                ],
+                "errorPrecision": 0.327
             },
             "Credit_Limit": {
-                "rmse": 0.8837739192049899,
-                "avg-value": 8234.9282
+                "rmse__": [
+                    0.9253244797497951
+                ],
+                "rmse": 0.9253244797497951,
+                "avg-value__": [
+                    8568.195699999998
+                ],
+                "avg-value": 8568.195699999998,
+                "errorPrecision__": [
+                    1.0
+                ],
+                "errorPrecision": 1.0
             },
             "Total_Revolving_Bal": {
-                "rmse": 18.45191621013423,
-                "avg-value": 1101.352
+                "rmse__": [
+                    18.734855236561135
+                ],
+                "rmse": 18.734855236561135,
+                "avg-value__": [
+                    1149.209
+                ],
+                "avg-value": 1149.209,
+                "errorPrecision__": [
+                    1.0
+                ],
+                "errorPrecision": 1.0
             },
             "Avg_Open_To_Buy": {
-                "rmse": 0.5537931065072216,
-                "avg-value": 7133.5762
+                "rmse__": [
+                    0.49466645867552195
+                ],
+                "rmse": 0.49466645867552195,
+                "avg-value__": [
+                    7418.9867
+                ],
+                "avg-value": 7418.9867,
+                "errorPrecision__": [
+                    1.0
+                ],
+                "errorPrecision": 1.0
             },
             "Total_Amt_Chng_Q4_Q1": {
-                "rmse": 0.22028870189070546,
-                "avg-value": 0.77037
+                "rmse__": [
+                    0.24269529171774068
+                ],
+                "rmse": 0.24269529171774068,
+                "avg-value__": [
+                    0.764015
+                ],
+                "avg-value": 0.764015,
+                "errorPrecision__": [
+                    0.641
+                ],
+                "errorPrecision": 0.641
             },
             "Total_Trans_Amt": {
-                "rmse": 1699.7062207103465,
-                "avg-value": 4100.89
+                "rmse__": [
+                    1798.5185257811402
+                ],
+                "rmse": 1798.5185257811402,
+                "avg-value__": [
+                    4328.211
+                ],
+                "avg-value": 4328.211,
+                "errorPrecision__": [
+                    0.45
+                ],
+                "errorPrecision": 0.45
             },
             "Total_Trans_Ct": {
-                "rmse": 11.838630223924582,
-                "avg-value": 62.57
+                "rmse__": [
+                    11.974469256365136
+                ],
+                "rmse": 11.974469256365136,
+                "avg-value__": [
+                    64.17
+                ],
+                "avg-value": 64.17,
+                "errorPrecision__": [
+                    0.381
+                ],
+                "errorPrecision": 0.381
             },
             "Total_Ct_Chng_Q4_Q1": {
-                "rmse": 0.23152441144356445,
-                "avg-value": 0.71061
+                "rmse__": [
+                    0.23775993685875052
+                ],
+                "rmse": 0.23775993685875052,
+                "avg-value__": [
+                    0.703072
+                ],
+                "avg-value": 0.703072,
+                "errorPrecision__": [
+                    0.627
+                ],
+                "errorPrecision": 0.627
             },
             "Avg_Utilization_Ratio": {
-                "rmse": 0.217535884098683,
-                "avg-value": 0.27344399999999996
+                "rmse__": [
+                    0.23186726631402071
+                ],
+                "rmse": 0.23186726631402071,
+                "avg-value__": [
+                    0.298631
+                ],
+                "avg-value": 0.298631,
+                "errorPrecision__": [
+                    0.244
+                ],
+                "errorPrecision": 0.244
             }
         }
     },
     "manual-ml-50": {
         "BankChurnersNoId_ctgan.json": {
             "Attrition_Flag": {
-                "accuracy": 0.868,
-                "accuracy_freq": 0.826
+                "accuracy__": [
+                    0.908
+                ],
+                "accuracy": 0.908,
+                "accuracy_freq__": [
+                    0.84
+                ],
+                "accuracy_freq": 0.84
             },
             "Customer_Age": {
-                "rmse": 4.696120811936421,
-                "avg-value": 46.522
+                "rmse__": [
+                    4.968991394695243
+                ],
+                "rmse": 4.968991394695243,
+                "avg-value__": [
+                    45.908
+                ],
+                "avg-value": 45.908,
+                "errorPrecision__": [
+                    0.346
+                ],
+                "errorPrecision": 0.346
             },
             "Gender": {
-                "accuracy": 0.896,
-                "accuracy_freq": 0.534
+                "accuracy__": [
+                    0.902
+                ],
+                "accuracy": 0.902,
+                "accuracy_freq__": [
+                    0.523
+                ],
+                "accuracy_freq": 0.523
             },
             "Dependent_count": {
-                "accuracy": 0.296,
-                "accuracy_freq": 0.278
+                "rmse__": [
+                    1.3060925720203738
+                ],
+                "rmse": 1.3060925720203738,
+                "avg-value__": [
+                    2.3
+                ],
+                "avg-value": 2.3,
+                "errorPrecision__": [
+                    0.275
+                ],
+                "errorPrecision": 0.275
             },
             "Education_Level": {
-                "accuracy": 0.318,
-                "accuracy_freq": 0.318
+                "accuracy__": [
+                    0.327
+                ],
+                "accuracy": 0.327,
+                "accuracy_freq__": [
+                    0.327
+                ],
+                "accuracy_freq": 0.327
             },
             "Marital_Status": {
-                "accuracy": 0.452,
-                "accuracy_freq": 0.486
+                "accuracy__": [
+                    0.46
+                ],
+                "accuracy": 0.46,
+                "accuracy_freq__": [
+                    0.46
+                ],
+                "accuracy_freq": 0.46
             },
             "Income_Category": {
-                "accuracy": 0.518,
-                "accuracy_freq": 0.374
+                "accuracy__": [
+                    0.524
+                ],
+                "accuracy": 0.524,
+                "accuracy_freq__": [
+                    0.347
+                ],
+                "accuracy_freq": 0.347
             },
             "Card_Category": {
-                "accuracy": 0.934,
-                "accuracy_freq": 0.926
+                "accuracy__": [
+                    0.942
+                ],
+                "accuracy": 0.942,
+                "accuracy_freq__": [
+                    0.931
+                ],
+                "accuracy_freq": 0.931
             },
             "Months_on_book": {
-                "rmse": 4.9187835738004555,
-                "avg-value": 36.334
+                "rmse__": [
+                    4.947856609432748
+                ],
+                "rmse": 4.947856609432748,
+                "avg-value__": [
+                    35.323
+                ],
+                "avg-value": 35.323,
+                "errorPrecision__": [
+                    0.36
+                ],
+                "errorPrecision": 0.36
             },
             "Total_Relationship_Count": {
-                "accuracy": 0.252,
-                "accuracy_freq": 0.22
+                "rmse__": [
+                    1.4044133996205743
+                ],
+                "rmse": 1.4044133996205743,
+                "avg-value__": [
+                    3.819
+                ],
+                "avg-value": 3.819,
+                "errorPrecision__": [
+                    0.237
+                ],
+                "errorPrecision": 0.237
             },
             "Months_Inactive_12_mon": {
-                "accuracy": 0.336,
-                "accuracy_freq": 0.37
+                "rmse__": [
+                    1.016279313708453
+                ],
+                "rmse": 1.016279313708453,
+                "avg-value__": [
+                    2.329
+                ],
+                "avg-value": 2.329,
+                "errorPrecision__": [
+                    0.384
+                ],
+                "errorPrecision": 0.384
             },
             "Contacts_Count_12_mon": {
-                "accuracy": 0.35,
-                "accuracy_freq": 0.35
+                "rmse__": [
+                    1.1360183534170492
+                ],
+                "rmse": 1.1360183534170492,
+                "avg-value__": [
+                    2.396
+                ],
+                "avg-value": 2.396,
+                "errorPrecision__": [
+                    0.317
+                ],
+                "errorPrecision": 0.317
             },
             "Credit_Limit": {
-                "rmse": 0.7208837015136083,
-                "avg-value": 8591.5976
+                "rmse__": [
+                    0.6759850220348487
+                ],
+                "rmse": 0.6759850220348487,
+                "avg-value__": [
+                    8551.107199999999
+                ],
+                "avg-value": 8551.107199999999,
+                "errorPrecision__": [
+                    1.0
+                ],
+                "errorPrecision": 1.0
             },
             "Total_Revolving_Bal": {
-                "rmse": 18.54966109816474,
-                "avg-value": 1132.446
+                "rmse__": [
+                    19.703923108270242
+                ],
+                "rmse": 19.703923108270242,
+                "avg-value__": [
+                    1147.962
+                ],
+                "avg-value": 1147.962,
+                "errorPrecision__": [
+                    1.0
+                ],
+                "errorPrecision": 1.0
             },
             "Avg_Open_To_Buy": {
-                "rmse": 0.46250210027487104,
-                "avg-value": 7459.151599999999
+                "rmse__": [
+                    0.5635843943509501
+                ],
+                "rmse": 0.5635843943509501,
+                "avg-value__": [
+                    7403.145200000001
+                ],
+                "avg-value": 7403.145200000001,
+                "errorPrecision__": [
+                    1.0
+                ],
+                "errorPrecision": 1.0
             },
             "Total_Amt_Chng_Q4_Q1": {
-                "rmse": 0.21468598847088347,
-                "avg-value": 0.75622
+                "rmse__": [
+                    0.2300548558011307
+                ],
+                "rmse": 0.2300548558011307,
+                "avg-value__": [
+                    0.759173
+                ],
+                "avg-value": 0.759173,
+                "errorPrecision__": [
+                    0.394
+                ],
+                "errorPrecision": 0.394
             },
             "Total_Trans_Amt": {
-                "rmse": 1744.4037762736848,
-                "avg-value": 4383.37
+                "rmse__": [
+                    1872.8158902732562
+                ],
+                "rmse": 1872.8158902732562,
+                "avg-value__": [
+                    4415.417
+                ],
+                "avg-value": 4415.417,
+                "errorPrecision__": [
+                    0.436
+                ],
+                "errorPrecision": 0.436
             },
             "Total_Trans_Ct": {
-                "rmse": 11.483891569364399,
-                "avg-value": 64.554
+                "rmse__": [
+                    12.00500464565765
+                ],
+                "rmse": 12.00500464565765,
+                "avg-value__": [
+                    64.747
+                ],
+                "avg-value": 64.747,
+                "errorPrecision__": [
+                    0.372
+                ],
+                "errorPrecision": 0.372
             },
             "Total_Ct_Chng_Q4_Q1": {
-                "rmse": 0.2635802031915668,
-                "avg-value": 0.7129699999999999
+                "rmse__": [
+                    0.2266571367093881
+                ],
+                "rmse": 0.2266571367093881,
+                "avg-value__": [
+                    0.710723
+                ],
+                "avg-value": 0.710723,
+                "errorPrecision__": [
+                    0.607
+                ],
+                "errorPrecision": 0.607
             },
             "Avg_Utilization_Ratio": {
-                "rmse": 0.2119586233771106,
-                "avg-value": 0.274426
+                "rmse__": [
+                    0.2149498796561267
+                ],
+                "rmse": 0.2149498796561267,
+                "avg-value__": [
+                    0.27772900000000006
+                ],
+                "avg-value": 0.27772900000000006,
+                "errorPrecision__": [
+                    0.251
+                ],
+                "errorPrecision": 0.251
             }
         }
     },
-    "manual-ml-100": {
-        "BankChurnersNoId_ctgan.json": {
-            "Attrition_Flag": {
-                "accuracy": 0.89,
-                "accuracy_freq": 0.848
-            },
-            "Customer_Age": {
-                "rmse": 4.829521504064834,
-                "avg-value": 46.468
-            },
-            "Gender": {
-                "accuracy": 0.88,
-                "accuracy_freq": 0.516
-            },
-            "Dependent_count": {
-                "accuracy": 0.25,
-                "accuracy_freq": 0.248
-            },
-            "Education_Level": {
-                "accuracy": 0.324,
-                "accuracy_freq": 0.324
-            },
-            "Marital_Status": {
-                "accuracy": 0.462,
-                "accuracy_freq": 0.48
-            },
-            "Income_Category": {
-                "accuracy": 0.492,
-                "accuracy_freq": 0.346
-            },
-            "Card_Category": {
-                "accuracy": 0.95,
-                "accuracy_freq": 0.944
-            },
-            "Months_on_book": {
-                "rmse": 4.9762371578372155,
-                "avg-value": 35.968
-            },
-            "Total_Relationship_Count": {
-                "accuracy": 0.234,
-                "accuracy_freq": 0.252
-            },
-            "Months_Inactive_12_mon": {
-                "accuracy": 0.382,
-                "accuracy_freq": 0.372
-            },
-            "Contacts_Count_12_mon": {
-                "accuracy": 0.36,
-                "accuracy_freq": 0.362
-            },
-            "Credit_Limit": {
-                "rmse": 0.7360049200932345,
-                "avg-value": 8177.874400000001
-            },
-            "Total_Revolving_Bal": {
-                "rmse": 18.4328817403078,
-                "avg-value": 1151.474
-            },
-            "Avg_Open_To_Buy": {
-                "rmse": 0.687070085862239,
-                "avg-value": 7026.4004
-            },
-            "Total_Amt_Chng_Q4_Q1": {
-                "rmse": 0.22146852469130376,
-                "avg-value": 0.767664
-            },
-            "Total_Trans_Amt": {
-                "rmse": 1611.5818473317447,
-                "avg-value": 4081.052
-            },
-            "Total_Trans_Ct": {
-                "rmse": 11.783786503383222,
-                "avg-value": 63.594
-            },
-            "Total_Ct_Chng_Q4_Q1": {
-                "rmse": 0.2662940446674268,
-                "avg-value": 0.720192
-            },
-            "Avg_Utilization_Ratio": {
-                "rmse": 0.21521598952521367,
-                "avg-value": 0.287824
-            }
-        }
-    },
+    "manual-ml-100": {},
     "diff-anonymeter-10": {
         "BankChurnersNoId_ctgan.json": {
             "Attrition_Flag": {
-                "accuracy": 0.846,
-                "accuracy_freq": 0.826
+                "accuracy__": [
+                    0.873
+                ],
+                "accuracy": 0.873,
+                "accuracy_freq__": [
+                    0.831
+                ],
+                "accuracy_freq": 0.831
             },
             "Customer_Age": {
-                "rmse": 8.043631020876083,
-                "avg-value": 46.444
+                "rmse__": [
+                    8.15573417909142
+                ],
+                "rmse": 8.15573417909142,
+                "avg-value__": [
+                    46.65
+                ],
+                "avg-value": 46.65,
+                "errorPrecision__": [
+                    0.291
+                ],
+                "errorPrecision": 0.291
             },
             "Gender": {
-                "accuracy": 0.898,
-                "accuracy_freq": 0.542
+                "accuracy__": [
+                    0.88
+                ],
+                "accuracy": 0.88,
+                "accuracy_freq__": [
+                    0.529
+                ],
+                "accuracy_freq": 0.529
             },
             "Dependent_count": {
-                "accuracy": 0.366,
-                "accuracy_freq": 0.268
+                "rmse__": [
+                    1.557562197795003
+                ],
+                "rmse": 1.557562197795003,
+                "avg-value__": [
+                    2.341
+                ],
+                "avg-value": 2.341,
+                "errorPrecision__": [
+                    0.343
+                ],
+                "errorPrecision": 0.343
             },
             "Education_Level": {
-                "accuracy": 0.344,
-                "accuracy_freq": 0.26
+                "accuracy__": [
+                    0.316
+                ],
+                "accuracy": 0.316,
+                "accuracy_freq__": [
+                    0.316
+                ],
+                "accuracy_freq": 0.316
             },
             "Marital_Status": {
-                "accuracy": 0.51,
-                "accuracy_freq": 0.452
+                "accuracy__": [
+                    0.485
+                ],
+                "accuracy": 0.485,
+                "accuracy_freq__": [
+                    0.462
+                ],
+                "accuracy_freq": 0.462
             },
             "Income_Category": {
-                "accuracy": 0.536,
-                "accuracy_freq": 0.346
+                "accuracy__": [
+                    0.514
+                ],
+                "accuracy": 0.514,
+                "accuracy_freq__": [
+                    0.368
+                ],
+                "accuracy_freq": 0.368
             },
             "Card_Category": {
-                "accuracy": 0.968,
-                "accuracy_freq": 0.946
+                "accuracy__": [
+                    0.934
+                ],
+                "accuracy": 0.934,
+                "accuracy_freq__": [
+                    0.931
+                ],
+                "accuracy_freq": 0.931
             },
             "Months_on_book": {
-                "rmse": 8.444169586170093,
-                "avg-value": 35.712
+                "rmse__": [
+                    8.306322892832906
+                ],
+                "rmse": 8.306322892832906,
+                "avg-value__": [
+                    36.199
+                ],
+                "avg-value": 36.199,
+                "errorPrecision__": [
+                    0.368
+                ],
+                "errorPrecision": 0.368
             },
             "Total_Relationship_Count": {
-                "accuracy": 0.372,
-                "accuracy_freq": 0.226
+                "rmse__": [
+                    1.8881207588499205
+                ],
+                "rmse": 1.8881207588499205,
+                "avg-value__": [
+                    3.826
+                ],
+                "avg-value": 3.826,
+                "errorPrecision__": [
+                    0.331
+                ],
+                "errorPrecision": 0.331
             },
             "Months_Inactive_12_mon": {
-                "accuracy": 0.438,
-                "accuracy_freq": 0.38
+                "rmse__": [
+                    1.2957623238850557
+                ],
+                "rmse": 1.2957623238850557,
+                "avg-value__": [
+                    2.395
+                ],
+                "avg-value": 2.395,
+                "errorPrecision__": [
+                    0.416
+                ],
+                "errorPrecision": 0.416
             },
             "Contacts_Count_12_mon": {
-                "accuracy": 0.384,
-                "accuracy_freq": 0.326
+                "rmse__": [
+                    1.4046351839534705
+                ],
+                "rmse": 1.4046351839534705,
+                "avg-value__": [
+                    2.464
+                ],
+                "avg-value": 2.464,
+                "errorPrecision__": [
+                    0.392
+                ],
+                "errorPrecision": 0.392
             },
             "Credit_Limit": {
-                "rmse": 4378.28934597749,
-                "avg-value": 8426.026
+                "rmse__": [
+                    4372.504333359774
+                ],
+                "rmse": 4372.504333359774,
+                "avg-value__": [
+                    8568.195699999998
+                ],
+                "avg-value": 8568.195699999998,
+                "errorPrecision__": [
+                    0.63
+                ],
+                "errorPrecision": 0.63
             },
             "Total_Revolving_Bal": {
-                "rmse": 743.4530543349728,
-                "avg-value": 1177.808
+                "rmse__": [
+                    762.4094746263323
+                ],
+                "rmse": 762.4094746263323,
+                "avg-value__": [
+                    1149.209
+                ],
+                "avg-value": 1149.209,
+                "errorPrecision__": [
+                    0.36
+                ],
+                "errorPrecision": 0.36
             },
             "Avg_Open_To_Buy": {
-                "rmse": 4108.10598416107,
-                "avg-value": 7248.218
+                "rmse__": [
+                    4144.475364742804
+                ],
+                "rmse": 4144.475364742804,
+                "avg-value__": [
+                    7418.9867
+                ],
+                "avg-value": 7418.9867,
+                "errorPrecision__": [
+                    0.642
+                ],
+                "errorPrecision": 0.642
             },
             "Total_Amt_Chng_Q4_Q1": {
-                "rmse": 0.2742420244966114,
-                "avg-value": 0.763934
+                "rmse__": [
+                    0.28039717366621225
+                ],
+                "rmse": 0.28039717366621225,
+                "avg-value__": [
+                    0.764015
+                ],
+                "avg-value": 0.764015,
+                "errorPrecision__": [
+                    0.581
+                ],
+                "errorPrecision": 0.581
             },
             "Total_Trans_Amt": {
-                "rmse": 2938.1597880305962,
-                "avg-value": 4368.906
+                "rmse__": [
+                    2718.7259639397275
+                ],
+                "rmse": 2718.7259639397275,
+                "avg-value__": [
+                    4328.211
+                ],
+                "avg-value": 4328.211,
+                "errorPrecision__": [
+                    0.65
+                ],
+                "errorPrecision": 0.65
             },
             "Total_Trans_Ct": {
-                "rmse": 19.957504854064297,
-                "avg-value": 66.682
+                "rmse__": [
+                    19.291111943068497
+                ],
+                "rmse": 19.291111943068497,
+                "avg-value__": [
+                    64.17
+                ],
+                "avg-value": 64.17,
+                "errorPrecision__": [
+                    0.37
+                ],
+                "errorPrecision": 0.37
             },
             "Total_Ct_Chng_Q4_Q1": {
-                "rmse": 0.22682687230573012,
-                "avg-value": 0.6897279999999999
+                "rmse__": [
+                    0.27442881044088646
+                ],
+                "rmse": 0.27442881044088646,
+                "avg-value__": [
+                    0.703072
+                ],
+                "avg-value": 0.703072,
+                "errorPrecision__": [
+                    0.597
+                ],
+                "errorPrecision": 0.597
             },
             "Avg_Utilization_Ratio": {
-                "rmse": 0.19770503787207852,
-                "avg-value": 0.28554599999999997
+                "rmse__": [
+                    0.19273867800729566
+                ],
+                "rmse": 0.19273867800729566,
+                "avg-value__": [
+                    0.298631
+                ],
+                "avg-value": 0.298631,
+                "errorPrecision__": [
+                    0.52
+                ],
+                "errorPrecision": 0.52
             }
         }
     },
     "diff-anonymeter-50": {
         "BankChurnersNoId_ctgan.json": {
             "Attrition_Flag": {
-                "accuracy": 0.948,
-                "accuracy_freq": 0.826
+                "accuracy__": [
+                    0.928
+                ],
+                "accuracy": 0.928,
+                "accuracy_freq__": [
+                    0.84
+                ],
+                "accuracy_freq": 0.84
             },
             "Customer_Age": {
-                "rmse": 5.585158905528114,
-                "avg-value": 46.07
+                "rmse__": [
+                    5.025634288326201
+                ],
+                "rmse": 5.025634288326201,
+                "avg-value__": [
+                    45.908
+                ],
+                "avg-value": 45.908,
+                "errorPrecision__": [
+                    0.659
+                ],
+                "errorPrecision": 0.659
             },
             "Gender": {
-                "accuracy": 0.944,
-                "accuracy_freq": 0.546
+                "accuracy__": [
+                    0.941
+                ],
+                "accuracy": 0.941,
+                "accuracy_freq__": [
+                    0.523
+                ],
+                "accuracy_freq": 0.523
             },
             "Dependent_count": {
-                "accuracy": 0.708,
-                "accuracy_freq": 0.264
+                "rmse__": [
+                    1.147170431975999
+                ],
+                "rmse": 1.147170431975999,
+                "avg-value__": [
+                    2.3
+                ],
+                "avg-value": 2.3,
+                "errorPrecision__": [
+                    0.671
+                ],
+                "errorPrecision": 0.671
             },
             "Education_Level": {
-                "accuracy": 0.674,
-                "accuracy_freq": 0.306
+                "accuracy__": [
+                    0.663
+                ],
+                "accuracy": 0.663,
+                "accuracy_freq__": [
+                    0.327
+                ],
+                "accuracy_freq": 0.327
             },
             "Marital_Status": {
-                "accuracy": 0.788,
-                "accuracy_freq": 0.444
+                "accuracy__": [
+                    0.741
+                ],
+                "accuracy": 0.741,
+                "accuracy_freq__": [
+                    0.46
+                ],
+                "accuracy_freq": 0.46
             },
             "Income_Category": {
-                "accuracy": 0.788,
-                "accuracy_freq": 0.342
+                "accuracy__": [
+                    0.769
+                ],
+                "accuracy": 0.769,
+                "accuracy_freq__": [
+                    0.347
+                ],
+                "accuracy_freq": 0.347
             },
             "Card_Category": {
-                "accuracy": 0.972,
-                "accuracy_freq": 0.916
+                "accuracy__": [
+                    0.971
+                ],
+                "accuracy": 0.971,
+                "accuracy_freq__": [
+                    0.931
+                ],
+                "accuracy_freq": 0.931
             },
             "Months_on_book": {
-                "rmse": 5.981304205605999,
-                "avg-value": 35.36
+                "rmse__": [
+                    5.410452846111867
+                ],
+                "rmse": 5.410452846111867,
+                "avg-value__": [
+                    35.323
+                ],
+                "avg-value": 35.323,
+                "errorPrecision__": [
+                    0.672
+                ],
+                "errorPrecision": 0.672
             },
             "Total_Relationship_Count": {
-                "accuracy": 0.672,
-                "accuracy_freq": 0.218
+                "rmse__": [
+                    1.2856904759700136
+                ],
+                "rmse": 1.2856904759700136,
+                "avg-value__": [
+                    3.819
+                ],
+                "avg-value": 3.819,
+                "errorPrecision__": [
+                    0.671
+                ],
+                "errorPrecision": 0.671
             },
             "Months_Inactive_12_mon": {
-                "accuracy": 0.772,
-                "accuracy_freq": 0.406
+                "rmse__": [
+                    0.9005553841935542
+                ],
+                "rmse": 0.9005553841935542,
+                "avg-value__": [
+                    2.329
+                ],
+                "avg-value": 2.329,
+                "errorPrecision__": [
+                    0.707
+                ],
+                "errorPrecision": 0.707
             },
             "Contacts_Count_12_mon": {
-                "accuracy": 0.728,
-                "accuracy_freq": 0.346
+                "rmse__": [
+                    1.0104454463255301
+                ],
+                "rmse": 1.0104454463255301,
+                "avg-value__": [
+                    2.396
+                ],
+                "avg-value": 2.396,
+                "errorPrecision__": [
+                    0.668
+                ],
+                "errorPrecision": 0.668
             },
             "Credit_Limit": {
-                "rmse": 3019.2543467088026,
-                "avg-value": 8499.767800000001
+                "rmse__": [
+                    3468.669632745384
+                ],
+                "rmse": 3468.669632745384,
+                "avg-value__": [
+                    8551.107199999999
+                ],
+                "avg-value": 8551.107199999999,
+                "errorPrecision__": [
+                    0.813
+                ],
+                "errorPrecision": 0.813
             },
             "Total_Revolving_Bal": {
-                "rmse": 476.09108162199385,
-                "avg-value": 1129.18
+                "rmse__": [
+                    553.5140088561444
+                ],
+                "rmse": 553.5140088561444,
+                "avg-value__": [
+                    1147.962
+                ],
+                "avg-value": 1147.962,
+                "errorPrecision__": [
+                    0.68
+                ],
+                "errorPrecision": 0.68
             },
             "Avg_Open_To_Buy": {
-                "rmse": 3008.9292047703616,
-                "avg-value": 7370.5878
+                "rmse__": [
+                    3308.880000492614
+                ],
+                "rmse": 3308.880000492614,
+                "avg-value__": [
+                    7403.145200000001
+                ],
+                "avg-value": 7403.145200000001,
+                "errorPrecision__": [
+                    0.823
+                ],
+                "errorPrecision": 0.823
             },
             "Total_Amt_Chng_Q4_Q1": {
-                "rmse": 0.17974406805232823,
-                "avg-value": 0.7770119999999999
+                "rmse__": [
+                    0.19248611638245497
+                ],
+                "rmse": 0.19248611638245497,
+                "avg-value__": [
+                    0.759173
+                ],
+                "avg-value": 0.759173,
+                "errorPrecision__": [
+                    0.705
+                ],
+                "errorPrecision": 0.705
             },
             "Total_Trans_Amt": {
-                "rmse": 1734.6921686570213,
-                "avg-value": 4618.88
+                "rmse__": [
+                    2190.540955106752
+                ],
+                "rmse": 2190.540955106752,
+                "avg-value__": [
+                    4415.417
+                ],
+                "avg-value": 4415.417,
+                "errorPrecision__": [
+                    0.803
+                ],
+                "errorPrecision": 0.803
             },
             "Total_Trans_Ct": {
-                "rmse": 12.506158482923523,
-                "avg-value": 66.104
+                "rmse__": [
+                    13.492219980418344
+                ],
+                "rmse": 13.492219980418344,
+                "avg-value__": [
+                    64.747
+                ],
+                "avg-value": 64.747,
+                "errorPrecision__": [
+                    0.701
+                ],
+                "errorPrecision": 0.701
             },
             "Total_Ct_Chng_Q4_Q1": {
-                "rmse": 0.166930224944436,
-                "avg-value": 0.725254
+                "rmse__": [
+                    0.1689438013068251
+                ],
+                "rmse": 0.1689438013068251,
+                "avg-value__": [
+                    0.710723
+                ],
+                "avg-value": 0.710723,
+                "errorPrecision__": [
+                    0.799
+                ],
+                "errorPrecision": 0.799
             },
             "Avg_Utilization_Ratio": {
-                "rmse": 0.1385459634922649,
-                "avg-value": 0.26595799999999997
+                "rmse__": [
+                    0.13064495780549665
+                ],
+                "rmse": 0.13064495780549665,
+                "avg-value__": [
+                    0.27772900000000006
+                ],
+                "avg-value": 0.27772900000000006,
+                "errorPrecision__": [
+                    0.771
+                ],
+                "errorPrecision": 0.771
             }
         }
     },
-    "diff-anonymeter-100": {
-        "BankChurnersNoId_ctgan.json": {
-            "Attrition_Flag": {
-                "accuracy": 0.992,
-                "accuracy_freq": 0.812
-            },
-            "Customer_Age": {
-                "rmse": 1.6186414056238645,
-                "avg-value": 46.726
-            },
-            "Gender": {
-                "accuracy": 1.0,
-                "accuracy_freq": 0.516
-            },
-            "Dependent_count": {
-                "accuracy": 0.968,
-                "accuracy_freq": 0.268
-            },
-            "Education_Level": {
-                "accuracy": 0.968,
-                "accuracy_freq": 0.328
-            },
-            "Marital_Status": {
-                "accuracy": 0.972,
-                "accuracy_freq": 0.452
-            },
-            "Income_Category": {
-                "accuracy": 0.98,
-                "accuracy_freq": 0.33
-            },
-            "Card_Category": {
-                "accuracy": 1.0,
-                "accuracy_freq": 0.926
-            },
-            "Months_on_book": {
-                "rmse": 1.7193021840269964,
-                "avg-value": 35.904
-            },
-            "Total_Relationship_Count": {
-                "accuracy": 0.98,
-                "accuracy_freq": 0.224
-            },
-            "Months_Inactive_12_mon": {
-                "accuracy": 0.968,
-                "accuracy_freq": 0.428
-            },
-            "Contacts_Count_12_mon": {
-                "accuracy": 0.968,
-                "accuracy_freq": 0.342
-            },
-            "Credit_Limit": {
-                "rmse": 282.10524986252915,
-                "avg-value": 8835.1824
-            },
-            "Total_Revolving_Bal": {
-                "rmse": 123.23098636300855,
-                "avg-value": 1137.504
-            },
-            "Avg_Open_To_Buy": {
-                "rmse": 295.77543508547154,
-                "avg-value": 7697.678400000001
-            },
-            "Total_Amt_Chng_Q4_Q1": {
-                "rmse": 0.0392108148346856,
-                "avg-value": 0.7556980000000001
-            },
-            "Total_Trans_Amt": {
-                "rmse": 683.1040828453597,
-                "avg-value": 4364.56
-            },
-            "Total_Trans_Ct": {
-                "rmse": 1.7572706109191036,
-                "avg-value": 64.958
-            },
-            "Total_Ct_Chng_Q4_Q1": {
-                "rmse": 0.03624168870237699,
-                "avg-value": 0.71916
-            },
-            "Avg_Utilization_Ratio": {
-                "rmse": 0.04541739754763586,
-                "avg-value": 0.26766999999999996
-            }
-        }
-    }
+    "diff-anonymeter-100": {}
 }

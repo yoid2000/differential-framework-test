@@ -7,12 +7,14 @@ from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
+from filelock import FileLock
 from tpot import TPOTClassifier
 from tpot import TPOTRegressor
 from joblib import load
 import numpy as np
 import pandas as pd
 import pprint
+import json
 import os
 from mixed_types_kneighbors import MixedTypeKNeighbors
 
@@ -20,15 +22,15 @@ columnTypes = {
         'Attrition_Flag': 'cat',
         'Customer_Age': 'num',
         'Gender': 'cat',
-        'Dependent_count': 'num',
+        'Dependent_count': 'num',    #num
         'Education_Level': 'cat',
         'Marital_Status': 'cat',
         'Income_Category': 'cat',
         'Card_Category': 'cat',
         'Months_on_book': 'num',
         'Total_Relationship_Count': 'num',
-        'Months_Inactive_12_mon': 'num',
-        'Contacts_Count_12_mon': 'num',
+        'Months_Inactive_12_mon': 'num',    #num
+        'Contacts_Count_12_mon': 'num',     #num
         'Credit_Limit': 'num',
         'Total_Revolving_Bal': 'num',
         'Avg_Open_To_Buy': 'num',
@@ -39,50 +41,109 @@ columnTypes = {
         'Avg_Utilization_Ratio': 'num',
 }
 
+class StoreResults():
+    def __init__(self, resultsFileName):
+        self.resultsFileName = resultsFileName
+        self.lock = FileLock(resultsFileName + ".lock")
+
+    def updateResults(self, method, dataset, column, measure, value):
+        with self.lock:
+            if not os.path.exists(self.resultsFileName):
+                res = {}
+            else:
+                with open(self.resultsFileName, 'r') as f:
+                    res = json.load(f)
+            if method not in res:
+                res[method] = {}
+            if dataset not in res:
+                res[method][dataset] = {}
+            if column not in res[method][dataset]:
+                res[method][dataset][column] = {}
+            measureList = measure + '__'
+            if measureList not in res[method][dataset][column]:
+                res[method][dataset][column][measureList] = []
+            res[method][dataset][column][measureList].append(value)
+            res[method][dataset][column][measure] = sum(res[method][dataset][column][measureList]) / len(res[method][dataset][column][measureList])
+            with open(self.resultsFileName, 'w') as f:
+                json.dump(res, f, indent=4)
+
+
 pp = pprint.PrettyPrinter(indent=4)
 
-def updateResults(res, dataset, column, measure, value):
-    ''' measures are: 'accuracy', 'rmse', 'accuracy-freq', 'avg-value'
-    '''
-    if dataset not in res:
-        res[dataset] = {}
-    if column not in res[dataset]:
-        res[dataset][column] = {}
-    res[dataset][column][measure] = value
+def getPrecisionFromBestGuess(y_test):
+    # Find the most frequent category
+    most_frequent = y_test.mode()[0]
+    print(f"most_frequent is {most_frequent}")
+    most_frequent_count = y_test.value_counts()
+    most_frequent_count = (y_test == most_frequent).sum()
+    print(f"most_frequent_count {most_frequent_count}")
+    return(most_frequent_count / len(y_test))
 
-def printEvaluation(res, dataset, target, targetType, y_test, y_pred):
+def convert_to_numpy(var):
+    if isinstance(var, pd.Series):
+        return var.values
+    elif isinstance(var, np.ndarray):
+        return var
+    else:
+        print("The input is neither a pandas Series nor a numpy array.")
+        return None
+
+def doClip(thingy,clipBegin = 10, clipEnd=3):
+    clipped = []
+    for thing in thingy:
+        clip = thing[:clipBegin] + '.' + thing[-clipEnd:]
+        while clip in clipped:
+            clip += '_'
+        clipped.append(clip)
+    return clipped
+
+def printEvaluation(sr, method, dataset, target, targetType, y_test, y_pred, precError=0.05, doBestGuess=True):
     if targetType == 'cat':
         accuracy = accuracy_score(y_test, y_pred)
-        updateResults(res, dataset, target, 'accuracy', accuracy)
         print(f"Accuracy: {accuracy}")
-        # Find the most frequent category
-        most_frequent = y_test.mode()[0]
-        # Create a list of predictions
-        y_pred_freq = [most_frequent] * len(y_test)
-        # Compute accuracy
-        accuracy_freq = accuracy_score(y_test, y_pred_freq)
-        updateResults(res, dataset, target, 'accuracy_freq', accuracy_freq)
+        accuracy_freq = getPrecisionFromBestGuess(y_test)
+        if doBestGuess:
+            accuracy = max(accuracy, accuracy_freq)
+        sr.updateResults(method, dataset, target, 'accuracy', accuracy)
+        sr.updateResults(method, dataset, target, 'accuracy_freq', accuracy_freq)
         print(f"Accuracy of best guess: {accuracy_freq}")
         accuracy_improvement = (accuracy - accuracy_freq) / max(accuracy, accuracy_freq)
         print(f"Accuracy Improvement: {accuracy_improvement}")
     else:
+        # First compute rmse
         mse = mean_squared_error(y_test, y_pred)
         rmse = np.sqrt(mse)
-        updateResults(res, dataset, target, 'rmse', rmse)
-        updateResults(res, dataset, target, 'avg-value', np.mean(y_test))
+        sr.updateResults(method, dataset, target, 'rmse', rmse)
+        sr.updateResults(method, dataset, target, 'avg-value', np.mean(y_test))
         print(f"Root Mean Squared Error: {rmse}")
         print(f"Average test value: {np.mean(y_test)}")
         print(f"Relative error: {rmse/np.mean(y_test)}")
-        #npFixed = np.full((len(y_test),),0.001)
-        #npMax = np.abs(np.maximum(y_test, y_pred, npFixed))
-        #y_test_has_bad = not np.isfinite(y_test).all()
-        #y_pred_has_bad = not np.isfinite(y_pred).all()
-        #print(f"bad y_test {y_test_has_bad}, bad y_pred {y_pred_has_bad}")
-        #relErr = np.abs(y_test - y_pred) / npMax
-        #print(f"Average relative error: {np.mean(relErr)}")
-        #print(f"Std Dev relative error: {np.std(relErr)}")
+        # Then compute precision of prediction within some error tolerance
+        testRange = abs(max(y_test) - min(y_test))
+        errorTolorance = precError * testRange
+        lowEdges = y_test - errorTolorance
+        highEdges = y_test + errorTolorance
+        print(f"testRange: {testRange}, errorTolorance: {errorTolorance}")
+        print("y_test")
+        print(y_test)
+        print("y_pred")
+        print(y_pred)
+        print(lowEdges)
+        print(highEdges)
+        print('types', type(y_pred), type(lowEdges), type(highEdges))
+        correctPredictions = ((convert_to_numpy(y_pred) >= convert_to_numpy(lowEdges)) & (convert_to_numpy(y_pred) <= convert_to_numpy(highEdges)))
+        print("correctPredictions")
+        print(correctPredictions)
+        numCorrect = np.count_nonzero(correctPredictions)
+        errorPrecision = numCorrect / len(y_test)
+        if doBestGuess:
+            errorPrecision_freq = getPrecisionFromBestGuess(y_test)
+            errorPrecision = max(errorPrecision, errorPrecision_freq)
+        # Now we check to see if we could have gotten a better prediction by
+        # simply predicting the most frequent value
+        sr.updateResults(method, dataset, target, 'errorPrecision', errorPrecision)
 
-def getAnonymeterPreds(res, filePath, victims, dataset, secret, auxCols):
+def getAnonymeterPreds(sr, method, filePath, victims, dataset, secret, auxCols):
     ''' Both victims and dataset df's have all columns.
         The secret is the column the attacker is trying to predict
         In usage, the dataset can be the synthetic dataset (in which case
@@ -103,9 +164,9 @@ def getAnonymeterPreds(res, filePath, victims, dataset, secret, auxCols):
     nn = MixedTypeKNeighbors(n_neighbors=1).fit(candidates=dataset[auxCols])
     predictions_idx = nn.kneighbors(queries=victims[auxCols])
     predictions = dataset.iloc[predictions_idx.flatten()][secret]
-    printEvaluation(res, filePath, secret, secretType, victims[secret], predictions)
+    printEvaluation(sr, method, filePath, secret, secretType, victims[secret], predictions)
 
-def makeModel(dataset, target, df, numVictims=500, auto='none'):
+def makeModel(dataset, target, df, auto='none', max_iter=100):
     fileBaseName = dataset + target
     targetType, nums, cats, drops = categorize_columns(df, target)
     # Assuming df is your DataFrame and 'target' is the column you want to predict
@@ -113,7 +174,7 @@ def makeModel(dataset, target, df, numVictims=500, auto='none'):
     y = df[target]
 
     if auto == 'none':
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=numVictims, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=10)
         # Create a column transformer
         preprocessor = ColumnTransformer(
             transformers=[
@@ -124,7 +185,7 @@ def makeModel(dataset, target, df, numVictims=500, auto='none'):
         # Create a pipeline that uses the transformer and then fits the model
         if targetType == 'cat':
             pipe = Pipeline(steps=[('preprocessor', preprocessor),
-                                ('model', LogisticRegression(penalty='l1', C=0.01, solver='saga'))])
+                                ('model', LogisticRegression(penalty='l1', C=0.01, solver='saga', max_iter=max_iter))])
         else:
             pipe = Pipeline(steps=[('preprocessor', preprocessor),
                                 ('model', Lasso(alpha=0.1))])
@@ -140,7 +201,7 @@ def makeModel(dataset, target, df, numVictims=500, auto='none'):
     elif auto == 'autosklearn':
         import autosklearn.regression
         import autosklearn.classification
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=numVictims, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=10)
         if targetType == 'cat':
             # Initialize the classifier
             automl = autosklearn.classification.AutoSklearnClassifier(time_left_for_this_task=120, per_run_time_limit=30)
@@ -167,17 +228,17 @@ def makeModel(dataset, target, df, numVictims=500, auto='none'):
             for column in cats:
                 df[column] = df[column].astype(str)
             X = pd.get_dummies(X)
-            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=numVictims, random_state=42)
+            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=10)
             if targetType == 'cat':
                 # Initialize the classifier
-                tpot = TPOTClassifier(generations=100, population_size=100, verbosity=1, random_state=42)
+                tpot = TPOTClassifier(generations=100, population_size=100, verbosity=1)
                 # Fit the model
                 tpot.fit(X_train, y_train)
                 # Print the best pipeline
                 print(tpot.fitted_pipeline_)
             else:
                 # Initialize the regressor
-                tpot = TPOTRegressor(generations=100, population_size=100, verbosity=1, random_state=42)
+                tpot = TPOTRegressor(generations=100, population_size=100, verbosity=1)
                 # Fit the model
                 tpot.fit(X_train, y_train)
                 # Print the best pipeline

@@ -8,15 +8,6 @@ import pandas as pd
 
 pp = pprint.PrettyPrinter(indent=4)
 
-def doClip(thingy,clipBegin = 10, clipEnd=3):
-    clipped = []
-    for thing in thingy:
-        clip = thing[:clipBegin] + '.' + thing[-clipEnd:]
-        while clip in clipped:
-            clip += '_'
-        clipped.append(clip)
-    return clipped
-
 if __name__ == "__main__":
     with open('resultsRecall.json', 'r') as f:
         res = json.load(f)

@@ -1,9 +1,9 @@
 [
     {
         "target": "Attrition_Flag",
-        "recall": 0.9996709443896018,
-        "numPredicts": 3038,
-        "prec": 0.8959842001316656
+        "recall": 1.0,
+        "numPredicts": 3039,
+        "prec": 0.8956893715037841
     },
     {
         "target": "Attrition_Flag",
@@ -67,9 +67,9 @@
     },
     {
         "target": "Gender",
-        "recall": 0.9996709443896018,
-        "numPredicts": 3038,
-        "prec": 0.8989466754443713
+        "recall": 1.0,
+        "numPredicts": 3039,
+        "prec": 0.8986508719973676
     },
     {
         "target": "Gender",
@@ -87,7 +87,7 @@
         "target": "Gender",
         "recall": 0.6873971701217506,
         "numPredicts": 2089,
-        "prec": 0.9597893729056965
+        "prec": 0.9601542416452442
     },
     {
         "target": "Gender",
@@ -103,15 +103,15 @@
     },
     {
         "target": "Education_Level",
-        "recall": 0.0,
-        "numPredicts": 0,
-        "prec": NaN
+        "recall": 1.0,
+        "numPredicts": 3039,
+        "prec": 0.30832510694307336
     },
     {
         "target": "Marital_Status",
-        "recall": 0.9996709443896018,
-        "numPredicts": 3038,
-        "prec": 0.4588545095457538
+        "recall": 1.0,
+        "numPredicts": 3039,
+        "prec": 0.4642974662717999
     },
     {
         "target": "Marital_Status",
@@ -133,9 +133,9 @@
     },
     {
         "target": "Income_Category",
-        "recall": 0.9996709443896018,
-        "numPredicts": 3038,
-        "prec": 0.500329163923634
+        "recall": 1.0,
+        "numPredicts": 3039,
+        "prec": 0.500164527805199
     },
     {
         "target": "Income_Category",
@@ -169,9 +169,9 @@
     },
     {
         "target": "Income_Category",
-        "recall": 0.13359657782165185,
-        "numPredicts": 406,
-        "prec": 0.7487684729064039
+        "recall": 0.1332675222112537,
+        "numPredicts": 405,
+        "prec": 0.7573435504469987
     },
     {
         "target": "Income_Category",
@@ -181,27 +181,27 @@
     },
     {
         "target": "Income_Category",
-        "recall": 0.022046725896676538,
-        "numPredicts": 67,
-        "prec": 0.8208955223880597
+        "recall": 0.02171767028627838,
+        "numPredicts": 66,
+        "prec": 0.8181818181818182
     },
     {
         "target": "Income_Category",
         "recall": 0.007239223428759461,
         "numPredicts": 22,
-        "prec": 0.7272727272727273
+        "prec": 0.8181818181818182
     },
     {
         "target": "Income_Category",
         "recall": 0.0036196117143797303,
         "numPredicts": 11,
-        "prec": 0.6363636363636364
+        "prec": 0.8181818181818182
     },
     {
         "target": "Card_Category",
-        "recall": 0.9996709443896018,
-        "numPredicts": 3038,
-        "prec": 0.93449637919684
+        "recall": 1.0,
+        "numPredicts": 3039,
+        "prec": 0.9341888779203685
     },
     {
         "target": "Card_Category",
@@ -235,15 +235,15 @@
     },
     {
         "target": "Card_Category",
-        "recall": 0.7933530766699572,
-        "numPredicts": 2411,
-        "prec": 0.9888013272501037
+        "recall": 0.793024021059559,
+        "numPredicts": 2410,
+        "prec": 0.9887966804979254
     },
     {
         "target": "Card_Category",
-        "recall": 0.7462981243830207,
-        "numPredicts": 2268,
-        "prec": 0.9933862433862434
+        "recall": 0.7459690687726226,
+        "numPredicts": 2267,
+        "prec": 0.9933833259814733
     },
     {
         "target": "Card_Category",

@@ -1,13 +1,14 @@
-from diffTools import makeModel, getAnonymeterPreds, accuracy_score, mean_squared_error, categorize_columns, printEvaluation, prepDataframes
+from diffTools import makeModel, getAnonymeterPreds, categorize_columns, printEvaluation, prepDataframes, StoreResults
 import pandas as pd
 import numpy as np
 import json
+import fire
 import pprint
 
 workWithAuto = False
 pp = pprint.PrettyPrinter(indent=4)
 
-def doModel(res, dataset, target, df, dfTest, numVictims=500, auto='none'):
+def doModel(sr, method, dataset, target, df, dfTest, auto='none', max_iter=100):
     if auto == 'autosklearn' and workWithAuto is False:
         return
     targetType, nums, cats, drops = categorize_columns(df, target)
@@ -20,10 +21,9 @@ def doModel(res, dataset, target, df, dfTest, numVictims=500, auto='none'):
         dfTest = df.drop(column, axis=1)
     X_test = dfTest.drop(target, axis=1)
     y_test = dfTest[target]
-    model = makeModel(dataset, target, df, numVictims=numVictims, auto=auto)
+    model = makeModel(dataset, target, df, auto=auto, max_iter=max_iter)
     y_pred = model.predict(X_test)
-    if res is not None:
-        printEvaluation(res, dataset, target, targetType, y_test, y_pred)
+    printEvaluation(sr, method, dataset, target, targetType, y_test, y_pred, doBestGuess=True)
 
 def sample_rows(df, num_rows=500):
     # Randomly sample rows and create a new dataframe
@@ -55,22 +55,8 @@ def print_dataframe_columns(df):
         print("-----")
         print(df[column].describe())
 
-if __name__ == "__main__":
-    results = {
-        'tpot':{},
-        'manual-ml':{},
-        'classic-anonymeter':{},
-        'diff-anonymeter':{},
-        'manual-ml-10':{},
-        'manual-ml-50':{},
-        'manual-ml-100':{},
-        'diff-anonymeter-10':{},
-        'diff-anonymeter-50':{},
-        'diff-anonymeter-100':{},
-    }
-    doTpot = False
-    numVictims = 500
-    filePath = 'BankChurnersNoId_ctgan.json'
+def runDiffTest(numVictims = 1000, max_iter = 5000, doTpot = False, resultsFile = 'results.json', filePath = 'BankChurnersNoId_ctgan.json'):
+    sr = StoreResults(resultsFile)
     with open(filePath, 'r') as f:
         testData = json.load(f)
     '''
@@ -89,6 +75,7 @@ if __name__ == "__main__":
 
     print(list(dfOrig.columns))
 
+    dfSampleVictims = dfTest.sample(n=numVictims, replace=False)
     if True:
         ''' The following runs the tests for the case where the victims are
             completely distinct from the original data
@@ -102,57 +89,55 @@ if __name__ == "__main__":
             # Here, we are using the original rows to measure the baseline
             # using ML models (this is meant to give a high-quality baseline)
             print("\n----  DIFFERENTIAL FRAMEWORK  ----")
-            doModel(results['manual-ml'], filePath, target, dfOrig, numVictims=numVictims)
+            doModel(sr, 'manual-ml', filePath, target, dfOrig, dfSampleVictims, max_iter=max_iter)
             if doTpot:
-                doModel(results['tpot'], filePath, target, dfOrig, auto='tpot', numVictims=numVictims)
+                doModel(sr, 'tpot', filePath, target, dfOrig, dfSampleVictims, auto='tpot')
             # Here, we are mimicing Anonymeter. That is to say, we are applying
             # the analysis (which is the same as the attack) to the synthetic
             # data using victims that were not part of making the synthetic data
             auxCols = list(dfTest.columns)
             auxCols.remove(target)
-            dfSampleVictims = dfTest.sample(n=numVictims, replace=False)
             print("\n----  CLASSIC ANONYMETER  ----")
-            getAnonymeterPreds(results['classic-anonymeter'], filePath, dfSampleVictims, dfAnon, target, auxCols)
+            getAnonymeterPreds(sr, 'classic-anonymeter', filePath, dfSampleVictims, dfAnon, target, auxCols)
             # Here, we are running Anonymeter against the original data instead of
             # the synthetic data. This follows the differential framework, but
             # using Anonymeter's attack method as the analysis
             print('----------------------------------------------')
             print("\n----  DIFFERENTIAL ANONYMETER  ----")
-            getAnonymeterPreds(results['diff-anonymeter'], filePath, dfSampleVictims, dfOrig, target, auxCols)
-        pp.pprint(results)
-        with open('results.json', 'w') as f:
-            json.dump(results, f, indent=4)
-        
+            getAnonymeterPreds(sr, 'diff-anonymeter', filePath, dfSampleVictims, dfOrig, target, auxCols)
 
-    ''' The following runs the tests for the case where some fraction of the
-        victims are replicated in the original data. The idea here is to model
-        the case where some users are linked (i.e. husband and wife that often
-        travel together), and one linked user is among the victims while the
-        other is among the original data.
-    '''
-    linkages = [10, 50, 100]      # these are precentages
+    if True:
+        ''' The following runs the tests for the case where some fraction of the
+            victims are replicated in the original data. The idea here is to model
+            the case where some users are linked (i.e. husband and wife that often
+            travel together), and one linked user is among the victims while the
+            other is among the original data.
+        '''
+        linkages = [10, 50, 100]      # these are precentages
 
-    for linkage in linkages:
-        dfOrigLinked = replicate_rows(dfOrig, frac= (linkage/100))
-        dfOrigLinked, dfTestLinked = sample_rows(dfOrigLinked, num_rows=numVictims)
-        print(f"Len orig: {dfOrig.shape[0]}")
-        print(f"Len linked: {dfOrigLinked.shape[0]}")
-        print(f"Len test linked: {dfTestLinked.shape[0]}")
-        for target in dfOrigLinked.columns:
-            print('----------------------------------------------')
-            print(f"Use target {target}")
-            # Here, we are using the original rows to measure the baseline
-            # using ML models (this is meant to give a high-quality baseline)
-            print(f"\n----  DIFFERENTIAL FRAMEWORK  ({linkage}%)----")
-            doModel(results[f'manual-ml-{linkage}'], filePath, target, dfOrigLinked, numVictims=numVictims)
-            auxCols = list(dfTest.columns)
-            auxCols.remove(target)
-            dfSampleVictims = dfTestLinked.sample(n=numVictims, replace=False)
-            # Here, we are running Anonymeter against the original data instead of
-            # the synthetic data. This follows the differential framework, but
-            # using Anonymeter's attack method as the analysis
-            print(f"\n----  DIFFERENTIAL ANONYMETER  ({linkage}%)----")
-            getAnonymeterPreds(results[f'diff-anonymeter-{linkage}'], filePath, dfSampleVictims, dfOrigLinked, target, auxCols)
-        pp.pprint(results)
-        with open('results.json', 'w') as f:
-            json.dump(results, f, indent=4)
+        for linkage in linkages:
+            dfOrigLinked = replicate_rows(dfOrig, frac= (linkage/100))
+            dfOrigLinked, dfTestLinked = sample_rows(dfOrigLinked, num_rows=numVictims)
+            print(f"Len orig: {dfOrig.shape[0]}")
+            print(f"Len linked: {dfOrigLinked.shape[0]}")
+            print(f"Len test linked: {dfTestLinked.shape[0]}")
+            for target in dfOrigLinked.columns:
+                print('----------------------------------------------')
+                print(f"Use target {target}")
+                # Here, we are using the original rows to measure the baseline
+                # using ML models (this is meant to give a high-quality baseline)
+                print(f"\n----  DIFFERENTIAL FRAMEWORK  ({linkage}%)----")
+                doModel(sr, f'manual-ml-{linkage}', filePath, target, dfOrigLinked, dfTestLinked, max_iter=max_iter)
+                auxCols = list(dfTest.columns)
+                auxCols.remove(target)
+                # Here, we are running Anonymeter against the original data instead of
+                # the synthetic data. This follows the differential framework, but
+                # using Anonymeter's attack method as the analysis
+                print(f"\n----  DIFFERENTIAL ANONYMETER  ({linkage}%)----")
+                getAnonymeterPreds(sr, f'diff-anonymeter-{linkage}', filePath, dfTestLinked, dfOrigLinked, target, auxCols)
+
+def main():
+    fire.Fire(runDiffTest)
+
+if __name__ == '__main__':
+    main()

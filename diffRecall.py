@@ -1,4 +1,4 @@
-from diffTools import makeModel, getColType, prepDataframes
+from diffTools import makeModel, getColType, prepDataframes, getPrecisionFromBestGuess
 import joblib
 import pandas as pd
 import numpy as np
@@ -95,7 +95,10 @@ if __name__ == "__main__":
         probs = model.predict_proba(X_test)
         print(f"probs is type {type(probs)}")
         classLabels = model.classes_
+        print("classLabels:")
         print(classLabels)
+        precLowerBound = getPrecisionFromBestGuess(y_test)
+        print(f"precLowerBound is {precLowerBound}")
         # classLabels contains the distinct values in the target column
         # probs contains the probability that each row in X_test predicts
         # each distinct value, where the column index in classLabels matches
@@ -107,15 +110,16 @@ if __name__ == "__main__":
         maxMaxProb = np.amax(maxProbs, axis=0)
         print(f"maxProbs ranges from {minMaxProb} to {maxMaxProb}")
 
-        ''' I want to step through 10 different thresholds to produce 10 
+        ''' I want to step through different thresholds to produce
             different precision/recall values
         '''
         thresh = minMaxProb
         numTests = maxProbs.shape[0]
+        bestPrecSoFar = 0
         while True:
-            if thresh > maxMaxProb:
+            if thresh >= maxMaxProb:
                 thresh = maxMaxProb
-            doPredicts = (maxProbs > thresh).astype(int)
+            doPredicts = (maxProbs >= thresh).astype(int)
             print(f"                     thresh is {thresh}")
             numPredicts = np.sum(doPredicts)
             recall = numPredicts / numTests
@@ -128,6 +132,13 @@ if __name__ == "__main__":
                 if y_test.values[i] == y_pred[i]:
                     numCorrect += 1
             prec = numCorrect / numPredicts
+            if prec < precLowerBound:
+                print(f"Set precision {prec} to lower bound {precLowerBound}")
+                prec = precLowerBound
+            if prec < bestPrecSoFar:
+                print(f"Set precision {prec} to best so far {bestPrecSoFar}")
+                prec = bestPrecSoFar
+            bestPrecSoFar = max(bestPrecSoFar, prec)
             print(f"Precision is {prec}")
             results.append({'target':target,
                             'recall':recall,
@@ -136,6 +147,8 @@ if __name__ == "__main__":
             if numPredicts <= 20:
                 break
             if prec >= 1.0:
+                break
+            if maxMaxProb == thresh:
                 break
             thresh += (maxMaxProb - thresh) / 3
     pp.pprint(results)

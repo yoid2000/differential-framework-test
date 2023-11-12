@@ -1,0 +1,885 @@
+{
+    "tpot": {},
+    "manual-ml": {
+        "BankChurnersNoId_ctgan.json": {
+            "Attrition_Flag": {
+                "accuracy": 0.8947022046725897,
+                "accuracy_freq": 0.8394208621256992
+            },
+            "Customer_Age": {
+                "rmse": 4.856150585977312,
+                "avg-value": 46.293846660085556,
+                "errorPrecision": 0.3935505100361961
+            },
+            "Gender": {
+                "accuracy": 0.8996380388285621,
+                "accuracy_freq": 0.5205659756498848
+            },
+            "Dependent_count": {
+                "rmse": 1.2817004980392435,
+                "avg-value": 2.3803882856202696,
+                "errorPrecision": 0.019085225403093122
+            },
+            "Education_Level": {
+                "accuracy": 0.30832510694307336,
+                "accuracy_freq": 0.30832510694307336
+            },
+            "Marital_Status": {
+                "accuracy": 0.460348798947022,
+                "accuracy_freq": 0.4642974662717999
+            },
+            "Income_Category": {
+                "accuracy": 0.4998354721948009,
+                "accuracy_freq": 0.3504442250740375
+            },
+            "Card_Category": {
+                "accuracy": 0.9341888779203685,
+                "accuracy_freq": 0.9315564330371833
+            },
+            "Months_on_book": {
+                "rmse": 4.8503312408308075,
+                "avg-value": 35.95985521553143,
+                "errorPrecision": 0.3464955577492596
+            },
+            "Total_Relationship_Count": {
+                "rmse": 1.4696616588475406,
+                "avg-value": 3.8193484698914117,
+                "errorPrecision": 0.16452780519907864
+            },
+            "Months_Inactive_12_mon": {
+                "rmse": 1.0268863374614543,
+                "avg-value": 2.3385982230997038,
+                "errorPrecision": 0.0
+            },
+            "Contacts_Count_12_mon": {
+                "rmse": 1.1042386748803266,
+                "avg-value": 2.4652846331029945,
+                "errorPrecision": 0.003290556103981573
+            },
+            "Credit_Limit": {
+                "rmse": 0.7431937748377623,
+                "avg-value": 8708.9309970385,
+                "errorPrecision": 1.0
+            },
+            "Total_Revolving_Bal": {
+                "rmse": 18.439485417683414,
+                "avg-value": 1162.307337940112,
+                "errorPrecision": 1.0
+            },
+            "Avg_Open_To_Buy": {
+                "rmse": 0.5145006126677895,
+                "avg-value": 7546.623659098388,
+                "errorPrecision": 1.0
+            },
+            "Total_Amt_Chng_Q4_Q1": {
+                "rmse": 0.2137130975475128,
+                "avg-value": 0.7549588680487002,
+                "errorPrecision": 0.5426127015465614
+            },
+            "Total_Trans_Amt": {
+                "rmse": 1824.6779946458369,
+                "avg-value": 4386.970055939454,
+                "errorPrecision": 0.42744323790720634
+            },
+            "Total_Trans_Ct": {
+                "rmse": 12.0852456063759,
+                "avg-value": 64.72128989799276,
+                "errorPrecision": 0.41000329055610396
+            },
+            "Total_Ct_Chng_Q4_Q1": {
+                "rmse": 0.23774694801653096,
+                "avg-value": 0.7118746298124382,
+                "errorPrecision": 0.514642974662718
+            },
+            "Avg_Utilization_Ratio": {
+                "rmse": 0.2085812691836945,
+                "avg-value": 0.26797203027311617,
+                "errorPrecision": 0.08983218163869694
+            }
+        }
+    },
+    "classic-anonymeter": {
+        "BankChurnersNoId_ctgan.json": {
+            "Attrition_Flag": {
+                "accuracy": 0.82,
+                "accuracy_freq": 0.8
+            },
+            "Customer_Age": {
+                "rmse": 11.00727032465361,
+                "avg-value": 46.52,
+                "errorPrecision": 0.08
+            },
+            "Gender": {
+                "accuracy": 0.74,
+                "accuracy_freq": 0.6
+            },
+            "Dependent_count": {
+                "rmse": 1.7204650534085253,
+                "avg-value": 2.42,
+                "errorPrecision": 0.26
+            },
+            "Education_Level": {
+                "accuracy": 0.18,
+                "accuracy_freq": 0.3
+            },
+            "Marital_Status": {
+                "accuracy": 0.34,
+                "accuracy_freq": 0.46
+            },
+            "Income_Category": {
+                "accuracy": 0.38,
+                "accuracy_freq": 0.48
+            },
+            "Card_Category": {
+                "accuracy": 0.82,
+                "accuracy_freq": 0.96
+            },
+            "Months_on_book": {
+                "rmse": 11.551623262554921,
+                "avg-value": 36.02,
+                "errorPrecision": 0.1
+            },
+            "Total_Relationship_Count": {
+                "rmse": 2.4331050121192876,
+                "avg-value": 3.72,
+                "errorPrecision": 0.14
+            },
+            "Months_Inactive_12_mon": {
+                "rmse": 1.378404875209022,
+                "avg-value": 2.36,
+                "errorPrecision": 0.34
+            },
+            "Contacts_Count_12_mon": {
+                "rmse": 1.4,
+                "avg-value": 2.48,
+                "errorPrecision": 0.32
+            },
+            "Credit_Limit": {
+                "rmse": 9921.084987792416,
+                "avg-value": 8655.332,
+                "errorPrecision": 0.36
+            },
+            "Total_Revolving_Bal": {
+                "rmse": 977.9066519867835,
+                "avg-value": 1147.08,
+                "errorPrecision": 0.2
+            },
+            "Avg_Open_To_Buy": {
+                "rmse": 9907.320678942415,
+                "avg-value": 9440.332,
+                "errorPrecision": 0.44
+            },
+            "Total_Amt_Chng_Q4_Q1": {
+                "rmse": 0.2791621392667709,
+                "avg-value": 0.74348,
+                "errorPrecision": 0.04
+            },
+            "Total_Trans_Amt": {
+                "rmse": 5224.014060088277,
+                "avg-value": 5722.36,
+                "errorPrecision": 0.22
+            },
+            "Total_Trans_Ct": {
+                "rmse": 31.238117740990734,
+                "avg-value": 61.92,
+                "errorPrecision": 0.04
+            },
+            "Total_Ct_Chng_Q4_Q1": {
+                "rmse": 0.2847608119106279,
+                "avg-value": 0.7130200000000001,
+                "errorPrecision": 0.14
+            },
+            "Avg_Utilization_Ratio": {
+                "rmse": 0.34172693777342167,
+                "avg-value": 0.27784,
+                "errorPrecision": 0.24
+            }
+        }
+    },
+    "diff-anonymeter": {
+        "BankChurnersNoId_ctgan.json": {
+            "Attrition_Flag": {
+                "accuracy": 0.9,
+                "accuracy_freq": 0.8
+            },
+            "Customer_Age": {
+                "rmse": 7.429670248402684,
+                "avg-value": 46.52,
+                "errorPrecision": 0.22
+            },
+            "Gender": {
+                "accuracy": 0.88,
+                "accuracy_freq": 0.6
+            },
+            "Dependent_count": {
+                "rmse": 1.5620499351813308,
+                "avg-value": 2.42,
+                "errorPrecision": 0.2
+            },
+            "Education_Level": {
+                "accuracy": 0.12,
+                "accuracy_freq": 0.3
+            },
+            "Marital_Status": {
+                "accuracy": 0.46,
+                "accuracy_freq": 0.46
+            },
+            "Income_Category": {
+                "accuracy": 0.42,
+                "accuracy_freq": 0.48
+            },
+            "Card_Category": {
+                "accuracy": 0.92,
+                "accuracy_freq": 0.96
+            },
+            "Months_on_book": {
+                "rmse": 9.173875952943773,
+                "avg-value": 36.02,
+                "errorPrecision": 0.24
+            },
+            "Total_Relationship_Count": {
+                "rmse": 1.6673332000533065,
+                "avg-value": 3.72,
+                "errorPrecision": 0.3
+            },
+            "Months_Inactive_12_mon": {
+                "rmse": 1.6792855623746665,
+                "avg-value": 2.36,
+                "errorPrecision": 0.46
+            },
+            "Contacts_Count_12_mon": {
+                "rmse": 1.3416407864998738,
+                "avg-value": 2.48,
+                "errorPrecision": 0.26
+            },
+            "Credit_Limit": {
+                "rmse": 4386.0324118045455,
+                "avg-value": 8655.332,
+                "errorPrecision": 0.44
+            },
+            "Total_Revolving_Bal": {
+                "rmse": 731.8470468615693,
+                "avg-value": 1147.08,
+                "errorPrecision": 0.28
+            },
+            "Avg_Open_To_Buy": {
+                "rmse": 5771.7536757037715,
+                "avg-value": 9440.332,
+                "errorPrecision": 0.56
+            },
+            "Total_Amt_Chng_Q4_Q1": {
+                "rmse": 0.3120397090115295,
+                "avg-value": 0.74348,
+                "errorPrecision": 0.06
+            },
+            "Total_Trans_Amt": {
+                "rmse": 3163.4624606592065,
+                "avg-value": 5722.36,
+                "errorPrecision": 0.52
+            },
+            "Total_Trans_Ct": {
+                "rmse": 23.467424230196208,
+                "avg-value": 61.92,
+                "errorPrecision": 0.22
+            },
+            "Total_Ct_Chng_Q4_Q1": {
+                "rmse": 0.27457749361519057,
+                "avg-value": 0.7130200000000001,
+                "errorPrecision": 0.16
+            },
+            "Avg_Utilization_Ratio": {
+                "rmse": 0.18439479385275498,
+                "avg-value": 0.27784,
+                "errorPrecision": 0.46
+            }
+        }
+    },
+    "manual-ml-10": {
+        "BankChurnersNoId_ctgan.json": {
+            "Attrition_Flag": {
+                "accuracy": 0.88,
+                "accuracy_freq": 0.84
+            },
+            "Customer_Age": {
+                "rmse": 4.762777186330271,
+                "avg-value": 46.14,
+                "errorPrecision": 0.42
+            },
+            "Gender": {
+                "accuracy": 0.96,
+                "accuracy_freq": 0.58
+            },
+            "Dependent_count": {
+                "rmse": 1.3228140251570344,
+                "avg-value": 1.96,
+                "errorPrecision": 0.0
+            },
+            "Education_Level": {
+                "accuracy": 0.3,
+                "accuracy_freq": 0.3
+            },
+            "Marital_Status": {
+                "accuracy": 0.4,
+                "accuracy_freq": 0.38
+            },
+            "Income_Category": {
+                "accuracy": 0.44,
+                "accuracy_freq": 0.3
+            },
+            "Card_Category": {
+                "accuracy": 0.92,
+                "accuracy_freq": 0.9
+            },
+            "Months_on_book": {
+                "rmse": 4.554308815006196,
+                "avg-value": 36.7,
+                "errorPrecision": 0.34
+            },
+            "Total_Relationship_Count": {
+                "rmse": 1.3801105520919856,
+                "avg-value": 4.0,
+                "errorPrecision": 0.1
+            },
+            "Months_Inactive_12_mon": {
+                "rmse": 1.1110144878553516,
+                "avg-value": 2.5,
+                "errorPrecision": 0.0
+            },
+            "Contacts_Count_12_mon": {
+                "rmse": 1.1034278745660848,
+                "avg-value": 2.52,
+                "errorPrecision": 0.02
+            },
+            "Credit_Limit": {
+                "rmse": 0.9789767216136196,
+                "avg-value": 10533.844,
+                "errorPrecision": 1.0
+            },
+            "Total_Revolving_Bal": {
+                "rmse": 20.66753681017442,
+                "avg-value": 945.8,
+                "errorPrecision": 1.0
+            },
+            "Avg_Open_To_Buy": {
+                "rmse": 0.6405787710531234,
+                "avg-value": 9588.044,
+                "errorPrecision": 1.0
+            },
+            "Total_Amt_Chng_Q4_Q1": {
+                "rmse": 0.24971475109914335,
+                "avg-value": 0.7453400000000002,
+                "errorPrecision": 0.34
+            },
+            "Total_Trans_Amt": {
+                "rmse": 2167.4487365692135,
+                "avg-value": 4959.0,
+                "errorPrecision": 0.38
+            },
+            "Total_Trans_Ct": {
+                "rmse": 13.192929082109424,
+                "avg-value": 66.22,
+                "errorPrecision": 0.28
+            },
+            "Total_Ct_Chng_Q4_Q1": {
+                "rmse": 0.19400090826021527,
+                "avg-value": 0.6889999999999997,
+                "errorPrecision": 0.3
+            },
+            "Avg_Utilization_Ratio": {
+                "rmse": 0.23021616524705657,
+                "avg-value": 0.25186,
+                "errorPrecision": 0.14
+            }
+        }
+    },
+    "manual-ml-50": {
+        "BankChurnersNoId_ctgan.json": {
+            "Attrition_Flag": {
+                "accuracy": 0.9,
+                "accuracy_freq": 0.9
+            },
+            "Customer_Age": {
+                "rmse": 5.043818935589565,
+                "avg-value": 43.7,
+                "errorPrecision": 0.3
+            },
+            "Gender": {
+                "accuracy": 0.9,
+                "accuracy_freq": 0.6
+            },
+            "Dependent_count": {
+                "rmse": 1.4052411232045945,
+                "avg-value": 2.44,
+                "errorPrecision": 0.02
+            },
+            "Education_Level": {
+                "accuracy": 0.16,
+                "accuracy_freq": 0.22
+            },
+            "Marital_Status": {
+                "accuracy": 0.46,
+                "accuracy_freq": 0.52
+            },
+            "Income_Category": {
+                "accuracy": 0.64,
+                "accuracy_freq": 0.48
+            },
+            "Card_Category": {
+                "accuracy": 0.96,
+                "accuracy_freq": 0.94
+            },
+            "Months_on_book": {
+                "rmse": 5.052903338224331,
+                "avg-value": 33.78,
+                "errorPrecision": 0.34
+            },
+            "Total_Relationship_Count": {
+                "rmse": 1.5998938550261805,
+                "avg-value": 4.02,
+                "errorPrecision": 0.14
+            },
+            "Months_Inactive_12_mon": {
+                "rmse": 1.197964072002738,
+                "avg-value": 2.64,
+                "errorPrecision": 0.0
+            },
+            "Contacts_Count_12_mon": {
+                "rmse": 1.0896095205966378,
+                "avg-value": 2.48,
+                "errorPrecision": 0.0
+            },
+            "Credit_Limit": {
+                "rmse": 0.7125585769147877,
+                "avg-value": 7998.831999999999,
+                "errorPrecision": 1.0
+            },
+            "Total_Revolving_Bal": {
+                "rmse": 17.402099580912843,
+                "avg-value": 1223.84,
+                "errorPrecision": 1.0
+            },
+            "Avg_Open_To_Buy": {
+                "rmse": 0.5243559507487057,
+                "avg-value": 6774.991999999999,
+                "errorPrecision": 1.0
+            },
+            "Total_Amt_Chng_Q4_Q1": {
+                "rmse": 0.17405459605402684,
+                "avg-value": 0.7682199999999999,
+                "errorPrecision": 0.12
+            },
+            "Total_Trans_Amt": {
+                "rmse": 1390.9293438589384,
+                "avg-value": 4575.28,
+                "errorPrecision": 0.44
+            },
+            "Total_Trans_Ct": {
+                "rmse": 10.672488021145954,
+                "avg-value": 69.36,
+                "errorPrecision": 0.36
+            },
+            "Total_Ct_Chng_Q4_Q1": {
+                "rmse": 0.17487179531046487,
+                "avg-value": 0.68306,
+                "errorPrecision": 0.24
+            },
+            "Avg_Utilization_Ratio": {
+                "rmse": 0.24038575196506853,
+                "avg-value": 0.34294,
+                "errorPrecision": 0.06
+            }
+        }
+    },
+    "manual-ml-100": {
+        "BankChurnersNoId_ctgan.json": {
+            "Attrition_Flag": {
+                "accuracy": 0.8,
+                "accuracy_freq": 0.78
+            },
+            "Customer_Age": {
+                "rmse": 4.731690131669104,
+                "avg-value": 47.06,
+                "errorPrecision": 0.3
+            },
+            "Gender": {
+                "accuracy": 0.84,
+                "accuracy_freq": 0.52
+            },
+            "Dependent_count": {
+                "rmse": 1.2648470867400514,
+                "avg-value": 2.22,
+                "errorPrecision": 0.04
+            },
+            "Education_Level": {
+                "accuracy": 0.28,
+                "accuracy_freq": 0.28
+            },
+            "Marital_Status": {
+                "accuracy": 0.46,
+                "accuracy_freq": 0.48
+            },
+            "Income_Category": {
+                "accuracy": 0.64,
+                "accuracy_freq": 0.4
+            },
+            "Card_Category": {
+                "accuracy": 0.9,
+                "accuracy_freq": 0.88
+            },
+            "Months_on_book": {
+                "rmse": 4.410776399177262,
+                "avg-value": 36.3,
+                "errorPrecision": 0.38
+            },
+            "Total_Relationship_Count": {
+                "rmse": 1.3651229227570827,
+                "avg-value": 4.08,
+                "errorPrecision": 0.22
+            },
+            "Months_Inactive_12_mon": {
+                "rmse": 0.9194564424943411,
+                "avg-value": 2.28,
+                "errorPrecision": 0.0
+            },
+            "Contacts_Count_12_mon": {
+                "rmse": 1.109271700099267,
+                "avg-value": 2.86,
+                "errorPrecision": 0.0
+            },
+            "Credit_Limit": {
+                "rmse": 0.7166063816492239,
+                "avg-value": 10474.126,
+                "errorPrecision": 1.0
+            },
+            "Total_Revolving_Bal": {
+                "rmse": 21.30964142233448,
+                "avg-value": 1313.86,
+                "errorPrecision": 1.0
+            },
+            "Avg_Open_To_Buy": {
+                "rmse": 0.49367041499013314,
+                "avg-value": 9160.266,
+                "errorPrecision": 1.0
+            },
+            "Total_Amt_Chng_Q4_Q1": {
+                "rmse": 0.34222817506933884,
+                "avg-value": 0.74678,
+                "errorPrecision": 0.34
+            },
+            "Total_Trans_Amt": {
+                "rmse": 1647.8517908674078,
+                "avg-value": 3978.88,
+                "errorPrecision": 0.38
+            },
+            "Total_Trans_Ct": {
+                "rmse": 13.448290796166917,
+                "avg-value": 59.42,
+                "errorPrecision": 0.2
+            },
+            "Total_Ct_Chng_Q4_Q1": {
+                "rmse": 0.23503413343752164,
+                "avg-value": 0.67936,
+                "errorPrecision": 0.2
+            },
+            "Avg_Utilization_Ratio": {
+                "rmse": 0.21868901049690598,
+                "avg-value": 0.28828000000000004,
+                "errorPrecision": 0.14
+            }
+        }
+    },
+    "diff-anonymeter-10": {
+        "BankChurnersNoId_ctgan.json": {
+            "Attrition_Flag": {
+                "accuracy": 0.86,
+                "accuracy_freq": 0.84
+            },
+            "Customer_Age": {
+                "rmse": 7.889233169326408,
+                "avg-value": 46.14,
+                "errorPrecision": 0.36
+            },
+            "Gender": {
+                "accuracy": 0.84,
+                "accuracy_freq": 0.58
+            },
+            "Dependent_count": {
+                "rmse": 1.7492855684535902,
+                "avg-value": 1.96,
+                "errorPrecision": 0.3
+            },
+            "Education_Level": {
+                "accuracy": 0.38,
+                "accuracy_freq": 0.3
+            },
+            "Marital_Status": {
+                "accuracy": 0.44,
+                "accuracy_freq": 0.38
+            },
+            "Income_Category": {
+                "accuracy": 0.5,
+                "accuracy_freq": 0.3
+            },
+            "Card_Category": {
+                "accuracy": 0.96,
+                "accuracy_freq": 0.9
+            },
+            "Months_on_book": {
+                "rmse": 6.979971346646059,
+                "avg-value": 36.7,
+                "errorPrecision": 0.38
+            },
+            "Total_Relationship_Count": {
+                "rmse": 1.772004514666935,
+                "avg-value": 4.0,
+                "errorPrecision": 0.34
+            },
+            "Months_Inactive_12_mon": {
+                "rmse": 1.4212670403551895,
+                "avg-value": 2.5,
+                "errorPrecision": 0.42
+            },
+            "Contacts_Count_12_mon": {
+                "rmse": 1.3341664064126333,
+                "avg-value": 2.52,
+                "errorPrecision": 0.42
+            },
+            "Credit_Limit": {
+                "rmse": 2968.238024384163,
+                "avg-value": 10533.844,
+                "errorPrecision": 0.64
+            },
+            "Total_Revolving_Bal": {
+                "rmse": 743.5481827023721,
+                "avg-value": 945.8,
+                "errorPrecision": 0.36
+            },
+            "Avg_Open_To_Buy": {
+                "rmse": 2944.677449467089,
+                "avg-value": 9588.044,
+                "errorPrecision": 0.68
+            },
+            "Total_Amt_Chng_Q4_Q1": {
+                "rmse": 0.31150592289714174,
+                "avg-value": 0.7453400000000001,
+                "errorPrecision": 0.34
+            },
+            "Total_Trans_Amt": {
+                "rmse": 2641.505150477659,
+                "avg-value": 4959.0,
+                "errorPrecision": 0.52
+            },
+            "Total_Trans_Ct": {
+                "rmse": 19.448907424325924,
+                "avg-value": 66.22,
+                "errorPrecision": 0.34
+            },
+            "Total_Ct_Chng_Q4_Q1": {
+                "rmse": 0.2480216522806023,
+                "avg-value": 0.6890000000000001,
+                "errorPrecision": 0.36
+            },
+            "Avg_Utilization_Ratio": {
+                "rmse": 0.1897044016358081,
+                "avg-value": 0.25186,
+                "errorPrecision": 0.62
+            }
+        }
+    },
+    "diff-anonymeter-50": {
+        "BankChurnersNoId_ctgan.json": {
+            "Attrition_Flag": {
+                "accuracy": 0.98,
+                "accuracy_freq": 0.9
+            },
+            "Customer_Age": {
+                "rmse": 4.317406628984581,
+                "avg-value": 43.7,
+                "errorPrecision": 0.74
+            },
+            "Gender": {
+                "accuracy": 0.98,
+                "accuracy_freq": 0.6
+            },
+            "Dependent_count": {
+                "rmse": 0.8831760866327847,
+                "avg-value": 2.44,
+                "errorPrecision": 0.78
+            },
+            "Education_Level": {
+                "accuracy": 0.78,
+                "accuracy_freq": 0.22
+            },
+            "Marital_Status": {
+                "accuracy": 0.86,
+                "accuracy_freq": 0.52
+            },
+            "Income_Category": {
+                "accuracy": 0.9,
+                "accuracy_freq": 0.48
+            },
+            "Card_Category": {
+                "accuracy": 0.96,
+                "accuracy_freq": 0.94
+            },
+            "Months_on_book": {
+                "rmse": 4.13763217311544,
+                "avg-value": 33.78,
+                "errorPrecision": 0.82
+            },
+            "Total_Relationship_Count": {
+                "rmse": 1.1224972160321824,
+                "avg-value": 4.02,
+                "errorPrecision": 0.8
+            },
+            "Months_Inactive_12_mon": {
+                "rmse": 0.9797958971132712,
+                "avg-value": 2.64,
+                "errorPrecision": 0.8
+            },
+            "Contacts_Count_12_mon": {
+                "rmse": 0.7348469228349535,
+                "avg-value": 2.48,
+                "errorPrecision": 0.8
+            },
+            "Credit_Limit": {
+                "rmse": 3101.5316380459512,
+                "avg-value": 7998.831999999999,
+                "errorPrecision": 0.88
+            },
+            "Total_Revolving_Bal": {
+                "rmse": 353.0005382432157,
+                "avg-value": 1223.84,
+                "errorPrecision": 0.8
+            },
+            "Avg_Open_To_Buy": {
+                "rmse": 3128.4357819523802,
+                "avg-value": 6774.991999999999,
+                "errorPrecision": 0.88
+            },
+            "Total_Amt_Chng_Q4_Q1": {
+                "rmse": 0.14247104969080557,
+                "avg-value": 0.76822,
+                "errorPrecision": 0.76
+            },
+            "Total_Trans_Amt": {
+                "rmse": 1240.2499506147944,
+                "avg-value": 4575.28,
+                "errorPrecision": 0.9
+            },
+            "Total_Trans_Ct": {
+                "rmse": 9.53205119583398,
+                "avg-value": 69.36,
+                "errorPrecision": 0.8
+            },
+            "Total_Ct_Chng_Q4_Q1": {
+                "rmse": 0.08504151927147116,
+                "avg-value": 0.68306,
+                "errorPrecision": 0.86
+            },
+            "Avg_Utilization_Ratio": {
+                "rmse": 0.12340478110673023,
+                "avg-value": 0.34293999999999997,
+                "errorPrecision": 0.84
+            }
+        }
+    },
+    "diff-anonymeter-100": {
+        "BankChurnersNoId_ctgan.json": {
+            "Attrition_Flag": {
+                "accuracy": 1.0,
+                "accuracy_freq": 0.78
+            },
+            "Customer_Age": {
+                "rmse": 0.0,
+                "avg-value": 47.06,
+                "errorPrecision": 1.0
+            },
+            "Gender": {
+                "accuracy": 1.0,
+                "accuracy_freq": 0.52
+            },
+            "Dependent_count": {
+                "rmse": 0.0,
+                "avg-value": 2.22,
+                "errorPrecision": 1.0
+            },
+            "Education_Level": {
+                "accuracy": 1.0,
+                "accuracy_freq": 0.28
+            },
+            "Marital_Status": {
+                "accuracy": 1.0,
+                "accuracy_freq": 0.48
+            },
+            "Income_Category": {
+                "accuracy": 1.0,
+                "accuracy_freq": 0.4
+            },
+            "Card_Category": {
+                "accuracy": 1.0,
+                "accuracy_freq": 0.88
+            },
+            "Months_on_book": {
+                "rmse": 0.0,
+                "avg-value": 36.3,
+                "errorPrecision": 1.0
+            },
+            "Total_Relationship_Count": {
+                "rmse": 0.0,
+                "avg-value": 4.08,
+                "errorPrecision": 1.0
+            },
+            "Months_Inactive_12_mon": {
+                "rmse": 0.0,
+                "avg-value": 2.28,
+                "errorPrecision": 1.0
+            },
+            "Contacts_Count_12_mon": {
+                "rmse": 0.0,
+                "avg-value": 2.86,
+                "errorPrecision": 1.0
+            },
+            "Credit_Limit": {
+                "rmse": 0.0,
+                "avg-value": 10474.126,
+                "errorPrecision": 1.0
+            },
+            "Total_Revolving_Bal": {
+                "rmse": 0.0,
+                "avg-value": 1313.86,
+                "errorPrecision": 1.0
+            },
+            "Avg_Open_To_Buy": {
+                "rmse": 0.0,
+                "avg-value": 9160.266,
+                "errorPrecision": 1.0
+            },
+            "Total_Amt_Chng_Q4_Q1": {
+                "rmse": 0.0,
+                "avg-value": 0.74678,
+                "errorPrecision": 1.0
+            },
+            "Total_Trans_Amt": {
+                "rmse": 0.0,
+                "avg-value": 3978.88,
+                "errorPrecision": 1.0
+            },
+            "Total_Trans_Ct": {
+                "rmse": 0.0,
+                "avg-value": 59.42,
+                "errorPrecision": 1.0
+            },
+            "Total_Ct_Chng_Q4_Q1": {
+                "rmse": 0.0,
+                "avg-value": 0.67936,
+                "errorPrecision": 1.0
+            },
+            "Avg_Utilization_Ratio": {
+                "rmse": 0.0,
+                "avg-value": 0.28828,
+                "errorPrecision": 1.0
+            }
+        }
+    }
+}

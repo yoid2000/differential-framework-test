@@ -7,17 +7,9 @@ import matplotlib.gridspec as gridspec
 import pandas as pd
 import math
 import os
+from diffTools import doClip
 
 pp = pprint.PrettyPrinter(indent=4)
-
-def doClip(thingy,clipBegin = 10, clipEnd=3):
-    clipped = []
-    for thing in thingy:
-        clip = thing[:clipBegin] + '.' + thing[-clipEnd:]
-        while clip in clipped:
-            clip += '_'
-        clipped.append(clip)
-    return clipped
 
 if __name__ == "__main__":
     useForMl = 'manual-ml'
@@ -65,14 +57,18 @@ if __name__ == "__main__":
         plottables[method]['avg-value'] = []
         plottables[method]['rmse_frac'] = []
         plottables[method]['rmse-improve'] = []
+        plottables[method]['errorPrecision'] = []
+        plottables[method]['errPrec-improve'] = []
         for column in conCols:
             plottables[method]['rmse'].append(res[method][dataset][column]['rmse'])
+            plottables[method]['errorPrecision'].append(res[method][dataset][column]['errorPrecision'])
             plottables[method]['avg-value'].append(res[method][dataset][column]['avg-value'])
             plottables[method]['rmse_frac'].append(res[method][dataset][column]['rmse'] / res[method][dataset][column]['avg-value'])
             #classic = zzzz
-            thisRmse = res[method][dataset][column]['rmse']
+            thisRmse = res[method][dataset][column]['rmse'] + 0.00000000001
             classicRmse = res['classic-anonymeter'][dataset][column]['rmse']
             plottables[method]['rmse-improve'].append(classicRmse/thisRmse)
+            plottables[method]['errPrec-improve'].append(res[method][dataset][column]['errorPrecision']/res['classic-anonymeter'][dataset][column]['errorPrecision'] - 1)
     pp.pprint(plottables)
 
     mlIndex = methods.index(useForMl)
@@ -91,7 +87,6 @@ if __name__ == "__main__":
         methods[diffIndex]: plottables[methods[diffIndex]]['accuracy'],
         methods[classicIndex]: plottables[methods[classicIndex]]['accuracy'],
     })
-
     dfAccMelted = dfAcc.melt('Columns', var_name='Analysis', value_name='Precision')
 
     # Create the plot
@@ -100,6 +95,23 @@ if __name__ == "__main__":
     snsPlot = sns.barplot(x="Columns", y="Precision", hue='Analysis', data=dfAccMelted)
     fig = snsPlot.get_figure()
     fig.savefig("accuracy.png")
+    plt.close()
+
+    # Plot the accuracy scores (for continuous columns)
+    dfErrPrec = pd.DataFrame({
+        'Columns': doClip(conCols),
+        methods[mlIndex]: plottables[methods[mlIndex]]['errorPrecision'],
+        methods[diffIndex]: plottables[methods[diffIndex]]['errorPrecision'],
+        methods[classicIndex]: plottables[methods[classicIndex]]['errorPrecision'],
+    })
+    dfErrPrecMelted = dfErrPrec.melt('Columns', var_name='Analysis', value_name='Precision')
+
+    # Create the plot
+    plt.xticks(rotation=45)
+    plt.subplots_adjust(bottom=0.3, left=0.15)
+    snsPlot = sns.barplot(x="Columns", y="Precision", hue='Analysis', data=dfErrPrecMelted)
+    fig = snsPlot.get_figure()
+    fig.savefig("errorPrecision.png")
     plt.close()
 
     # Plot the RMSE scores (for continuous columns)
@@ -229,6 +241,16 @@ if __name__ == "__main__":
         'Match 50%': plottables[methods[diffIndex50]]['rmse'],
         'Match 100%': plottables[methods[diffIndex100]]['rmse'],
     })
+    dfErrorPrecLink = pd.DataFrame({
+        'ML 0': plottables[methods[mlIndex]]['errorPrecision'],
+        'ML 10%': plottables[methods[mlIndex10]]['errorPrecision'],
+        'ML 50%': plottables[methods[mlIndex50]]['errorPrecision'],
+        'ML 100%': plottables[methods[mlIndex100]]['errorPrecision'],
+        'Match 0': plottables[methods[diffIndex]]['errorPrecision'],
+        'Match 10%': plottables[methods[diffIndex10]]['errorPrecision'],
+        'Match 50%': plottables[methods[diffIndex50]]['errorPrecision'],
+        'Match 100%': plottables[methods[diffIndex100]]['errorPrecision'],
+    })
 
     fig = plt.figure(figsize=(4, 8))
     gs = gridspec.GridSpec(4, 1, height_ratios=[1, 1, 4, 4])
@@ -306,15 +328,14 @@ if __name__ == "__main__":
     for i in range(len(colors)):
         mybox = ax2.artists[i]
         mybox.set_facecolor(colors[i])
-    ax2.set_xlabel('Precision')
+    ax2.set_xlabel('Precision (Classification)')
     
     ax3=fig.add_subplot(gs[1])
-    sns.boxplot(data=dfRmseLink, orient='h', ax=ax3)
+    sns.boxplot(data=dfErrorPrecLink, orient='h', ax=ax3)
     for i in range(len(colors)):
         mybox = ax3.artists[i]
         mybox.set_facecolor(colors[i])
-    ax3.set_xlabel('Root Mean Squared Error (RMSE)')
-    ax3.set_xscale('log')
+    ax3.set_xlabel('Precision (Regression)')
 
     # Display the figure
     #plt.subplots_adjust(bottom=0.3, left=0.15, right=0.2)
@@ -333,21 +354,27 @@ if __name__ == "__main__":
         'Match/Diff': plottables[methods[diffIndex]]['accuracy'],
         'Match/Prior': plottables[methods[classicIndex]]['accuracy'],
     })
+    dfErrPrec = pd.DataFrame({
+        'ML/Diff': plottables[methods[mlIndex]]['errorPrecision'],
+        'Match/Diff': plottables[methods[diffIndex]]['errorPrecision'],
+        'Match/Prior': plottables[methods[classicIndex]]['errorPrecision'],
+    })
     print("dfRmse:")
     print(dfRmse.describe())
     print("dfAcc:")
     print(dfAcc.describe())
-    fig = plt.figure(figsize=(4, 2.5))
-    gs = gridspec.GridSpec(2, 1, height_ratios=[1, 1])
+    print("dfErrPrec:")
+    print(dfErrPrec.describe())
 
-    # Create the seaborn graphs
+    fig = plt.figure(figsize=(4, 4.5))
+    gs = gridspec.GridSpec(3, 1, height_ratios=[1, 1, 1])
     ax0=fig.add_subplot(gs[0])
     sns.boxplot(data=dfAcc, orient='h', ax=ax0)
     colors = ['#4c72b0', '#ccb974', '#c44e52']
     for i in range(len(colors)):
         mybox = ax0.artists[i]
         mybox.set_facecolor(colors[i])
-    ax0.set_xlabel('Precision')
+    ax0.set_xlabel('Precision (Classification)')
 
     ax1=fig.add_subplot(gs[1])
     sns.boxplot(data=dfRmse, orient='h', ax=ax1)
@@ -356,6 +383,35 @@ if __name__ == "__main__":
         mybox.set_facecolor(colors[i])
     ax1.set_xlabel('Root Mean Square Error (RMSE)')
     ax1.set_xscale('log')
+
+    ax2=fig.add_subplot(gs[2])
+    sns.boxplot(data=dfErrPrec, orient='h', ax=ax2)
+    for i in range(len(colors)):
+        mybox = ax2.artists[i]
+        mybox.set_facecolor(colors[i])
+    ax2.set_xlabel('Precision (Regression)')
+
+    plt.tight_layout()
+    plt.savefig("diffVsClassicAll.png")
+    plt.close()
+
+    fig = plt.figure(figsize=(4, 3))
+    gs = gridspec.GridSpec(2, 1, height_ratios=[1, 1])
+    ax0=fig.add_subplot(gs[0])
+    sns.boxplot(data=dfAcc, orient='h', ax=ax0)
+    colors = ['#4c72b0', '#ccb974', '#c44e52']
+    for i in range(len(colors)):
+        mybox = ax0.artists[i]
+        mybox.set_facecolor(colors[i])
+    ax0.set_xlabel('Precision (Classification)')
+
+    ax1=fig.add_subplot(gs[1])
+    sns.boxplot(data=dfErrPrec, orient='h', ax=ax1)
+    for i in range(len(colors)):
+        mybox = ax1.artists[i]
+        mybox.set_facecolor(colors[i])
+    ax1.set_xlabel('Precision (Regression)')
+
     plt.tight_layout()
     plt.savefig("diffVsClassic.png")
     plt.close()
