@@ -2,4 +2,4 @@
 #SBATCH --time=7-0
 #SBATCH --array=0-19
 arrayNum="${SLURM_ARRAY_TASK_ID}"
-python3 diffTest.py --jobNum=$arrayNum --numVictims=5000 --max_iter=1000
+python3 diffTest.py --jobNum=$arrayNum --numVictims=1000 --max_iter=1000
