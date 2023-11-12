@@ -44,7 +44,7 @@ columnTypes = {
 class StoreResults():
     def __init__(self, resultsFileName):
         self.resultsFileName = resultsFileName
-        self.lock = filelock.Filelock(self.resultsFileName + '.lock')
+        self.lock = filelock.FileLock(self.resultsFileName + '.lock')
 
     def updateResults(self, method, dataset, column, measure, value):
         with self.lock:
