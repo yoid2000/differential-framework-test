@@ -15,15 +15,15 @@ pp = pprint.PrettyPrinter(indent=4)
 
 def doMethodTags(row):
     methodTags = {
-        'manual-ml': 'Diff',
-        'diff-anonymeter': 'Diff',
+        'manual-ml': 'Non-mem',
+        'diff-anonymeter': 'Non-mem',
         'classic-anonymeter': 'Prior', 
-        'manual-ml-10': 'Diff',
-        'diff-anonymeter-10': 'Diff',
-        'manual-ml-50': 'Diff',
-        'diff-anonymeter-50': 'Diff',
-        'manual-ml-100': 'Diff',
-        'diff-anonymeter-100': 'Diff',
+        'manual-ml-10': 'Non-mem',
+        'diff-anonymeter-10': 'Non-mem',
+        'manual-ml-50': 'Non-mem',
+        'diff-anonymeter-50': 'Non-mem',
+        'manual-ml-100': 'Non-mem',
+        'diff-anonymeter-100': 'Non-mem',
     }
     return methodTags[row['Analysis']]
 
@@ -57,8 +57,8 @@ def doDuplicateTags(row):
 
 def renameMethods(df):
     replacements = {
-        'manual-ml': 'ML/Diff',
-        'diff-anonymeter': 'Match/Diff',
+        'manual-ml': 'ML/Non-mem',
+        'diff-anonymeter': 'Match/Non-mem',
         'classic-anonymeter': 'Match/Prior', 
         'manual-ml-10': 'ML 10%',
         'diff-anonymeter-10': 'Match 10%', 
@@ -77,7 +77,7 @@ methods = [useForMl, 'diff-anonymeter', 'classic-anonymeter',
                      'diff-anonymeter-10', 'manual-ml-10',
                      'diff-anonymeter-50', 'manual-ml-50',
                      'diff-anonymeter-100', 'manual-ml-100']
-with open('results.json', 'r') as f:
+with open('resultsMain.json', 'r') as f:
     res = json.load(f)
 dataset = list(res['classic-anonymeter'].keys())[0]
 print(dataset)
@@ -203,8 +203,11 @@ fig, ax = plt.subplots(2, 1)
 sns.pointplot(x='Columns', y='Precision', hue='Analysis', data=dfAccMelted, order=catOrder, ax=ax[0])
 sns.pointplot(x='Columns', y='Precision', hue='Analysis', data=dfErrPrecMelted, order=conOrder, ax=ax[1])
 plt.tight_layout()
-ax[0].set(xticklabels=[], xlabel='Categorical attributes (ordered by ML/Diff precision)')
-ax[1].set(xticklabels=[], xlabel='Continuous attributes (ordered by ML/Diff precision)', ylabel='Precision (prediction within 5%)')
+ax[0].yaxis.grid(True)
+ax[1].yaxis.grid(True)
+ax[0].set_ylim([0.25,1.05])
+ax[0].set(xticklabels=[], xlabel='Categorical attributes (ordered by ML/Non-mem precision)')
+ax[1].set(xticklabels=[], xlabel='Continuous attributes (ordered by ML/Non-mem precision)', ylabel='Precision (prediction within 5%)')
 plt.savefig("diffVsClassic.png")
 plt.close()
 
@@ -226,8 +229,8 @@ print(dfAccLinkMelted.head(10))
 
 # Try as line plots for linkage
 markers = {
-        'ML/Diff':'o',
-        'Match/Diff':'o',
+        'ML/Non-mem':'o',
+        'Match/Non-mem':'o',
         'ML 10%':'x',
         'Match 10%':'x', 
         'ML 50%':'s',
@@ -236,8 +239,8 @@ markers = {
         'Match 100%':'^', 
 }
 colors = {
-        'ML/Diff':'#4c72b0',
-        'Match/Diff':'#ccb974',
+        'ML/Non-mem':'#4c72b0',
+        'Match/Non-mem':'#ccb974',
         'ML 10%':'#4c72b0',
         'Match 10%':'#ccb974', 
         'ML 50%':'#4c72b0',
@@ -504,18 +507,18 @@ plt.close()
 
 # Let's look at three whiskers
 dfRmse = pd.DataFrame({
-    'ML/Diff': plottables[methods[mlIndex]]['rmse'],
-    'Match/Diff': plottables[methods[diffIndex]]['rmse'],
+    'ML/Non-mem': plottables[methods[mlIndex]]['rmse'],
+    'Match/Non-mem': plottables[methods[diffIndex]]['rmse'],
     'Match/Prior': plottables[methods[classicIndex]]['rmse'],
 })
 dfAcc = pd.DataFrame({
-    'ML/Diff': plottables[methods[mlIndex]]['accuracy'],
-    'Match/Diff': plottables[methods[diffIndex]]['accuracy'],
+    'ML/Non-mem': plottables[methods[mlIndex]]['accuracy'],
+    'Match/Non-mem': plottables[methods[diffIndex]]['accuracy'],
     'Match/Prior': plottables[methods[classicIndex]]['accuracy'],
 })
 dfErrPrec = pd.DataFrame({
-    'ML/Diff': plottables[methods[mlIndex]]['errorPrecision'],
-    'Match/Diff': plottables[methods[diffIndex]]['errorPrecision'],
+    'ML/Non-mem': plottables[methods[mlIndex]]['errorPrecision'],
+    'Match/Non-mem': plottables[methods[diffIndex]]['errorPrecision'],
     'Match/Prior': plottables[methods[classicIndex]]['errorPrecision'],
 })
 print("dfRmse:")

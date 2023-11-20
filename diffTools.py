@@ -1,11 +1,8 @@
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LogisticRegression, Lasso
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-from sklearn.linear_model import Lasso
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import accuracy_score, recall_score, mean_squared_error, precision_score, f1_score
 from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.pipeline import Pipeline
 from tpot import TPOTClassifier
 from tpot import TPOTRegressor
@@ -46,7 +43,7 @@ class StoreResults():
         self.resultsFileName = resultsFileName
         self.lock = filelock.FileLock(self.resultsFileName + '.lock')
 
-    def updateResults(self, method, dataset, column, measure, value):
+    def updateResults(self, method, dataset, column, measure, value, numPredictColumns, valuePrecs=None):
         with self.lock:
             if not os.path.exists(self.resultsFileName):
                 print(f"updateResults: {self.resultsFileName} doesn't exist: making")
@@ -66,18 +63,65 @@ class StoreResults():
                 res[method][dataset][column][measureList] = []
             res[method][dataset][column][measureList].append(value)
             res[method][dataset][column][measure] = sum(res[method][dataset][column][measureList]) / len(res[method][dataset][column][measureList])
+            if valuePrecs is not None:
+                if 'perValue' not in res[method][dataset][column]:
+                    res[method][dataset][column]['perValue'] = {}
+                pv = res[method][dataset][column]['perValue']
+                for value, info in valuePrecs.items():
+                    if value not in pv:
+                        pv[value] = {}
+                    if 'precision__' not in pv[value]:
+                        pv[value]['precision__'] = []
+                    if 'recall__' not in pv[value]:
+                        pv[value]['recall__'] = []
+                    if 'f1__' not in pv[value]:
+                        pv[value]['f1__'] = []
+                    if 'countPred__' not in pv[value]:
+                        pv[value]['countPred__'] = []
+                    if 'countTest__' not in pv[value]:
+                        pv[value]['countTest__'] = []
+                    pv[value]['precision__'].append(info['precision'])
+                    pv[value]['precision'] = sum(pv[value]['precision__']) / len(pv[value]['precision__'])
+                    pv[value]['recall__'].append(info['recall'])
+                    pv[value]['recall'] = sum(pv[value]['recall__']) / len(pv[value]['recall__'])
+                    pv[value]['f1__'].append(info['f1'])
+                    pv[value]['f1'] = sum(pv[value]['f1__']) / len(pv[value]['f1__'])
+                    pv[value]['countPred__'].append(info['countPred'])
+                    pv[value]['countPred'] = sum(pv[value]['countPred__']) / len(pv[value]['countPred__'])
+                    pv[value]['countTest__'].append(info['countTest'])
+                    pv[value]['countTest'] = sum(pv[value]['countTest__']) / len(pv[value]['countTest__'])
             print(f"updateResults: writing {self.resultsFileName}")
             with open(self.resultsFileName, 'w') as f:
                 json.dump(res, f, indent=4)
 
+    def computePerValueStats(self, y_test, y_pred):
+        ''' We want to compute per-value precisions and recall
+        '''
+        valuePrecs = {}
+        labels = np.unique(y_test)
+        recallScores = recall_score(y_test, y_pred, average=None, labels=labels)
+        precisionScores = precision_score(y_test, y_pred, average=None, labels=labels)
+        f1Scores = f1_score(y_test, y_pred, average=None, labels=labels)
+        pp.pprint(labels)
+        print("recallScores")
+        pp.pprint(recallScores)
+        print("precisionScores")
+        pp.pprint(precisionScores)
+        print("f1Scores")
+        pp.pprint(f1Scores)
+        for label, recall, precision, f1 in zip(labels,recallScores,precisionScores, f1Scores):
+            countTest = int(y_test.value_counts().get(label, 0))
+            countPred = np.count_nonzero(y_pred == label)
+            valuePrecs[label] = {'precision':precision, 'recall':recall, 'f1':f1, 'countTest':countTest, 'countPred':countPred}
+        return valuePrecs
 
 pp = pprint.PrettyPrinter(indent=4)
 
-def getPrecisionFromBestGuess(y_test):
-    # Find the most frequent category
-    most_frequent = y_test.mode()[0]
+def getPrecisionFromBestGuess(y_test, dfCol):
+    # Find the most frequent category from the source data
+    most_frequent = dfCol.mode()[0]
     print(f"most_frequent is {most_frequent}")
-    most_frequent_count = y_test.value_counts()
+    # Emulate precision if we had simply always predected this among the test data
     most_frequent_count = (y_test == most_frequent).sum()
     print(f"most_frequent_count {most_frequent_count}")
     return(most_frequent_count / len(y_test))
@@ -100,15 +144,19 @@ def doClip(thingy,clipBegin = 10, clipEnd=3):
         clipped.append(clip)
     return clipped
 
-def printEvaluation(sr, method, dataset, target, targetType, y_test, y_pred, precError=0.05, doBestGuess=True):
+def printEvaluation(sr, method, dataset, target, targetType, y_test, y_pred, dfSource, numPredictColumns, precError=0.05, doBestGuess=True):
     if targetType == 'cat':
+        valuePrecs = None
+        valuePrecs = sr.computePerValueStats(y_test, y_pred)
+        print("valuePrecs:")
+        pp.pprint(valuePrecs)
         accuracy = accuracy_score(y_test, y_pred)
         print(f"Accuracy: {accuracy}")
-        accuracy_freq = getPrecisionFromBestGuess(y_test)
+        accuracy_freq = getPrecisionFromBestGuess(y_test, dfSource[target])
         if doBestGuess:
             accuracy = max(accuracy, accuracy_freq)
-        sr.updateResults(method, dataset, target, 'accuracy', accuracy)
-        sr.updateResults(method, dataset, target, 'accuracy_freq', accuracy_freq)
+        sr.updateResults(method, dataset, target, 'accuracy', accuracy, numPredictColumns, valuePrecs=valuePrecs)
+        sr.updateResults(method, dataset, target, 'accuracy_freq', accuracy_freq, numPredictColumns)
         print(f"Accuracy of best guess: {accuracy_freq}")
         accuracy_improvement = (accuracy - accuracy_freq) / max(accuracy, accuracy_freq)
         print(f"Accuracy Improvement: {accuracy_improvement}")
@@ -116,8 +164,8 @@ def printEvaluation(sr, method, dataset, target, targetType, y_test, y_pred, pre
         # First compute rmse
         mse = mean_squared_error(y_test, y_pred)
         rmse = np.sqrt(mse)
-        sr.updateResults(method, dataset, target, 'rmse', rmse)
-        sr.updateResults(method, dataset, target, 'avg-value', np.mean(y_test))
+        sr.updateResults(method, dataset, target, 'rmse', rmse, numPredictColumns)
+        sr.updateResults(method, dataset, target, 'avg-value', np.mean(y_test), numPredictColumns)
         print(f"Root Mean Squared Error: {rmse}")
         print(f"Average test value: {np.mean(y_test)}")
         print(f"Relative error: {rmse/np.mean(y_test)}")
@@ -127,24 +175,17 @@ def printEvaluation(sr, method, dataset, target, targetType, y_test, y_pred, pre
         lowEdges = y_test - errorTolorance
         highEdges = y_test + errorTolorance
         print(f"testRange: {testRange}, errorTolorance: {errorTolorance}")
-        print("y_test")
-        print(y_test)
-        print("y_pred")
-        print(y_pred)
-        print(lowEdges)
-        print(highEdges)
-        print('types', type(y_pred), type(lowEdges), type(highEdges))
         correctPredictions = ((convert_to_numpy(y_pred) >= convert_to_numpy(lowEdges)) & (convert_to_numpy(y_pred) <= convert_to_numpy(highEdges)))
         print("correctPredictions")
         print(correctPredictions)
         numCorrect = np.count_nonzero(correctPredictions)
         errorPrecision = numCorrect / len(y_test)
         if doBestGuess:
-            errorPrecision_freq = getPrecisionFromBestGuess(y_test)
+            errorPrecision_freq = getPrecisionFromBestGuess(y_test, dfSource[target])
             errorPrecision = max(errorPrecision, errorPrecision_freq)
         # Now we check to see if we could have gotten a better prediction by
         # simply predicting the most frequent value
-        sr.updateResults(method, dataset, target, 'errorPrecision', errorPrecision)
+        sr.updateResults(method, dataset, target, 'errorPrecision', errorPrecision, numPredictColumns)
 
 def getAnonymeterPreds(sr, method, filePath, victims, dataset, secret, auxCols):
     ''' Both victims and dataset df's have all columns.
@@ -167,7 +208,7 @@ def getAnonymeterPreds(sr, method, filePath, victims, dataset, secret, auxCols):
     nn = MixedTypeKNeighbors(n_neighbors=1).fit(candidates=dataset[auxCols])
     predictions_idx = nn.kneighbors(queries=victims[auxCols])
     predictions = dataset.iloc[predictions_idx.flatten()][secret]
-    printEvaluation(sr, method, filePath, secret, secretType, victims[secret], predictions)
+    printEvaluation(sr, method, filePath, secret, secretType, len(auxCols), victims[secret], predictions)
 
 def makeModel(dataset, target, df, auto='none', max_iter=100):
     fileBaseName = dataset + target

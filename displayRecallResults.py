@@ -26,6 +26,7 @@ if __name__ == "__main__":
     #plt.xscale('log')
     plt.xlabel("Recall")
     plt.ylabel("Precision")
+    plt.grid(True)
     plt.tight_layout()
     plt.savefig("prec-recall.png")
     plt.close()

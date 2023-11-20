@@ -8,7 +8,15 @@ import pprint
 workWithAuto = False
 pp = pprint.PrettyPrinter(indent=4)
 
-def doModel(sr, method, dataset, target, df, dfTest, auto='none', max_iter=100):
+piiColumns = {
+        'Customer_Age': 'num',
+        'Gender': 'cat',
+        'Dependent_count': 'num',    #num
+        'Education_Level': 'cat',
+        'Marital_Status': 'cat',
+}
+
+def doModel(sr, method, dataset, target, df, dfTest, predColumns=[], auto='none', max_iter=100):
     if auto == 'autosklearn' and workWithAuto is False:
         return
     targetType, nums, cats, drops = categorize_columns(df, target)
@@ -22,8 +30,13 @@ def doModel(sr, method, dataset, target, df, dfTest, auto='none', max_iter=100):
     X_test = dfTest.drop(target, axis=1)
     y_test = dfTest[target]
     model = makeModel(dataset, target, df, auto=auto, max_iter=max_iter)
+    if len(predColumns) > 0:
+        for testCol in X_test.columns:
+            if testCol not in predColumns:
+                X_test = X_test.drop(testCol, axis=1)
+    numPredictCols = len(list(X_test.columns))
     y_pred = model.predict(X_test)
-    printEvaluation(sr, method, dataset, target, targetType, y_test, y_pred, doBestGuess=True)
+    printEvaluation(sr, method, dataset, target, targetType, y_test, y_pred, df, numPredictCols, doBestGuess=True)
 
 def sample_rows(df, num_rows=500):
     # Randomly sample rows and create a new dataframe
@@ -55,7 +68,7 @@ def print_dataframe_columns(df):
         print("-----")
         print(df[column].describe())
 
-def runDiffTest(jobNum=0, numVictims = 1000, max_iter = 5000, doTpot = False, resultsFile = 'results.json', filePath = 'BankChurnersNoId_ctgan.json'):
+def runDiffTest(jobNum=0, numVictims = None, max_iter = 5000, resultsFile = 'results.json', filePath = 'BankChurnersNoId_ctgan.json', doReplication=False):
     sr = StoreResults(resultsFile)
     with open(filePath, 'r') as f:
         testData = json.load(f)
@@ -75,38 +88,27 @@ def runDiffTest(jobNum=0, numVictims = 1000, max_iter = 5000, doTpot = False, re
 
     print(list(dfOrig.columns))
 
+    if numVictims is None:
+        numVictims = dfTest.shape[0]
     dfSampleVictims = dfTest.sample(n=numVictims, replace=False)
-    if True:
-        ''' The following runs the tests for the case where the victims are
-            completely distinct from the original data
-        '''
-        
-        print_dataframe_columns(dfOrig)
-        print('===============================================')
-        print('===============================================')
-        for target in dfOrig.columns:
-            print(f"Use target {target}")
-            # Here, we are using the original rows to measure the baseline
-            # using ML models (this is meant to give a high-quality baseline)
-            print("\n----  DIFFERENTIAL FRAMEWORK  ----")
-            doModel(sr, 'manual-ml', filePath, target, dfOrig, dfSampleVictims, max_iter=max_iter)
-            if doTpot:
-                doModel(sr, 'tpot', filePath, target, dfOrig, dfSampleVictims, auto='tpot')
-            # Here, we are mimicing Anonymeter. That is to say, we are applying
-            # the analysis (which is the same as the attack) to the synthetic
-            # data using victims that were not part of making the synthetic data
-            auxCols = list(dfTest.columns)
-            auxCols.remove(target)
-            print("\n----  CLASSIC ANONYMETER  ----")
-            getAnonymeterPreds(sr, 'classic-anonymeter', filePath, dfSampleVictims, dfAnon, target, auxCols)
-            # Here, we are running Anonymeter against the original data instead of
-            # the synthetic data. This follows the differential framework, but
-            # using Anonymeter's attack method as the analysis
-            print('----------------------------------------------')
-            print("\n----  DIFFERENTIAL ANONYMETER  ----")
-            getAnonymeterPreds(sr, 'diff-anonymeter', filePath, dfSampleVictims, dfOrig, target, auxCols)
+    print(f"Running with {len(dfSampleVictims)} test cases")
+    ''' The following runs the tests for the case where the victims are
+        completely distinct from the original data
+    '''
+    print_dataframe_columns(dfOrig)
+    print('===============================================')
+    print('===============================================')
+    for target in dfOrig.columns:
+        print(f"Use target {target}")
+        # Here, we are using the original rows to measure the baseline
+        # using ML models (this is meant to give a high-quality baseline)
+        print("\n----  NON-MEMBER FRAMEWORK  ----")
+        doModel(sr, 'manual-ml', filePath, target, dfOrig, dfSampleVictims, max_iter=max_iter)
+        doModel(sr, 'manual-ml', filePath, target, dfOrig, dfSampleVictims, predColumns=piiColumns, max_iter=max_iter)
+        print("\n----  PRIOR FRAMEWORK  ----")
+        doModel(sr, 'prior', filePath, target, dfAnon, dfSampleVictims, max_iter=max_iter)
 
-    if True:
+    if doReplication:
         ''' The following runs the tests for the case where some fraction of the
             victims are replicated in the original data. The idea here is to model
             the case where some users are linked (i.e. husband and wife that often
@@ -128,13 +130,6 @@ def runDiffTest(jobNum=0, numVictims = 1000, max_iter = 5000, doTpot = False, re
                 # using ML models (this is meant to give a high-quality baseline)
                 print(f"\n----  DIFFERENTIAL FRAMEWORK  ({linkage}%)----")
                 doModel(sr, f'manual-ml-{linkage}', filePath, target, dfOrigLinked, dfTestLinked, max_iter=max_iter)
-                auxCols = list(dfTest.columns)
-                auxCols.remove(target)
-                # Here, we are running Anonymeter against the original data instead of
-                # the synthetic data. This follows the differential framework, but
-                # using Anonymeter's attack method as the analysis
-                print(f"\n----  DIFFERENTIAL ANONYMETER  ({linkage}%)----")
-                getAnonymeterPreds(sr, f'diff-anonymeter-{linkage}', filePath, dfTestLinked, dfOrigLinked, target, auxCols)
 
 def main():
     fire.Fire(runDiffTest)
