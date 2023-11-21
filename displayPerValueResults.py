@@ -24,10 +24,14 @@ pp.pprint(list(np.unique(dfFull['method'])))
 
 dfMain = dfFull[(dfFull['method'] == 'manual-ml') & (dfFull['numPredCols'] > 18)]
 dfMain['Framework'] = 'Non-member'
+dfLow = dfFull[(dfFull['method'] == 'manual-ml') & (dfFull['numPredCols'] < 18)]
+dfLow['Framework'] = 'Non-member'
 
 dfNonCatVal = dfMain[(dfMain['column'].notnull())]
 dfNonCat = dfMain[(dfMain['accuracy'].notnull())]
 dfNonCon = dfMain[(dfMain['errorPrecision'].notnull())]
+dfNonCatLow = dfLow[(dfLow['accuracy'].notnull())]
+dfNonConLow = dfLow[(dfLow['errorPrecision'].notnull())]
 dfPrior = dfFull[(dfFull['method'] == 'prior')]
 dfPrior['Framework'] = 'Prior'
 dfPriorCat = dfPrior[dfPrior['accuracy'].notnull()]
@@ -44,6 +48,8 @@ dfPriorCat['prec'] = dfPriorCat['accuracy']
 dfPriorCon['prec'] = dfPriorCon['errorPrecision']
 dfNonCat['prec'] = dfNonCat['accuracy']
 dfNonCon['prec'] = dfNonCon['errorPrecision']
+dfNonCatLow['prec'] = dfNonCatLow['accuracy']
+dfNonConLow['prec'] = dfNonConLow['errorPrecision']
 df10Cat['prec'] = df10Cat['accuracy']
 df10Con['prec'] = df10Con['errorPrecision']
 df50Cat['prec'] = df50Cat['accuracy']
@@ -52,6 +58,18 @@ df100Cat['prec'] = df100Cat['accuracy']
 df100Con['prec'] = df100Con['errorPrecision']
 
 # sort category column data by accuracy
+dfNonCat = dfNonCat[['target','prec','Framework']]
+dfNonCat = dfNonCat.groupby(['target','Framework'], as_index=False).mean()
+dfNonCon = dfNonCon[['target','prec','Framework']]
+dfNonCon = dfNonCon.groupby(['target','Framework'], as_index=False).mean()
+dfNonCatLow = dfNonCatLow[['target','prec','Framework']]
+dfNonCatLow = dfNonCatLow.groupby(['target','Framework'], as_index=False).mean()
+dfNonConLow = dfNonConLow[['target','prec','Framework']]
+dfNonConLow = dfNonConLow.groupby(['target','Framework'], as_index=False).mean()
+dfPriorCat = dfPriorCat[['target','prec','Framework']]
+dfPriorCat = dfPriorCat.groupby(['target','Framework'], as_index=False).mean()
+dfPriorCon = dfPriorCon[['target','prec','Framework']]
+dfPriorCon = dfPriorCon.groupby(['target','Framework'], as_index=False).mean()
 dfNonSorted = dfNonCat.sort_values(by='prec')
 print("dfNonSorted")
 colOrderAcc = list(dfNonSorted['target'])
@@ -63,11 +81,9 @@ print("dfNonSorted")
 colOrderErrPrec = list(dfNonSorted['target'])
 print(colOrderErrPrec)
 
-dfAllCatVal = pd.concat([dfNonCatVal, dfPriorCatVal], ignore_index=True)
 dfAllCat = pd.concat([dfNonCat, dfPriorCat], ignore_index=True)
 dfAllCon = pd.concat([dfNonCon, dfPriorCon], ignore_index=True)
 
-# Try as line plots for accuracy
 fig, ax = plt.subplots(2, 1)
 sns.pointplot(x='target', y='prec', hue='Framework', data=dfAllCat, order=colOrderAcc, ax=ax[0])
 sns.pointplot(x='target', y='prec', hue='Framework', data=dfAllCon, order=colOrderErrPrec, ax=ax[1])
@@ -80,7 +96,27 @@ ax[1].set(xticklabels=[], xlabel='Continuous attributes (ordered by Non-member p
 plt.savefig("nonVsPriorAcc.png")
 plt.close()
 
-print(dfNonCatVal[['recall','precision','target']].head(50))
+dfNonCat['Known Attr'] = 'All'
+dfNonCon['Known Attr'] = 'All'
+dfNonCatLow['Known Attr'] = 'PII only'
+dfNonConLow['Known Attr'] = 'PII only'
+dfAllCatKnown = pd.concat([dfNonCat, dfNonCatLow], ignore_index=True)
+dfAllConKnown = pd.concat([dfNonCon, dfNonConLow], ignore_index=True)
+
+fig, ax = plt.subplots(2, 1)
+sns.pointplot(x='target', y='prec', hue='Known Attr', data=dfAllCatKnown, order=colOrderAcc, ax=ax[0])
+sns.pointplot(x='target', y='prec', hue='Known Attr', data=dfAllConKnown, order=colOrderErrPrec, ax=ax[1])
+plt.tight_layout()
+ax[0].yaxis.grid(True)
+ax[1].yaxis.grid(True)
+#ax[0].set_ylim([0.25,1.05])
+ax[0].set(xticklabels=[], xlabel='Categorical attributes (ordered by Non-member precision)', ylabel='Precision')
+ax[1].set(xticklabels=[], xlabel='Continuous attributes (ordered by Non-member precision)', ylabel='Precision (prediction within 5%)')
+plt.savefig("allVsPiiAcc.png")
+plt.close()
+
+dfNonCatVal = dfNonCatVal[['target','precision','recall','label']]
+dfNonCatVal = dfNonCatVal.groupby(['target', 'label'], as_index=False).mean()
 #pd.set_option('display.max_columns', None)
 #pd.set_option('display.max_rows', None)
 #print(dfNonCatVal.describe(include='all'))
@@ -103,6 +139,18 @@ plt.savefig("perValue.png")
 plt.close()
 
 # Now let's do the replication graph
+df10Cat = df10Cat[['target','prec']]
+df10Cat = df10Cat.groupby(['target'], as_index=False).mean()
+df10Con = df10Con[['target','prec']]
+df10Con = df10Con.groupby(['target'], as_index=False).mean()
+df50Cat = df50Cat[['target','prec']]
+df50Cat = df50Cat.groupby(['target'], as_index=False).mean()
+df50Con = df50Con[['target','prec']]
+df50Con = df50Con.groupby(['target'], as_index=False).mean()
+df100Cat = df100Cat[['target','prec']]
+df100Cat = df100Cat.groupby(['target'], as_index=False).mean()
+df100Con = df100Con[['target','prec']]
+df100Con = df100Con.groupby(['target'], as_index=False).mean()
 
 dfNon = pd.concat([dfNonCat[['target','prec']], dfNonCon[['target','prec']]], ignore_index=True, axis=0)
 dfNon['replication'] = '0%'
