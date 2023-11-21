@@ -43,77 +43,72 @@ class StoreResults():
         self.resultsFileName = resultsFileName
         self.lock = filelock.FileLock(self.resultsFileName + '.lock')
 
-    def updateResults(self, method, dataset, column, measure, value, numPredictColumns, valuePrecs=None):
+    def initRow(self, method, dataset, target, numPredCols, column=None):
+        self.row = {
+            'method':method,
+            'dataset':dataset,
+            'target':target,
+            'numPredCols':numPredCols,
+            'accuracy':None,
+            'accuracy_freq':None,
+            'errorPrecision':None,
+            'rmse':None,
+            'avg_value':None,
+            # Following are for per-column stats
+            'column':column,
+            'label':None,
+            'attClass':None,
+            'precision': None,
+            'recall': None,
+            'f1': None,
+            'countTest':None,
+            'countPred':None,
+        }
+
+    def updateRow(self, measure, value):
+        self.row[measure] = value
+
+    def commitRow(self):
         with self.lock:
             if not os.path.exists(self.resultsFileName):
-                print(f"updateResults: {self.resultsFileName} doesn't exist: making")
-                res = {}
+                print(f"updateRow: {self.resultsFileName} doesn't exist: making")
+                res = []
             else:
-                print(f"updateResults: opening {self.resultsFileName}")
+                print(f"updateRow: opening {self.resultsFileName}")
                 with open(self.resultsFileName, 'r') as f:
                     res = json.load(f)
-            if method not in res:
-                res[method] = {}
-            if dataset not in res[method]:
-                res[method][dataset] = {}
-            if column not in res[method][dataset]:
-                res[method][dataset][column] = {}
-            measureList = measure + '__'
-            if measureList not in res[method][dataset][column]:
-                res[method][dataset][column][measureList] = []
-            res[method][dataset][column][measureList].append(value)
-            res[method][dataset][column][measure] = sum(res[method][dataset][column][measureList]) / len(res[method][dataset][column][measureList])
-            if valuePrecs is not None:
-                if 'perValue' not in res[method][dataset][column]:
-                    res[method][dataset][column]['perValue'] = {}
-                pv = res[method][dataset][column]['perValue']
-                for value, info in valuePrecs.items():
-                    if value not in pv:
-                        pv[value] = {}
-                    if 'precision__' not in pv[value]:
-                        pv[value]['precision__'] = []
-                    if 'recall__' not in pv[value]:
-                        pv[value]['recall__'] = []
-                    if 'f1__' not in pv[value]:
-                        pv[value]['f1__'] = []
-                    if 'countPred__' not in pv[value]:
-                        pv[value]['countPred__'] = []
-                    if 'countTest__' not in pv[value]:
-                        pv[value]['countTest__'] = []
-                    pv[value]['precision__'].append(info['precision'])
-                    pv[value]['precision'] = sum(pv[value]['precision__']) / len(pv[value]['precision__'])
-                    pv[value]['recall__'].append(info['recall'])
-                    pv[value]['recall'] = sum(pv[value]['recall__']) / len(pv[value]['recall__'])
-                    pv[value]['f1__'].append(info['f1'])
-                    pv[value]['f1'] = sum(pv[value]['f1__']) / len(pv[value]['f1__'])
-                    pv[value]['countPred__'].append(info['countPred'])
-                    pv[value]['countPred'] = sum(pv[value]['countPred__']) / len(pv[value]['countPred__'])
-                    pv[value]['countTest__'].append(info['countTest'])
-                    pv[value]['countTest'] = sum(pv[value]['countTest__']) / len(pv[value]['countTest__'])
-            print(f"updateResults: writing {self.resultsFileName}")
+
+            res.append(self.row)
+            print(f"updateRow: writing {self.resultsFileName}")
             with open(self.resultsFileName, 'w') as f:
                 json.dump(res, f, indent=4)
 
-    def computePerValueStats(self, y_test, y_pred):
-        ''' We want to compute per-value precisions and recall
-        '''
-        valuePrecs = {}
-        labels = np.unique(y_test)
-        recallScores = recall_score(y_test, y_pred, average=None, labels=labels)
-        precisionScores = precision_score(y_test, y_pred, average=None, labels=labels)
-        f1Scores = f1_score(y_test, y_pred, average=None, labels=labels)
-        pp.pprint(labels)
-        print("recallScores")
-        pp.pprint(recallScores)
-        print("precisionScores")
-        pp.pprint(precisionScores)
-        print("f1Scores")
-        pp.pprint(f1Scores)
-        for label, recall, precision, f1 in zip(labels,recallScores,precisionScores, f1Scores):
-            countTest = int(y_test.value_counts().get(label, 0))
-            countPred = np.count_nonzero(y_pred == label)
-            valuePrecs[label] = {'precision':precision, 'recall':recall, 'f1':f1, 'countTest':countTest, 'countPred':countPred}
-        return valuePrecs
+def computePerValueStats(sr, y_test, y_pred, method, dataset, target, numPredictColumns):
+    ''' We want to compute per-value precisions and recall
+    '''
+    labels = np.unique(y_test)
+    recallScores = recall_score(y_test, y_pred, average=None, labels=labels)
+    precisionScores = precision_score(y_test, y_pred, average=None, labels=labels)
+    f1Scores = f1_score(y_test, y_pred, average=None, labels=labels)
+    pp.pprint(labels)
+    print("recallScores")
+    pp.pprint(recallScores)
+    print("precisionScores")
+    pp.pprint(precisionScores)
+    print("f1Scores")
+    pp.pprint(f1Scores)
+    for label, recall, precision, f1 in zip(labels,recallScores,precisionScores, f1Scores):
+        sr.initRow(method, dataset, target, numPredictColumns, column=label)
+        countTest = int(y_test.value_counts().get(label, 0))
+        countPred = np.count_nonzero(y_pred == label)
+        sr.updateRow('label',label)
+        sr.updateRow('attClass', f"{target}_{label}")
+        sr.updateRow('precision',precision)
+        sr.updateRow('recall',recall)
+        sr.updateRow('f1',f1)
+        sr.updateRow('countTest',countTest)
+        sr.updateRow('countPred',countPred)
+        sr.commitRow()
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -146,26 +141,28 @@ def doClip(thingy,clipBegin = 10, clipEnd=3):
 
 def printEvaluation(sr, method, dataset, target, targetType, y_test, y_pred, dfSource, numPredictColumns, precError=0.05, doBestGuess=True):
     if targetType == 'cat':
-        valuePrecs = None
-        valuePrecs = sr.computePerValueStats(y_test, y_pred)
-        print("valuePrecs:")
-        pp.pprint(valuePrecs)
+        sr.initRow(method, dataset, target, numPredictColumns)
         accuracy = accuracy_score(y_test, y_pred)
         print(f"Accuracy: {accuracy}")
         accuracy_freq = getPrecisionFromBestGuess(y_test, dfSource[target])
         if doBestGuess:
             accuracy = max(accuracy, accuracy_freq)
-        sr.updateResults(method, dataset, target, 'accuracy', accuracy, numPredictColumns, valuePrecs=valuePrecs)
-        sr.updateResults(method, dataset, target, 'accuracy_freq', accuracy_freq, numPredictColumns)
+        sr.updateRow('accuracy', accuracy)
+        sr.updateRow('accuracy_freq', accuracy_freq)
         print(f"Accuracy of best guess: {accuracy_freq}")
         accuracy_improvement = (accuracy - accuracy_freq) / max(accuracy, accuracy_freq)
         print(f"Accuracy Improvement: {accuracy_improvement}")
+        sr.commitRow()
+        sr.initRow(method, dataset, target, numPredictColumns)
+        computePerValueStats(sr, y_test, y_pred, method, dataset, target, numPredictColumns)
+        sr.commitRow()
     else:
+        sr.initRow(method, dataset, target, numPredictColumns)
         # First compute rmse
         mse = mean_squared_error(y_test, y_pred)
         rmse = np.sqrt(mse)
-        sr.updateResults(method, dataset, target, 'rmse', rmse, numPredictColumns)
-        sr.updateResults(method, dataset, target, 'avg-value', np.mean(y_test), numPredictColumns)
+        sr.updateRow('rmse', rmse)
+        sr.updateRow('avg_value', np.mean(y_test))
         print(f"Root Mean Squared Error: {rmse}")
         print(f"Average test value: {np.mean(y_test)}")
         print(f"Relative error: {rmse/np.mean(y_test)}")
@@ -185,7 +182,8 @@ def printEvaluation(sr, method, dataset, target, targetType, y_test, y_pred, dfS
             errorPrecision = max(errorPrecision, errorPrecision_freq)
         # Now we check to see if we could have gotten a better prediction by
         # simply predicting the most frequent value
-        sr.updateResults(method, dataset, target, 'errorPrecision', errorPrecision, numPredictColumns)
+        sr.updateRow('errorPrecision', errorPrecision)
+        sr.commitRow()
 
 def getAnonymeterPreds(sr, method, filePath, victims, dataset, secret, auxCols):
     ''' Both victims and dataset df's have all columns.

@@ -27,13 +27,16 @@ def doModel(sr, method, dataset, target, df, dfTest, predColumns=[], auto='none'
     for column in drops:
         df = df.drop(column, axis=1)
         dfTest = df.drop(column, axis=1)
+    if len(predColumns) > 0:
+        for testCol in df.columns:
+            if testCol == target:
+                continue
+            if testCol not in predColumns:
+                df = df.drop(testCol, axis=1)
+                dfTest = dfTest.drop(testCol, axis=1)
     X_test = dfTest.drop(target, axis=1)
     y_test = dfTest[target]
     model = makeModel(dataset, target, df, auto=auto, max_iter=max_iter)
-    if len(predColumns) > 0:
-        for testCol in X_test.columns:
-            if testCol not in predColumns:
-                X_test = X_test.drop(testCol, axis=1)
     numPredictCols = len(list(X_test.columns))
     y_pred = model.predict(X_test)
     printEvaluation(sr, method, dataset, target, targetType, y_test, y_pred, df, numPredictCols, doBestGuess=True)
